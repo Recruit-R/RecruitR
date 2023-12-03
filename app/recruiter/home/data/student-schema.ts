@@ -9,7 +9,8 @@ export const studentSchema = z.object({
   year: z.string(),
   gpa: z.union([z.number(), z.null()]),
   major: z.string(),
-  temp_id: z.number()
+  temp_id: z.number(),
+  email: z.string(),
 })
 
 export type Student = z.infer<typeof studentSchema>
