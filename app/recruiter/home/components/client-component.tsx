@@ -55,7 +55,7 @@ export default function ClientComponent({students} : {students : any}) {
                 </Button>
             </div>
             {
-                currentStudent && (
+                currentStudent ? (
                     <div className={cn("bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
                         <FeedbackCard
                             feedbackFocus={feedbackFocus}
@@ -64,6 +64,20 @@ export default function ClientComponent({students} : {students : any}) {
                             c={c}
                         />
                     </div>
+                ) : (
+                    <div className={cn("bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+                        <Card className="min-h-full flex items-center justify-center">
+                        <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
+                            <p className="font-bold">
+                                No Student Selected.
+                            </p>
+                            <p>
+                                Select a student to view.
+                            </p>
+                        </CardContent>
+                        </Card>
+                    </div>
+
                 )
             }
         </div>
