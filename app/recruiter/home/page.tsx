@@ -19,10 +19,10 @@ async function getStudents() {
 }
 
 export default async function Page() {
-    const students = await getStudents()
+    // const students = await getStudents()
     const new_students = await getData({ collection_name: 'users' })
     console.log(new_students);
     return (
-        <ClientComponent students={students} />
+        <ClientComponent students={new_students} />
     )
 }

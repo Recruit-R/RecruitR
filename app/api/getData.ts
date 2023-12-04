@@ -1,5 +1,7 @@
 import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
 import app from "../../firebase.config";
+import { z } from "zod";
+import { studentSchema } from "@/app/recruiter/home/data/student-schema";
 
 const db = getFirestore(app)
 export default async function getDoument({ collection_name, document_id }: { collection_name: string, document_id?: string }) {
@@ -9,7 +11,16 @@ export default async function getDoument({ collection_name, document_id }: { col
     } else {
         let response = await collection(db, collection_name)
         let result = await getDocs(response);
-        return result;
+        // console.log(result.docs)
+        let student_list = []
+        result.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            student_list.push(doc.data());
+        });
+        console.log(student_list)
+        // const students = JSON.parse(result.toString())
+        return z.array(studentSchema).parse(student_list);
     }
 
 }
