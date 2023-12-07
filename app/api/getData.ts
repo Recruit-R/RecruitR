@@ -16,8 +16,11 @@ export default async function getDoument({ collection_name, document_id }: { col
         result.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-            student_list.push(doc.data());
+            if (doc.data() != {}) {
+                student_list.push(doc.data());
+            }
         });
+        console.log("Student list: ")
         console.log(student_list)
         // const students = JSON.parse(result.toString())
         return z.array(studentSchema).parse(student_list);
