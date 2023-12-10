@@ -1,0 +1,33 @@
+.bold-text {
+    font-weight: bold;
+}
+
+.events-container {
+    display: flex;
+    justify-content: space-between; 
+}
+
+.event-column {
+    flex: 1;
+    margin-right: 3%; 
+}
+
+.event-front{
+    flex: 1;
+    margin-left: 3%; 
+}
+
+.title-padding{
+ 
+    padding-top:4%;
+    padding-bottom: 2%;
+}
+
+.create-padding{
+    padding-top: 3%;
+}
+
+.gray{
+    background-color: lightgrey;
+    color: black;
+}

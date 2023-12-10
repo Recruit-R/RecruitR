@@ -22,7 +22,7 @@ import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 export default function ClientComponent({students} : {students : any}) {
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
     const [studentView, setStudentView] = useState<boolean>(true)
-    const [currentStudent, setCurrentStudent] = useState<Student>(null)
+    const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
 
     const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
