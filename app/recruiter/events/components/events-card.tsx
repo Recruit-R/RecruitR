@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./card.tsx"
+} from "@/components/ui/card"
 
 interface EventData {
   title: string;
