@@ -28,7 +28,7 @@ export default function Page() {
     return (
         <div>
             <div className="w-half event-front create-padding"></div>
-       <Button className="w-half event-front gray"><PlusIcon/>Create Event</Button>
+       <Button className="w-half event-front gray" variant="outline"><PlusIcon/>Create Event</Button>
         <div className="events-container event-front">           
         <div className="event-column ">
             <h1 className="title-padding bold-text">Current Events</h1>

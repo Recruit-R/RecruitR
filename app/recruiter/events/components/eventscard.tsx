@@ -21,7 +21,7 @@ interface EventCardProps {
 export function EventCard({ eventData }: EventCardProps) {
   return (
     <Card className="bg-gray-300">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-1">
         
         
       </CardHeader>
