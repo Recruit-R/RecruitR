@@ -33,7 +33,7 @@ import {tree} from "next/dist/build/templates/app-page";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  setCurrentStudent: React.Dispatch<React.SetStateAction<Student>>
+  setCurrentStudent: React.Dispatch<React.SetStateAction<Student | null>>
   setStudentView: React.Dispatch<React.SetStateAction<boolean>>
   c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-  const printOutput = (row) => {
+  const printOutput = (row : Student) => {
     console.log(row)
   }
   return (
