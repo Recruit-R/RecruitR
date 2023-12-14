@@ -1,8 +1,8 @@
 import React from 'react';
-import { EventCard } from 'C:/Users/HATFIELDAE20/newCapstoneRepo/RecruitR/app/recruiter/events/components/eventscard.tsx';
+import { EventCard } from '@/app/recruiter/events/components/events-card.tsx';
 import './Page.css'; 
-import { Button } from "C:/Users/HATFIELDAE20/newCapstoneRepo/RecruitR/app/recruiter/events/components/button.tsx"
-import { PlusIcon } from 'C:/Users/HATFIELDAE20/newCapstoneRepo/RecruitR/app/recruiter/events/components/plusicon.tsx';
+import { Button } from "@/components/ui/button"
+import { PlusIcon } from "@/app/recruiter/events/components/plusicon";
 
 export default function Page() {
     // Sample data for current and past events
