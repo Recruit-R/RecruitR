@@ -11,7 +11,7 @@ export async function create(value: string) {
     // ...
     const obj = JSON.parse(value);
     console.log("test")
-    const res = await addData("events", "1", {"Title": "asdfasdf", "Location": "GCC", "Time": { "seconds": 1702498664, "nanoseconds": 569000000 }})
+    const res = await addData("events", "2", {"Title": "asdf", "Location": "GCC", "Time": { "seconds": 1702498664, "nanoseconds": 569000000 }})
     console.log("IT WORKED")
     console.log(res.result)
 
