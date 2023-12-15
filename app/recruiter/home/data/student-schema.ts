@@ -15,7 +15,7 @@ export const studentSchema = z.object({
   statusDate: z.union([z.object({
     seconds: z.number(),
     nanoseconds: z.number(),
-  }), z.undefined()]),
+  }).transform((object) => {return convert(object.seconds, object.nanoseconds)}), z.undefined()]),
   gradYear: z.union([z.number(), z.undefined()]),
   interview2: z.union([z.string(), z.undefined()]),
   interview1: z.union([z.string(), z.undefined()]),
