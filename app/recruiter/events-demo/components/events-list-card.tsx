@@ -1,5 +1,5 @@
 import {ClassName} from "postcss-selector-parser";
-import {RecruiterEvent} from "@/app/recruiter/events-demo/data/events-schema";
+import {RecruiterEvent} from "@/app/recruiter/events/data/events-schema";
 import {
     Card,
     CardContent,

@@ -2,8 +2,8 @@
 import {Button} from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import {EventsListCard} from "@/app/recruiter/events-demo/components/events-list-card";
-import {RecruiterEvent} from "@/app/recruiter/events-demo/data/events-schema";
-import {EventCreationDialog} from "@/app/recruiter/events-demo/components/event-creation-dialog";
+import {RecruiterEvent} from "@/app/recruiter/events/data/events-schema";
+import {EventCreationDialog} from "@/app/recruiter/events/components/event-creation-dialog";
 
 
 export default function ClientComponent({events} : {events: any}) {

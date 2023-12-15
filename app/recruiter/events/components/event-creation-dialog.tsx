@@ -12,11 +12,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {PlusIcon} from "lucide-react";
 import {EventCreateForm} from "@/app/recruiter/events/components/event-create-form";
-
+import { useState } from "react";
 
 export function EventCreationDialog() {
+    const [open, setOpen] = useState(false)
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline"><PlusIcon />Create Event</Button>
             </DialogTrigger>
@@ -27,7 +29,7 @@ export function EventCreationDialog() {
                         Make changes to your profile here. Click save when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <EventCreateForm />
+                <EventCreateForm setOpen={setOpen}/>
                 {/*<DialogFooter>*/}
                 {/*    <Button type="submit">Save changes</Button>*/}
                 {/*</DialogFooter>*/}
