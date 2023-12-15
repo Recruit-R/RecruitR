@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
+import {    
     Form,
     FormControl,
     FormDescription,
@@ -16,21 +16,25 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { create } from "@/app/recruiter/events-demo/actions"
+import { DatePicker } from "@/components/ui/date-picker"
+
 const formSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
+    eventName: z.string().min(2, {
+        message: "Event name must be at least 2 characters.",
     }),
+    date: z.date(),
+
 })
 
 export function EventCreateForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(
             formSchema.transform((v) => ({
-                username: v.username
+                eventName: v.eventName
             }))
         ),
         defaultValues: {
-            username: "",
+            eventName: "",
         },
     })
 
@@ -44,15 +48,32 @@ export function EventCreateForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="eventName"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Name of Event</FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="Name of Event" {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name.
+                                This is the name of the event.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Date</FormLabel>
+                            <FormControl>
+                                <DatePicker>
+                                </DatePicker>
+                            </FormControl>
+                            <FormDescription>
+                                Enter a date for the event.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
