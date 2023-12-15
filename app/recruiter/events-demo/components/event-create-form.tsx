@@ -23,6 +23,9 @@ const formSchema = z.object({
         message: "Event name must be at least 2 characters.",
     }),
     date: z.date(),
+    location: z.string().min(2, {
+        message: "Location name must be at least 2 characters.",
+    }),
 
 })
 
@@ -30,11 +33,14 @@ export function EventCreateForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(
             formSchema.transform((v) => ({
-                eventName: v.eventName
+                eventName: v.eventName,
+                date: v.date,
+                location: v.location
             }))
         ),
         defaultValues: {
             eventName: "",
+            location: "",
         },
     })
 
@@ -67,13 +73,28 @@ export function EventCreateForm() {
                     name="date"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Date</FormLabel>
+                            <FormLabel>Date<br></br></FormLabel>
                             <FormControl>
-                                <DatePicker>
-                                </DatePicker>
+                                <DatePicker/>
                             </FormControl>
                             <FormDescription>
                                 Enter a date for the event.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Location" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                This is where the event will take place.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
