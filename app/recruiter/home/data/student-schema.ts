@@ -22,5 +22,8 @@ export const studentSchema = z.object({
   gradMonth: z.union([z.string(), z.undefined()])
 
 })
-
+function convert(seconds, nanoseconds) {
+  // Create a Date object from the seconds and nanoseconds.
+  return new Date(seconds * 1000 + nanoseconds / 1000000);
+}
 export type Student = z.infer<typeof studentSchema>

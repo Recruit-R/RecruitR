@@ -17,7 +17,7 @@ export default function ClientComponent({events} : {events: any}) {
                     <EventsListCard title="Past Events" events={events}/>
                 </div>
                 <div className="">
-                    <EventsListCard title="Home Events" events={events}/>
+                    <EventsListCard title="Current Events" events={events}/>
                 </div>
             </div>
         </div>
