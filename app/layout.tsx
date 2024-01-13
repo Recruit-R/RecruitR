@@ -19,19 +19,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        suppressHydrationWarning={true} 
+        suppressHydrationWarning={true}
         className={`${cn(
           "min-h-screen bg-background font-sans antialiased h-screen overflow-y-hidden",
           inter.variable
-      )} h-screen`}>
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
+        )} h-screen`}>
+        <main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </main>
       </body>
     </html>
   )
