@@ -3,13 +3,13 @@
 import * as React from "react";
 import * as z from 'zod';
 
+import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { useAuth } from "@/components/auth-provider";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -31,8 +31,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        auth?.loginGoogle();
+        console.log(values);
     }
 
     return (
@@ -92,7 +91,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}{" "}
                 GitHub
             </Button> */}
-            <Button variant="outline" type="button" disabled={isLoading} className='w-full'>
+            <Button
+                variant="outline"
+                type="button"
+                disabled={isLoading}
+                onClick={() => {
+                    auth?.loginGoogle().then(() => {
+                        console.log('worked')
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+                }}
+                className='w-full'>
                 {isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
