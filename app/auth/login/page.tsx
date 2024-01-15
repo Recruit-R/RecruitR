@@ -1,16 +1,35 @@
 import { Metadata } from "next"
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import Link from "next/link"
 
 import { buttonVariants } from "@/components/ui/button"
+import { auth } from "@/firebase/server";
 import { cn } from "@/lib/utils"
 import { UserAuthForm } from "../components/user-auth-form"
+import { DecodedIdToken } from "firebase-admin/auth";
 
 export const metadata: Metadata = {
     title: "Authentication",
     description: "Authentication forms built using the components.",
 }
 
-export default function LoginPage() {
+export default async function LoginPage() {
+    const cookieStore = cookies();
+    const authToken = cookieStore.get("firebaseIdToken")?.value;
+    if (authToken && auth) {
+        let user: DecodedIdToken | null = null
+        try {
+            user = await auth.verifyIdToken(authToken);
+            if (user.role === "recruiter" || user.role === "coordinator") {
+                redirect("/recruiter/home");
+            } else {
+                redirect("/candidate/home");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <>
             <div className="relative flex items-center justify-center align-center h-screen">

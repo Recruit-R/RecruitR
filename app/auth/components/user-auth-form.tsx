@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-
+import { useAuth } from "@/components/auth-provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 
@@ -28,9 +28,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         },
     })
 
+    const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
+        auth?.loginGoogle();
     }
 
     return (
