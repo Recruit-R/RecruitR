@@ -4,13 +4,13 @@ import { Auth, connectAuthEmulator, getAuth } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAEhSOpSsVoR69DYZj3ZzD2SrWrYOLC8HU",
-    authDomain: "recruitr-security-test.firebaseapp.com",
-    projectId: "recruitr-security-test",
-    storageBucket: "recruitr-security-test.appspot.com",
-    messagingSenderId: "713680458659",
-    appId: "1:713680458659:web:31cbd95b48537ecb1f4016",
-    measurementId: "G-D8L5NWYPE7"
+    apiKey: "AIzaSyDfVh_A1RSb2S4xNxNDozKzHRv0nxjv-_M",
+    authDomain: "recruitr-5a2af.firebaseapp.com",
+    projectId: "recruitr-5a2af",
+    storageBucket: "recruitr-5a2af.appspot.com",
+    messagingSenderId: "48151581853",
+    appId: "1:48151581853:web:f7d7278fc5bdff76523074",
+    measurementId: "G-8T1V6SZFQS"
 };
 
 const currentApps = getApps();

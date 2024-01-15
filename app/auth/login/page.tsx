@@ -1,13 +1,13 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
 import { cookies } from 'next/headers';
+import Link from "next/link";
 import { redirect } from 'next/navigation';
-import Link from "next/link"
 
-import { buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button";
 import { auth } from "@/firebase/server";
-import { cn } from "@/lib/utils"
-import { UserAuthForm } from "../components/user-auth-form"
+import { cn } from "@/lib/utils";
 import { DecodedIdToken } from "firebase-admin/auth";
+import { UserAuthForm } from "../components/user-auth-form";
 
 export const metadata: Metadata = {
     title: "Authentication",
@@ -21,6 +21,7 @@ export default async function LoginPage() {
         let user: DecodedIdToken | null = null
         try {
             user = await auth.verifyIdToken(authToken);
+            console.log(user);
             if (user.role === "recruiter" || user.role === "coordinator") {
                 redirect("/recruiter/home");
             } else {
