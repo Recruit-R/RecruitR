@@ -12,7 +12,7 @@ export default function SignOut() {
             type="button"
             onClick={() => {
                 auth?.logout().then(() => {
-                    console.log('logged out')
+                    console.log("gotta redirect to login page");
                 }).catch((error: any) => {
                     console.log(error);
                 });

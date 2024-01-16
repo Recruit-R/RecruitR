@@ -6,13 +6,13 @@ import { initializeApp } from "firebase-admin/app";
 initializeApp(config().firebase);
 
 export const onUserCreate = auth.user().onCreate(async (user) => {
-    if (user.email && user.email === "admin@example.com") {
+    if (user.email && user.email === "coordinator@example.com") {
         await firestore().doc(`users/${user.uid}`).create({
-            isPro: true,
+            isRecruiter: true,
         });
 
         const customClaims = {
-            role: "admin",
+            role: "coordinator",
         };
 
         try {
@@ -23,14 +23,14 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
         return;
     }
 
-    if (user.email && user.email === "pro@example.com") {
+    if (user.email && user.email === "recruiter@example.com") {
         await firestore().doc(`users/${user.uid}`).create({
-            isPro: true,
+            isRecruiter: true,
         });
         return;
     }
 
     await firestore().doc(`users/${user.uid}`).create({
-        isPro: false,
+        isRecruiter: false,
     });
 });

@@ -18,8 +18,8 @@ export function removeAuthToken(): void {
 
 type AuthContextType = {
     currentUser: User | null;
-    isAdmin: boolean;
-    isPro: boolean;
+    isCoordinator: boolean;
+    isRecruiter: boolean;
     loginGoogle: () => Promise<void>;
     logout: () => Promise<void>;
 };
@@ -28,8 +28,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    const [isPro, setIsPro] = useState<boolean>(false);
+    const [isCoordinator, setIsCoordinator] = useState<boolean>(false);
+    const [isRecruiter, setIsRecruiter] = useState<boolean>(false);
 
     // Triggers when App is started
     useEffect(() => {
@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
             // Triggers when user signs out
             if (!user) {
                 setCurrentUser(null);
-                setIsAdmin(false);
-                setIsPro(false);
+                setIsCoordinator(false);
+                setIsRecruiter(false);
                 removeAuthToken();
                 return;
             }
@@ -50,9 +50,11 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setCurrentUser(user);
                 setAuthToken(token);
 
-                // Check if is admin
+                // Check if is coordinator
                 const tokenValues = await user.getIdTokenResult();
-                setIsAdmin(tokenValues.claims.role === "admin");
+                setIsCoordinator(tokenValues.claims.role === "coordinator");
+
+                console.log("custom claims: ", tokenValues.claims)
 
                 // Check if is pro
                 const userResponse = await fetch(`/api/users/${user.uid}`, {
@@ -62,7 +64,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 });
                 if (userResponse.ok) {
                     const userJson = await userResponse.json();
-                    if (userJson?.isPro) setIsPro(true);
+                    if (userJson?.isRecruiter) setIsRecruiter(true);
                 } else {
                     console.error("Could not get user info");
                 }
@@ -110,8 +112,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
         <AuthContext.Provider
             value={{
                 currentUser,
-                isAdmin,
-                isPro,
+                isCoordinator,
+                isRecruiter,
                 loginGoogle,
                 logout,
             }}

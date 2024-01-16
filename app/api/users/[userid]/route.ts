@@ -22,10 +22,10 @@ export async function GET(
                 console.log(error);
             }
 
-        const isAdmin = user?.role === "admin";
+        const isRecruiter = user?.role === "coordinator" || user?.role === "recruiter";
         console.log('logging user from route called by auth provider', user, params.userid)
-        // Only admin or user can delete user info
-        const valid = isAdmin || user?.uid === params.userid;
+        // Only recruiter or coordinator can delete user info
+        const valid = isRecruiter || user?.uid === params.userid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
 
         const userDocument = await firestore
