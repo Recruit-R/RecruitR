@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import { cookies } from 'next/headers';
 import Link from "next/link";
-import { redirect } from 'next/navigation';
 
 import { buttonVariants } from "@/components/ui/button";
 import { auth } from "@/firebase/server";
 import { cn } from "@/lib/utils";
 import { DecodedIdToken } from "firebase-admin/auth";
+import { redirect } from "next/navigation";
 import { UserAuthForm } from "../components/user-auth-form";
 
 export const metadata: Metadata = {
@@ -19,17 +19,17 @@ export default async function LoginPage() {
     const authToken = cookieStore.get("firebaseIdToken")?.value;
     if (authToken && auth) {
         let user: DecodedIdToken | null = null
-        try {
-            user = await auth.verifyIdToken(authToken);
-            console.log(user);
-            if (user.role === "recruiter" || user.role === "coordinator") {
-                redirect("/recruiter/home");
-            } else {
-                redirect("/candidate/home");
-            }
-        } catch (error) {
-            console.error(error);
+        user = await auth.verifyIdToken(authToken);
+        console.log(user);
+        if (user.role === "recruiter" || user.role === "coordinator") {
+            return redirect("/recruiter/home");
+        } else {
+            return redirect("/candidate/home");
         }
+        // try {
+        // } catch (error) {
+        //     console.error(error);
+        // }
     }
     return (
         <>
