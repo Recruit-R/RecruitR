@@ -12,10 +12,10 @@ export default function Home() {
             <Link className="rounded-md bg-slate-500" href={"/recruiter/home"}>Recruiter Dashboard</Link>
           </li>
           <li>
-            <Link className="rounded-md bg-slate-500" href={'/signup'}>Signup</Link>
+            <Link className="rounded-md bg-slate-500" href={'/auth/signup'}>Signup</Link>
           </li>
           <li>
-            <Link className="rounded-md bg-slate-500" href={'/login'}>Login</Link>
+            <Link className="rounded-md bg-slate-500" href={'/auth/login'}>Login</Link>
           </li>
         </ul>
       </div>
