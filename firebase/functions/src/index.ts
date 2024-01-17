@@ -6,9 +6,10 @@ import { initializeApp } from "firebase-admin/app";
 initializeApp(config().firebase);
 
 export const onUserCreate = auth.user().onCreate(async (user) => {
+    console.log("user created", user);
     if (user.email && user.email === "coordinator@example.com") {
         await firestore().doc(`users/${user.uid}`).create({
-            isRecruiter: true,
+            isCoordinator: true,
         });
 
         const customClaims = {
@@ -27,6 +28,16 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
         await firestore().doc(`users/${user.uid}`).create({
             isRecruiter: true,
         });
+
+        const customClaims = {
+            role: "recruiter",
+        };
+
+        try {
+            await getAuth().setCustomUserClaims(user.uid, customClaims);
+        } catch (error) {
+            console.log(error);
+        }
         return;
     }
 
