@@ -14,16 +14,16 @@ export async function GET(
             request.headers.get("authorization")?.split("Bearer ")[1] || null;
 
         let user: DecodedIdToken | null = null;
-        if (auth && authToken)
+        if (auth && authToken) {
             try {
                 user = await auth.verifyIdToken(authToken);
             } catch (error) {
                 // One possible error is the token being expired, return forbidden
                 console.log(error);
             }
+        }
 
         const isRecruiter = user?.role === "coordinator" || user?.role === "recruiter";
-        console.log('logging user from route called by auth provider', user, params.userid)
         // Only recruiter or coordinator can delete user info
         const valid = isRecruiter || user?.uid === params.userid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
