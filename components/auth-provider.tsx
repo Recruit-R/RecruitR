@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 return;
             }
 
-            const token = await user.getIdToken();
+            const token = await user.getIdToken(true);
             if (user) {
                 setCurrentUser(user);
                 setAuthToken(token);
