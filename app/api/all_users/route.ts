@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { firestore } from "../../../firebase/server";
+import { firestore } from "@/firebase/server";
 
 export enum ItemAccess {
     PUBLIC = "PUBLIC",
