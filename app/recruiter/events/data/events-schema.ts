@@ -10,7 +10,7 @@ export const eventSchema = z.object({
     }).transform((object) => {return convert(object.seconds, object.nanoseconds)}), z.undefined()]),
     Location: z.string()
 })
-function convert(seconds, nanoseconds) {
+function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.
     return new Date(seconds * 1000 + nanoseconds / 1000000);
 }

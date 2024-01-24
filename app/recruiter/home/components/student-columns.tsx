@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import useScreenWidth from "@/hooks/use-screen-width"
 import { Task } from "../../../tasks/data/schema"
 import { years } from "../data/student-data"
-import { DataTableColumnHeader } from "./data-table-column-header"
+import { DataTableColumnHeader } from "./data-table/data-table-column-header.tsx"
 
 export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
   const widthSize = useScreenWidth()

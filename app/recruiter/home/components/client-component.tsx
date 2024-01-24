@@ -14,7 +14,7 @@ import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {studentColumns} from "@/app/recruiter/home/components/student-columns";
-import {DataTable} from "@/app/recruiter/home/components/data-table";
+import {DataTable} from "@/app/recruiter/home/components/data-table/data-table.tsx";
 import {Student} from "@/app/recruiter/home/data/student-schema";
 import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 

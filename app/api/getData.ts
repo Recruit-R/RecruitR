@@ -16,11 +16,15 @@ export default async function getDoument({ collection_name, document_id, schemaN
         let data_list = []
         result.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
             if (doc.data() != {}) {
-                data_list.push(doc.data());
+                let student = doc.data();
+                student.id = doc.id;
+                data_list.push(student);
+                console.log(student)
             }
         });
+
         // const students = JSON.parse(result.toString())
         if (schemaName != null && schemaName === "eventSchema"){
             return z.array(eventSchema).parse(data_list);
