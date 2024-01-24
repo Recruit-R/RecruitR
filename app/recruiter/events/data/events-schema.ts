@@ -7,8 +7,11 @@ export const eventSchema = z.object({
     Time: z.union([z.object({
         seconds: z.number(),
         nanoseconds: z.number(),
-    }), z.undefined()]),
+    }).transform((object) => {return convert(object.seconds, object.nanoseconds)}), z.undefined()]),
     Location: z.string()
 })
-
+function convert(seconds, nanoseconds) {
+    // Create a Date object from the seconds and nanoseconds.
+    return new Date(seconds * 1000 + nanoseconds / 1000000);
+}
 export type RecruiterEvent = z.infer<typeof eventSchema>

@@ -19,8 +19,6 @@ export default async function Page() {
 
     return (
         <ClientComponent events={events} />
-        // <div>
-        //
-        // </div>
+        
     )
 }
