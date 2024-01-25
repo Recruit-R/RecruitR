@@ -19,12 +19,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     const formSchema = z.object({
         email: z.string().email(),
+        password: z.string().min(6),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
+            password: "",
         },
     })
 
@@ -56,6 +58,27 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                                                 autoCapitalize="none"
                                                 autoComplete="email"
                                                 autoCorrect="off"
+                                                disabled={isLoading}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}>
+                            </FormField>
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="sr-only" htmlFor="email">
+                                            Password
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="password"
+                                                placeholder="password"
+                                                type="password"
+                                                autoCapitalize="none"
                                                 disabled={isLoading}
                                                 {...field}
                                             />

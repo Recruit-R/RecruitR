@@ -46,10 +46,10 @@ export default async function LoginPage() {
                     <div className="m-auto flex w-1/4 flex-col justify-center space-y-6">
                         <div className="flex flex-col space-y-2 text-center">
                             <h1 className="text-2xl font-semibold tracking-tight">
-                                Create an account
+                                Login
                             </h1>
                             <p className="text-sm text-muted-foreground">
-                                Enter your email below to create your account
+                                Enter your email and password below to login
                             </p>
                         </div>
                         <UserAuthForm />
