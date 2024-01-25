@@ -2,7 +2,7 @@ import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
 import app from "../../firebase.config";
 import { z } from "zod";
 import { studentSchema } from "@/app/recruiter/home/data/student-schema";
-import {eventSchema} from "@/app/recruiter/events-demo/data/events-schema";
+import {eventSchema} from "@/app/recruiter/events/data/events-schema";
 
 const db = getFirestore(app)
 export default async function getDoument({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
