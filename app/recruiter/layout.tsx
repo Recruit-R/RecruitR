@@ -11,22 +11,15 @@ export default async function RecruiterLayout({
 }) {
 
     const user: DecodedIdToken | null = await getUser();
-    let shouldRender = false;
-    if (user === null) {
+    if (user === null || (user.role === "recruiter" || user.role === "coordinator")) {
         return redirect("/auth/login");
-    } else if (user.role === "recruiter" || user.role === "coordinator") {
-        return redirect("/recruiter/home");
     }
     return (
-        <div>
-            {shouldRender && (
-                <section className="flex h-screen flex-col grow-0 overflow-y-hidden">
-                    <div className="flex-0 px-4 border-y"><NavBar /></div>
-                    <div className="flex-1 overflow-y-hidden">
-                        {children}
-                    </div>
-                </section>
-            )}
-        </div>
+        <section className="flex h-screen flex-col grow-0 overflow-y-hidden">
+            <div className="flex-0 px-4 border-y"><NavBar /></div>
+            <div className="flex-1 overflow-y-hidden">
+                {children}
+            </div>
+        </section>
     )
 }
