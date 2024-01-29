@@ -31,7 +31,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, c} : FeedbackCardPr
     return (
         <>
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
-                <ChevronLeft className="mr-2 h-4 w-4"/> Back to Event List
+                <ChevronLeft className="mr-2 h-4 w-4"/> To Event List
             </Button>
             <Card className="min-h-full">
                 <CardHeader className="flex flex-row items-center divide-x border-b mb-4">

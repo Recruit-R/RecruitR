@@ -44,7 +44,7 @@ export default function ClientComponent({students} : {students : any}) {
             
             <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
-                <ChevronRight className="mr-2 h-4 w-4 align-right"/> Back to User Info
+                To User Info <ChevronRight className="mr-2 h-4 w-4 align-right"/>
             </Button>
                 <p className = "font-bold text-lg">Recent Events
                     
