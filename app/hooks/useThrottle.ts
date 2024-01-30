@@ -3,7 +3,7 @@ import throttle from 'lodash/throttle';
 
 type Callback = () => void;
 
-const useThrottle = (callback: Callback): Callback => {
+export const useThrottle = (callback: Callback): Callback => {
     const ref = useRef<Callback | null>(null);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const useThrottle = (callback: Callback): Callback => {
             }
         };
 
-        return throttle(func, 1000);
+        return throttle(func, 2000);
     }, []);
 
     return throttleCallback;

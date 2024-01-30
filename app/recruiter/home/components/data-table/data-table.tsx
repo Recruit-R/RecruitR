@@ -33,7 +33,7 @@ import {tree} from "next/dist/build/templates/app-page";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  setCurrentStudent: React.Dispatch<React.SetStateAction<Student | null>>
+  setCurrentStudent: (student: Student) => void
   setStudentView: React.Dispatch<React.SetStateAction<boolean>>
   c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }

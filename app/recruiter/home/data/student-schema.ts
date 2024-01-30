@@ -6,7 +6,8 @@ export const feedbackSchema = z.record(z.object( {
   initial_feedback: z.number().optional(),
   possible_placement: z.string().optional(),
   known_tech: z.string().array().optional(),
-  text_feedback: z.string().optional()
+  text_feedback: z.string().optional(),
+  rating: z.number().optional()
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
 export const studentSchema = z.object({
@@ -30,8 +31,10 @@ export const studentSchema = z.object({
   gradMonth: z.union([z.string(), z.undefined()]),
   feedback: feedbackSchema.optional(),
 })
+export const studentListSchema = z.record(studentSchema);
 function convert(seconds: number, nanoseconds: number) {
   // Create a Date object from the seconds and nanoseconds.
   return new Date(seconds * 1000 + nanoseconds / 1000000);
 }
 export type Student = z.infer<typeof studentSchema>
+export type StudentList = z.infer<typeof studentListSchema>
