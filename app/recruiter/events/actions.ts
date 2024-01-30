@@ -16,8 +16,8 @@ export async function create(value: string) {
     obj.Time = Timestamp.fromDate(new Date(obj.Time))
 
     const res = await addData("events", Date.now().toString(), obj)
-    console.log("IT WORKED")
-    console.log(JSON.stringify(res))
+    // console.log("IT WORKED")
+    // console.log(JSON.stringify(res))
 }
 function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.

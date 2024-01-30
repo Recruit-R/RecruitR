@@ -23,17 +23,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table.tsx"
 
-import { DataTablePagination } from "./data-table-pagination"
-import { DataTableToolbar } from "./data-table-toolbar"
-import {Student} from "@/app/recruiter/home/data/student-schema";
+import { DataTablePagination } from "./data-table-pagination.tsx"
+import { DataTableToolbar } from "./data-table-toolbar.tsx"
+import {Student} from "@/app/recruiter/home/data/student-schema.ts";
 import {tree} from "next/dist/build/templates/app-page";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  setCurrentStudent: React.Dispatch<React.SetStateAction<Student | null>>
+  setCurrentStudent: (student: Student) => void
   setStudentView: React.Dispatch<React.SetStateAction<boolean>>
   c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
