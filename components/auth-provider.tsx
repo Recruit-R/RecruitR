@@ -99,12 +99,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
             createUserWithEmailAndPassword(auth, email, password)
                 .then((user) => {
-                    console.log("Signed in!");
                     resolve();
                 })
-                .catch(() => {
-                    console.error("creating user with email and password failed");
-                    reject();
+                .catch((error) => {
+                    reject(error);
                 });
         })
     }
@@ -120,9 +118,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     console.log("Signed in!");
                     resolve();
                 })
-                .catch(() => {
+                .catch((error) => {
                     console.error("signing in with email and password failed");
-                    reject();
+                    reject(error);
                 });
         })
     }

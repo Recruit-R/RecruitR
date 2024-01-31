@@ -1,14 +1,16 @@
 "use client"
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as z from 'zod';
 
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -17,6 +19,8 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
+    const [authSuccessful, setAuthSuccessful] = useState<boolean>(true);
+    const [authError, setAuthError] = useState<any>(null);
     const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
@@ -40,12 +44,37 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             auth?.createAccountEmail({ email: values.email, password: values.password }).then(() => {
                 console.log('logged in');
             }).catch((error) => {
-                console.log(error);
+                if (error.code === 'auth/email-already-in-use') {
+                    setAuthError((
+                        <div>
+                            <span>An account with this email already exists. <br /> Please </span>
+                            <Link className='underline' href="/auth/login" >
+                                login instead
+                            </Link>
+                        </div>
+                    ));
+                } else {
+                    setAuthError("There was an error when creating the account, please try again.");
+                }
+                setAuthSuccessful(false);
             });
         } else {
             auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
                 console.log('logged in');
             }).catch((error) => {
+                if (error.code === 'auth/user-not-found') {
+                    setAuthError((
+                        <div>
+                            <span>An account with this email does not exist. <br /> Please </span>
+                            <Link className='underline' href="/auth/signup" >
+                                sign up instead
+                            </Link>
+                        </div>
+                    ));
+                } else {
+                    setAuthError("There was an error when logging in, please try again.");
+                }
+                setAuthSuccessful(false);
                 console.log(error);
             });
         }
@@ -88,9 +117,14 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                                 {...field}
                                             />
                                         </FormControl>
+                                        {signup && (
+                                            <FormMessage />
+                                        )}
+
                                     </FormItem>
                                 )}>
                             </FormField>
+
                             <FormField
                                 control={form.control}
                                 name="password"
@@ -109,10 +143,20 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                                 {...field}
                                             />
                                         </FormControl>
+                                        {signup && (
+                                            <FormMessage />
+                                        )}
+
                                     </FormItem>
                                 )}>
                             </FormField>
+
                         </div>
+                        {!authSuccessful && (
+                            <div className={cn("text-sm font-medium text-destructive")}>
+                                {authError}
+                            </div>
+                        )}
                         <Button disabled={auth?.isLoading}>
                             {auth?.isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -132,14 +176,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     </span>
                 </div>
             </div>
-            {/* <Button variant="outline" type="button" disabled={auth?.isLoading}>
-                {auth?.isLoading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <Icons.gitHub className="mr-2 h-4 w-4" />
-                )}{" "}
-                GitHub
-            </Button> */}
+
             <Button
                 variant="outline"
                 type="button"
