@@ -19,7 +19,7 @@ import {Student, StudentList} from "@/app/recruiter/home/data/student-schema";
 import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 import {useThrottle} from "@/app/hooks/useThrottle.ts";
 import _ from "lodash";
-import {addFeedback} from "@/app/recruiter/home/actions.ts";
+import {addFeedback, feedbackReset} from "@/app/recruiter/home/actions.ts";
 export interface StudentDataContextType {
     studentList: StudentList
     setStudentList: React.Dispatch<React.SetStateAction<StudentList>>
@@ -27,17 +27,24 @@ export interface StudentDataContextType {
     setCurrentStudent: React.Dispatch<React.SetStateAction<Student>>
     saved: boolean
     setSaved: React.Dispatch<React.SetStateAction<boolean>>
-
+    currRecrFeedback: string
+    setCurrRecrFeedback: React.Dispatch<React.SetStateAction<string>>
+    tempCurrentUser: string
+    editable: () => boolean
 }
 export const StudentDataContext = createContext<StudentDataContextType | null>(null);
 
 export default function ClientComponent({students} : {students : StudentList}) {
+    const [tempCurrentUser, setTempCurrentUser] = useState("Caleb")
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
     const [studentView, setStudentView] = useState<boolean>(true)
     const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
     const [studentList, setStudentList] = useState<StudentList>(students);
     const [saved, setSaved] = useState(true)
-    
+    const [currRecrFeedback, setCurrRecrFeedback] = useState(tempCurrentUser)
+
+    const editable = () => currRecrFeedback === tempCurrentUser // CHANGE TO AUTH USER ONCE IMPLEMENTED
+
     // const [currentRecruiterFeedback, setCurrentRecruiterFeedback] = useState()
     const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
@@ -45,10 +52,7 @@ export default function ClientComponent({students} : {students : StudentList}) {
     function reset() {
         for (const studentListKey in studentList) {
 
-            addFeedback(studentListKey, JSON.stringify({initialFeedback: undefined,
-                possiblePlacement: undefined,
-                knownTech: undefined,
-                textFeedback: undefined})).then(r => console.log(r))
+            feedbackReset(studentListKey).then(e => console.log(e))
         }
     }
     function studentClick(name: string) {
@@ -67,6 +71,7 @@ export default function ClientComponent({students} : {students : StudentList}) {
             console.log(currentStudent)
             setStudentList(prevState => ({...prevState, [currentStudent.id]: currentStudent!}))
         }
+        setCurrRecrFeedback(tempCurrentUser)
         setCurrentStudent(student)
     }
     return (
@@ -76,7 +81,11 @@ export default function ClientComponent({students} : {students : StudentList}) {
             currentStudent,
             setCurrentStudent,
             saved,
-            setSaved
+            setSaved,
+            currRecrFeedback,
+            setCurrRecrFeedback,
+            tempCurrentUser,
+            editable
         }}>
 
         <div className="">
