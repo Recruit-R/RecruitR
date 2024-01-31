@@ -1,11 +1,15 @@
 import { auth, firestore } from '@/firebase/server';
-import { DecodedIdToken } from "firebase-admin/auth";
+import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
+import Roles from "@/app/types/roles";
+
 
 export async function GET(
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) {
+    const wlcList = ['coordinator@example.com']
+    const wlrList = ['recruiter@example.com']
     try {
         if (!firestore)
             return new NextResponse("No Firestore", { status: 500 });
@@ -23,15 +27,24 @@ export async function GET(
             }
         }
 
-        const isRecruiter = user?.role === "coordinator" || user?.role === "recruiter";
-        // Only recruiter or coordinator can delete user info
-        const valid = isRecruiter || user?.uid === params.userid;
+        // validate that user requesting role type is requesting it for themselves
+        const valid = user?.uid === params.userid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
 
         const userDocument = await firestore
             .collection("users")
             .doc(params.userid)
             .get();
+
+        if (!userDocument.exists) {
+            const role = wlcList.includes(user!.email!) ? Roles.COORDINATOR : wlrList.includes(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
+            const customClaims = { role: role };
+            await firestore.doc(`users/${user!.uid}`).create({
+                role: role
+            });
+            await getAuth().setCustomUserClaims(user!.uid, customClaims);
+            return NextResponse.json({ role });
+        }
 
         const userData = userDocument.data();
 
