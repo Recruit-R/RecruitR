@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { cookies } from 'next/headers';
 import Link from "next/link";
 
+import Roles from "@/app/types/roles";
 import { buttonVariants } from "@/components/ui/button";
 import { auth } from "@/firebase/server";
 import { cn } from "@/lib/utils";
@@ -20,7 +21,8 @@ export default async function LoginPage() {
     if (authToken && auth) {
         let user: DecodedIdToken | null = null
         user = await auth.verifyIdToken(authToken);
-        if (user.role === "recruiter" || user.role === "coordinator") {
+        console.log(user);
+        if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
             return redirect("/recruiter/home");
         } else {
             return redirect("/candidate/home");
