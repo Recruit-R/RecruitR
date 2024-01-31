@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react";
+import { useEffect } from "react";
 import * as z from 'zod';
 
 import { useAuth } from "@/components/auth-provider";
@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
@@ -35,6 +34,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
     }
+
+    useEffect(() => {
+        if (!auth?.isLoading && auth?.currentUser) {
+            console.log('ROUTING', auth?.isLoading, auth?.isRecruiter, auth?.isCoordinator);
+            if (auth?.isCoordinator || auth?.isRecruiter) {
+                router.push('/recruiter/home');
+            } else {
+                router.push('/candidate/home');
+            }
+        }
+    }, [auth?.isLoading])
 
     return (
         <div className='grid gap-6 h-full' {...props}>
@@ -58,7 +68,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                                                 autoCapitalize="none"
                                                 autoComplete="email"
                                                 autoCorrect="off"
-                                                disabled={isLoading}
+                                                disabled={auth?.isLoading}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -79,7 +89,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                                                 placeholder="password"
                                                 type="password"
                                                 autoCapitalize="none"
-                                                disabled={isLoading}
+                                                disabled={auth?.isLoading}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -87,8 +97,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                                 )}>
                             </FormField>
                         </div>
-                        <Button disabled={isLoading}>
-                            {isLoading && (
+                        <Button disabled={auth?.isLoading}>
+                            {auth?.isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}
                             Sign In with Email
@@ -106,8 +116,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     </span>
                 </div>
             </div>
-            {/* <Button variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
+            {/* <Button variant="outline" type="button" disabled={auth?.isLoading}>
+                {auth?.isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                     <Icons.gitHub className="mr-2 h-4 w-4" />
@@ -117,20 +127,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Button
                 variant="outline"
                 type="button"
-                disabled={isLoading}
+                disabled={auth?.isLoading}
                 onClick={() => {
                     auth?.loginGoogle().then(() => {
-                        if (auth.isRecruiter || auth.isCoordinator) {
-                            router.push("/recruiter/home");
-                        } else {
-                            router.push("/candidate/home");
-                        }
+                        console.log('logged in');
                     }).catch((error) => {
                         console.log(error);
                     });
                 }}
                 className='w-full'>
-                {isLoading ? (
+                {auth?.isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                     <Icons.google className="mr-2 h-4 w-4" />
