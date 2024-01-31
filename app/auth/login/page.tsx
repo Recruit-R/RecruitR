@@ -21,7 +21,6 @@ export default async function LoginPage() {
     if (authToken && auth) {
         let user: DecodedIdToken | null = null
         user = await auth.verifyIdToken(authToken);
-        console.log(user);
         if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
             return redirect("/recruiter/home");
         } else {
