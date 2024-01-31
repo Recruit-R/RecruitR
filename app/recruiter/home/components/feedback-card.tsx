@@ -54,10 +54,10 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
                 <ChevronLeft className="mr-2 h-4 w-4"/> Back to Search List
             </Button>
-            <Card className="min-h-full relative">
-                <div className={"absolute top-0 right-0 p-4"}>
-                    {saved ? <BsCloudCheck className={"w-6 h-6 stroke-{.5}"} /> : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-1"}/>}
-                </div>
+            <Card className="min-h-full">
+                {/*<div className={"absolute top-0 right-0 p-4"}>*/}
+                {/*    {saved ? <BsCloudCheck className={"w-6 h-6 stroke-{.5}"} /> : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-1"}/>}*/}
+                {/*</div>*/}
                 <CardHeader className="flex flex-row items-center border-b mb-4">
                     <div className="flex flex-1 items-center space-x-4 pr-4">
                         <Avatar className="h-20 w-20">
@@ -88,7 +88,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 <StudentInfo func={c} student={currentStudent}/>
                             </div>
 
-                            {/*<InitialFeedback initialFeedback={defaultFeedback.initialFeedback}/>*/}
+                            <InitialFeedback />
                             <PossiblePlacement possiblePlacement={defaultFeedback.possiblePlacement}/>
                             <KnownTech/>
 

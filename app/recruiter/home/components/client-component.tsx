@@ -88,10 +88,10 @@ export default function ClientComponent({students} : {students : StudentList}) {
             editable
         }}>
 
-        <div className="">
-            <Button variant={"destructive"} onClick={reset}>
-                RESET
-            </Button>
+        {/*<div className="">*/}
+            {/*<Button variant={"destructive"} onClick={reset}>*/}
+            {/*    RESET*/}
+            {/*</Button>*/}
         <div className="flex flex-row h-full">
             <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
                 <DataTable
@@ -140,7 +140,7 @@ export default function ClientComponent({students} : {students : StudentList}) {
                 )
             }
         </div>
-        </div>
+        {/*</div>*/}
         </StudentDataContext.Provider>
 
     )
