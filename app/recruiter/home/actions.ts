@@ -7,7 +7,10 @@ import getData from "@/app/api/getData.ts";
 import { LucideCornerDownLeft } from "lucide-react";
 import updateData from "@/app/api/updateData";
 
-export async function addFeedback(student_id: string, value: string) {
+export async function feedbackReset(student_id: string) {
+    return addData("users", student_id, {"feedback": {}})
+}
+export async function addFeedback(student_id: string, value: string, recruiter_id: string) {
     // ...
     let obj = JSON.parse(value);
     // obj.Time = Timestamp.fromDate(new Date(obj.Time))
@@ -16,7 +19,7 @@ export async function addFeedback(student_id: string, value: string) {
     console.log(student_id)
     console.log(value)
 
-    return addData("users", student_id, {"feedback": {"Karen": obj}})
+    return addData("users", student_id, {"feedback": {[recruiter_id]: obj}})
     // console.log("IT WORKED")
     // console.log(res)
 }

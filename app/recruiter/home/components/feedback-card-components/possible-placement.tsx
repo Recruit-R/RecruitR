@@ -8,19 +8,28 @@ import {addFeedback} from "@/app/recruiter/home/actions.ts";
 
 export function PossiblePlacement({possiblePlacement}: {possiblePlacement: string | undefined}) {
     const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management"]
-    const { currentStudent, setCurrentStudent, studentList, setSaved } = useContext(StudentDataContext) as StudentDataContextType
-    const [placementFeedback, setPlacementFeedback] = useState(currentStudent?.feedback?.["Karen"].possible_placement ?? undefined)
+    const { currentStudent,
+        setCurrentStudent, studentList,
+        setSaved,
+        currRecrFeedback,
+        tempCurrentUser,
+        editable} = useContext(StudentDataContext) as StudentDataContextType
+    const getFeedback = () => currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? ""
+    const [placementFeedback, setPlacementFeedback] = useState(getFeedback)
     // @ts-ignore
     useEffect(() => {
-        setPlacementFeedback(currentStudent?.feedback?.["Karen"].possible_placement ?? "")
-    }, [studentList]);
+        setPlacementFeedback(getFeedback)
+    }, [studentList, currRecrFeedback]);
 
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        const mergedObject = _.merge({}, currentStudent!.feedback, {"Karen": {"possible_placement": placementFeedback} });
-        addFeedback(currentStudent!.id, JSON.stringify({"possible_placement": placementFeedback})).then(r => setSaved(true))
-        setCurrentStudent((prevState) => ({...prevState, "feedback": mergedObject}))
+        if (currRecrFeedback === tempCurrentUser) {
+            const mergedObject = _.merge({}, currentStudent!.feedback, {[tempCurrentUser]: {"possible_placement": placementFeedback} });
+            addFeedback(currentStudent!.id, JSON.stringify({"possible_placement": placementFeedback}), tempCurrentUser).then(r => setSaved(true))
+            setCurrentStudent((prevState) => ({...prevState, "feedback": mergedObject}))
+        }
+
     });
     // function handleEvent(e: FormEvent<HTMLButtonElement>| undefined) {
     //     console.log(e)
@@ -40,7 +49,9 @@ export function PossiblePlacement({possiblePlacement}: {possiblePlacement: strin
                 defaultValue="option-one"
                 value={placementFeedback}
                 onValueChange={setPlacementFeedback}
-                className="gap-1">
+                className="gap-1"
+                disabled={!editable()}
+            >
                 {
                     placements.map((placement) => (
                         <div className="flex items-center space-x-2 pl-3 bg-muted rounded-lg" key={placement}>

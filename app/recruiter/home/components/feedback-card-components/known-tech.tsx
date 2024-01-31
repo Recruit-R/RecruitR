@@ -16,12 +16,19 @@ import {CheckedState} from "@radix-ui/react-checkbox";
 
 export function KnownTech() {
     const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
-    const {currentStudent , setCurrentStudent, studentList, saved, setSaved} = useContext(StudentDataContext) as StudentDataContextType
-    const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.["Karen"].known_tech ?? []);
+    const {currentStudent ,
+        setCurrentStudent,
+        studentList, saved,
+        setSaved,
+        currRecrFeedback,
+        tempCurrentUser,
+        editable
+    } = useContext(StudentDataContext) as StudentDataContextType
+    const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
 
     useEffect(() => {
-        setKnownLanguages(currentStudent?.feedback?.["Karen"].known_tech ?? []);
-    }, [studentList]);
+        setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
+    }, [studentList, currRecrFeedback]);
     useEffect(() => {
         console.log(currentStudent?.feedback)
     }, [currentStudent]);
@@ -30,11 +37,12 @@ export function KnownTech() {
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        const mergedObject = _.merge({}, currentStudent!.feedback?.["Karen"], {"Karen": {"known_tech": knownLanguages} });
-
-        addFeedback(currentStudent!.id, JSON.stringify({"known_tech": knownLanguages})).then(e => (setSaved(true)))
-        const knownTechFeedback = {...(currentStudent?.feedback?.["Karen"] ?? {}), "known_tech": knownLanguages}
-        setCurrentStudent((prevState) => ({...prevState, feedback: {"Karen": knownTechFeedback}}))
+        if (currRecrFeedback === tempCurrentUser) {
+            const knownTechFeedback = {...(currentStudent?.feedback?.[tempCurrentUser] ?? {}), "known_tech": knownLanguages}
+            const mergedObject = _.merge({}, currentStudent!.feedback, {[tempCurrentUser]: knownTechFeedback});
+            addFeedback(currentStudent!.id, JSON.stringify({"known_tech": knownLanguages}), tempCurrentUser).then(e => (setSaved(true)))
+            setCurrentStudent((prevState) => ({...prevState, feedback: mergedObject}))
+            }
     });
     useEffect(() => {
         console.log(knownLanguages)
@@ -64,6 +72,7 @@ export function KnownTech() {
                                 id={language}
                                 checked={knownLanguages.includes(language)}
                                 onCheckedChange={checked => handleCheckedChange(checked, language)}
+                                disabled={!editable()}
                             />
                             <label
                                 htmlFor={language}

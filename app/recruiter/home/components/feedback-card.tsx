@@ -37,7 +37,7 @@ function tern<Type, Type2>(arg: Type, out: Type2): Type | Type2 {
 }
 export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, setCurrentStudent, c} : FeedbackCardProps) {
     const csf = currentStudent.feedback ? (currentStudent.feedback["Karen"] ? currentStudent.feedback["Karen"] : null ) : null
-    const { saved } = useContext(StudentDataContext) as StudentDataContextType
+    const { saved, currRecrFeedback } = useContext(StudentDataContext) as StudentDataContextType
     const defaultFeedback = csf ? {
         initialFeedback: csf.initial_feedback,
         possiblePlacement: csf.possible_placement,
@@ -69,7 +69,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 {currentStudent.first_name} {currentStudent.last_name}
                             </CardTitle>
                             <CardDescription className="text-md">
-                                He/him
+                                He/him {currRecrFeedback}
                             </CardDescription>
                         </div>
                     </div>
