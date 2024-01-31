@@ -9,14 +9,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
+    const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
         password: z.string().min(6),
@@ -120,7 +120,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 disabled={isLoading}
                 onClick={() => {
                     auth?.loginGoogle().then(() => {
-                        console.log('worked')
+                        if (auth.isRecruiter || auth.isCoordinator) {
+                            router.push("/recruiter/home");
+                        } else {
+                            router.push("/candidate/home");
+                        }
                     }).catch((error) => {
                         console.log(error);
                     });

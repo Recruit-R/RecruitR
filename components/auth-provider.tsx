@@ -1,4 +1,5 @@
 "use client";
+import Roles from "@/app/types/roles";
 import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -48,26 +49,32 @@ export const AuthProvider = ({ children }: { children: any }) => {
             const token = await user.getIdToken(true);
             if (user) {
                 setCurrentUser(user);
-                setAuthToken(token);
 
                 // Check if is coordinator
                 const tokenValues = await user.getIdTokenResult();
-                setIsCoordinator(tokenValues.claims.role === "coordinator");
+                setIsRecruiter(tokenValues.claims.role === Roles.RECRUITER);
+                setIsCoordinator(tokenValues.claims.role === Roles.COORDINATOR);
 
-                console.log("custom claims: ", tokenValues.claims)
+                // check if user exists in database 
 
-                // Check if is pro
                 const userResponse = await fetch(`/api/users/${user.uid}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
                 if (userResponse.ok) {
                     const userJson = await userResponse.json();
-                    if (userJson?.isRecruiter) setIsRecruiter(true);
+                    if (userJson?.role) {
+                        setIsCoordinator(userJson.role === Roles.COORDINATOR);
+                        setIsRecruiter(userJson.role === Roles.RECRUITER);
+                    }
+                    console.log(userJson);
+                    console.log(isCoordinator, isRecruiter);
                 } else {
                     console.error("Could not get user info");
                 }
+                setAuthToken(await user.getIdToken(true));
             }
         });
     }, []);

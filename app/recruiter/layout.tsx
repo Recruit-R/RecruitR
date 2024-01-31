@@ -1,3 +1,4 @@
+import Roles from "@/app/types/roles";
 import { getUser } from "@/components/get-user";
 import NavBar from "@/components/nav-bar";
 import { DecodedIdToken } from "firebase-admin/auth";
@@ -11,7 +12,7 @@ export default async function RecruiterLayout({
 }) {
 
     const user: DecodedIdToken | null = await getUser();
-    if (user === null || (user.role === "recruiter" || user.role === "coordinator")) {
+    if (user === null || !(user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR)) {
         return redirect("/auth/login");
     }
     return (

@@ -1,10 +1,11 @@
 'use client'
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function SignOut() {
     const auth = useAuth();
-
+    const router = useRouter();
 
     return (
         <Button
@@ -12,7 +13,7 @@ export default function SignOut() {
             type="button"
             onClick={() => {
                 auth?.logout().then(() => {
-                    console.log("gotta redirect to login page");
+                    router.push("/auth/login");
                 }).catch((error: any) => {
                     console.log(error);
                 });
