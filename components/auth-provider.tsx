@@ -1,6 +1,6 @@
 "use client";
 import Roles from "@/app/types/roles";
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
@@ -17,12 +17,19 @@ export function removeAuthToken(): void {
     return Cookies.remove("firebaseIdToken");
 }
 
+type EmailAccountProps = {
+    email: string;
+    password: string;
+};
+
 type AuthContextType = {
     currentUser: User | null;
     isCoordinator: boolean;
     isRecruiter: boolean;
     isLoading: boolean;
     loginGoogle: () => Promise<void>;
+    loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
+    createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     logout: () => Promise<void>;
 };
 
@@ -84,6 +91,42 @@ export const AuthProvider = ({ children }: { children: any }) => {
         });
     }, []);
 
+    function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!auth) {
+                reject();
+                return;
+            }
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((user) => {
+                    console.log("Signed in!");
+                    resolve();
+                })
+                .catch(() => {
+                    console.error("creating user with email and password failed");
+                    reject();
+                });
+        })
+    }
+
+    function loginEmail({ email, password: password }: EmailAccountProps): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!auth) {
+                reject();
+                return;
+            }
+            signInWithEmailAndPassword(auth, email, password)
+                .then((user) => {
+                    console.log("Signed in!");
+                    resolve();
+                })
+                .catch(() => {
+                    console.error("signing in with email and password failed");
+                    reject();
+                });
+        })
+    }
+
     function loginGoogle(): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!auth) {
@@ -96,7 +139,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                 })
                 .catch(() => {
-                    console.error("Something went wrong");
+                    console.error("signing in with google failed");
                     reject();
                 });
         });
@@ -114,7 +157,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                 })
                 .catch(() => {
-                    console.error("Something went wrong");
+                    console.error("signing out failed");
                     reject();
                 });
         });
@@ -128,6 +171,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 isRecruiter,
                 isLoading,
                 loginGoogle,
+                loginEmail,
+                createAccountEmail,
                 logout,
             }}
         >

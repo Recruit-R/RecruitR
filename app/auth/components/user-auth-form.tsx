@@ -12,9 +12,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+    signup: boolean;
+}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
     const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
@@ -32,7 +34,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        console.log('submitting', values);
+        if (signup) {
+            console.log('creating account');
+            auth?.createAccountEmail({ email: values.email, password: values.password }).then(() => {
+                console.log('logged in');
+            }).catch((error) => {
+                console.log(error);
+            });
+        } else {
+            auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
+                console.log('logged in');
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
     useEffect(() => {
@@ -101,7 +117,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                             {auth?.isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                             )}
-                            Sign In with Email
+                            {signup ? 'Sign up' : 'Login'}
                         </Button>
                     </div>
                 </form>
