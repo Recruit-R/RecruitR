@@ -21,6 +21,7 @@ type AuthContextType = {
     currentUser: User | null;
     isCoordinator: boolean;
     isRecruiter: boolean;
+    isLoading: boolean;
     loginGoogle: () => Promise<void>;
     logout: () => Promise<void>;
 };
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isCoordinator, setIsCoordinator] = useState<boolean>(false);
     const [isRecruiter, setIsRecruiter] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // Triggers when App is started
     useEffect(() => {
@@ -38,11 +40,13 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
         return auth.onAuthStateChanged(async (user) => {
             // Triggers when user signs out
+            setIsLoading(true);
             if (!user) {
                 setCurrentUser(null);
                 setIsCoordinator(false);
                 setIsRecruiter(false);
                 removeAuthToken();
+                setIsLoading(false);
                 return;
             }
 
@@ -75,6 +79,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     console.error("Could not get user info");
                 }
                 setAuthToken(await user.getIdToken(true));
+                setIsLoading(false);
             }
         });
     }, []);
@@ -121,6 +126,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 currentUser,
                 isCoordinator,
                 isRecruiter,
+                isLoading,
                 loginGoogle,
                 logout,
             }}
