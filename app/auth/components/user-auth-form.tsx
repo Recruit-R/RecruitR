@@ -24,7 +24,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
-        password: z.string().min(6),
+        password: signup ? z.string().min(6) : z.string(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -34,6 +34,28 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             password: "",
         },
     })
+
+    const LoginFailure = () => {
+        return (
+            <div className='text-center'>
+                <span>Incorrect email or password. <br />Try again or </span>
+                <Link className='underline' href="/auth/signup" >
+                    sign up instead
+                </Link>
+            </div>
+        )
+    }
+
+    const SignupFailure = () => {
+        return (
+            <div className='text-center'>
+                <span>An account with this email already exists. <br /> Please </span>
+                <Link className='underline' href="/auth/login" >
+                    login instead
+                </Link>
+            </div>
+        )
+    }
 
     const auth = useAuth();
 
@@ -45,14 +67,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 console.log('logged in');
             }).catch((error) => {
                 if (error.code === 'auth/email-already-in-use') {
-                    setAuthError((
-                        <div>
-                            <span>An account with this email already exists. <br /> Please </span>
-                            <Link className='underline' href="/auth/login" >
-                                login instead
-                            </Link>
-                        </div>
-                    ));
+                    setAuthError(SignupFailure);
                 } else {
                     setAuthError("There was an error when creating the account, please try again.");
                 }
@@ -62,15 +77,8 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
                 console.log('logged in');
             }).catch((error) => {
-                if (error.code === 'auth/user-not-found') {
-                    setAuthError((
-                        <div>
-                            <span>An account with this email does not exist. <br /> Please </span>
-                            <Link className='underline' href="/auth/signup" >
-                                sign up instead
-                            </Link>
-                        </div>
-                    ));
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    setAuthError(LoginFailure);
                 } else {
                     setAuthError("There was an error when logging in, please try again.");
                 }
@@ -93,6 +101,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
 
     return (
         <div className='grid gap-6 h-full' {...props}>
+
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="grid gap-2">
@@ -117,9 +126,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                                 {...field}
                                             />
                                         </FormControl>
-                                        {signup && (
-                                            <FormMessage />
-                                        )}
+                                        {signup && <FormMessage className="text-center" />}
 
                                     </FormItem>
                                 )}>
@@ -143,20 +150,14 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                                 {...field}
                                             />
                                         </FormControl>
-                                        {signup && (
-                                            <FormMessage />
-                                        )}
+                                        {signup && <FormMessage className="text-center" />}
 
                                     </FormItem>
                                 )}>
                             </FormField>
 
                         </div>
-                        {!authSuccessful && (
-                            <div className={cn("text-sm font-medium text-destructive")}>
-                                {authError}
-                            </div>
-                        )}
+
                         <Button disabled={auth?.isLoading}>
                             {auth?.isLoading && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -166,6 +167,11 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     </div>
                 </form>
             </Form>
+            {!authSuccessful && (
+                <div className={cn("text-sm font-medium text-destructive")}>
+                    {authError}
+                </div>
+            )}
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
