@@ -127,6 +127,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     function loginGoogle(): Promise<void> {
         return new Promise((resolve, reject) => {
+            setIsLoading(true);
             if (!auth) {
                 reject();
                 return;
