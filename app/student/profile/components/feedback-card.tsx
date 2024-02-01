@@ -8,7 +8,7 @@ import Link from "next/link";
 import {ChevronLeft} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useEffect} from "react";
-import {set} from "yaml/dist/schema/yaml-1.1/set";
+//import {set} from "yaml/dist/schema/yaml-1.1/set";
 import {PossiblePlacement} from "@/app/student/profile/components/possible-placement";
 import {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
@@ -19,21 +19,17 @@ import { ShowSkills } from "./show-skills";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
-    setStudentView: React.Dispatch<React.SetStateAction<boolean>>,
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
 
-export function FeedbackCard({feedbackFocus, setStudentView, c} : FeedbackCardProps) {
+export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
     const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
 
     useEffect(() => {console.log(`RAHHH`)})
 
     return (
         <>
-            <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
-                <ChevronLeft className="mr-2 h-4 w-4"/> To Event List
-            </Button>
-            <Card className="min-h-full">
+            <Card className="min-h-full ">
                 <CardHeader className="flex flex-row items-center divide-x border-b mb-4">
                     <div className="flex flex-1 items-center space-x-4 pr-4">
                         <Avatar className="h-20 w-20">
@@ -66,20 +62,23 @@ export function FeedbackCard({feedbackFocus, setStudentView, c} : FeedbackCardPr
                             <StudentInfo func={c}></StudentInfo>
                         </div>
                         <PossiblePlacement/>
-                        <div className="space-y-1">
+                        {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
                                 Skills
                             </p>
-                            <ShowSkills/>
+                            {<ShowSkills/>}
                             
+                        </div> */}
+                        <div className="space-y-1">
+                            <p className="font-bold text-lg">
+                                Resume
+                            </p>
+                        </div>
+                        <div className="col-start-2">
+                            <ResumeButton />
                         </div>
                     </div>
                     
-                    {/*<PossiblePlacement/>*/}
-
-                    <ResumeButton>
-
-                    </ResumeButton>
                 </CardContent>
                 
             </Card>

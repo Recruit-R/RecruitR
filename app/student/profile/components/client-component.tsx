@@ -1,12 +1,4 @@
 'use client'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
 import {Textarea} from "@/components/ui/textarea";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FeedbackCard} from "@/app/student/profile/components/feedback-card";
@@ -15,42 +7,32 @@ import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {ChevronLeftIcon, ChevronRight, ChevronRightIcon} from "lucide-react";
 import { EventTable } from "./event-table";
+import { EventCard } from "./event-card";
 
 
 export default function ClientComponent({students} : {students : any}) {
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
-    const [studentView, setStudentView] = useState<boolean>(true)
 
     const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
     }
 
-    function studentClick(name: string) {
-        setStudentView(prevState => !prevState)
-    }
-
     return (
         // <div className="">
-        <div className="flex flex-row h-full">
+        <div className="flex flex-col md:flex-row md:h-full p-1">
             
-                
-            <div className={cn("bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+            <div className="md:w-3/4 bg-background overflow-y-auto overscroll-auto md:overflow-y-scroll md:overscroll-contain md:p-1 md:no-scrollbar pb-4">
+            {/* <div>         */}
                 <FeedbackCard
-                            feedbackFocus={feedbackFocus}
-                            setStudentView={setStudentView}
-                            c={c}
-                        />
+                    feedbackFocus={feedbackFocus}
+                    c={c}
+                />
+            </div>
+            <div className={"h-full w-full md:w-1/4 overflow-y-auto overscroll-auto bg-background md:overflow-y-scroll md:overscroll-contain md:p-1"}>
+            <EventCard/>
+            
             </div>
             
-            <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
-            <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
-                To User Info <ChevronRight className="mr-2 h-4 w-4 align-right"/>
-            </Button>
-                <p className = "font-bold text-lg">Recent Events
-                    
-                </p>
-                <EventTable></EventTable>
-            </div>
         </div>
         // </div>
     )
