@@ -31,8 +31,8 @@ export default async function Page() {
 
     // console.log(new_students);
     return (
-        <div>
+        // <div>
          <ClientComponent students={new_students as StudentList} />
-        </div>
+        // </div>
     )
 }

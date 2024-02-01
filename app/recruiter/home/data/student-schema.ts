@@ -29,6 +29,7 @@ export const studentSchema = z.object({
   interview2: z.union([z.string(), z.undefined()]),
   interview1: z.union([z.string(), z.undefined()]),
   gradMonth: z.union([z.string(), z.undefined()]),
+  avgRating: z.union([z.number(), z.nan()]).optional(),
   feedback: feedbackSchema.optional(),
 })
 export const studentListSchema = z.record(studentSchema);

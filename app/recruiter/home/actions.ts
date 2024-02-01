@@ -23,6 +23,14 @@ export async function addFeedback(student_id: string, value: string, recruiter_i
     // console.log("IT WORKED")
     // console.log(res)
 }
+export async function updateAvgRating(studentId: string, value: string) {
+    const avgRating = parseFloat(value);
+    if (avgRating != 0) {
+        return addData("users", studentId, {"avgRating": avgRating})
+    }
+
+
+}
 export async function get_student_feedback(student_id: string) {
     // console.log(student_id);
     getData({collection_name: "users", document_id: student_id}).then((e) => console.log(e))

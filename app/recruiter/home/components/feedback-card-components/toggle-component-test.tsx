@@ -16,7 +16,7 @@ export function ToggleGroupDemo() {
 
     return (
         <div className={"flex flex-row items-center"}>
-            <div className={"font-bold pr-3"}>Avg. Rating: 4.3</div>
+            <div className={"font-bold pr-3"}>Avg. Rating: {(Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)}</div>
             {
                 currentStudent?.feedback &&
                 Object.keys(currentStudent?.feedback!).some((name) => name !== tempCurrentUser) && (

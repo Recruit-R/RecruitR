@@ -29,9 +29,10 @@ export function KnownTech() {
     useEffect(() => {
         setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
     }, [studentList, currRecrFeedback]);
-    useEffect(() => {
-        console.log(currentStudent?.feedback)
-    }, [currentStudent]);
+
+    // useEffect(() => {
+    //     console.log(currentStudent?.feedback)
+    // }, [currentStudent]);
 
 
     const throttledRequest = useThrottle(() => {
@@ -42,7 +43,7 @@ export function KnownTech() {
             const mergedObject = _.merge({}, currentStudent!.feedback, {[tempCurrentUser]: knownTechFeedback});
             addFeedback(currentStudent!.id, JSON.stringify({"known_tech": knownLanguages}), tempCurrentUser).then(e => (setSaved(true)))
             setCurrentStudent((prevState) => ({...prevState, feedback: mergedObject}))
-            }
+        }
     });
     useEffect(() => {
         console.log(knownLanguages)

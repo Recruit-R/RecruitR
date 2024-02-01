@@ -73,6 +73,15 @@ export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
       enableSorting: true,
       enableHiding: false,
     },
+    {
+      accessorKey: "avgRating",
+      header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Avg. Rating" />
+      ),
+      cell: ({ row }) => <div className="w-[80px]">{(Math.round(parseFloat(row.getValue("avgRating")) * 100) / 100).toFixed(2)}</div>,
+      enableSorting: true,
+      enableHiding: false,
+    },
     // {
     //   accessorKey: "title",
     //   header: ({ column }) => (
