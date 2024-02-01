@@ -1,9 +1,11 @@
 import ClientComponent from "@/app/recruiter/home/components/client-component";
-import { studentSchema } from "@/app/recruiter/home/data/student-schema";
+import { StudentList, studentSchema } from "@/app/recruiter/home/data/student-schema";
 import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
+import updateData from "@/app/api/updateData";
+import addData from "@/app/api/addData";
 
 
 
@@ -20,8 +22,11 @@ async function getStudents() {
 
 export default async function Page() {
     // const students = await getStudents()
+
     const new_students = await getData({ collection_name: 'users' })
     return (
-        <ClientComponent students={new_students} />
+        <div>
+            <ClientComponent students={new_students as StudentList} />
+        </div>
     )
 }

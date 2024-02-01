@@ -10,36 +10,94 @@ import {
 import {Textarea} from "@/components/ui/textarea";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FeedbackCard} from "@/app/recruiter/home/components/feedback-card";
-import React, {useState} from "react";
+import React, {createContext, useContext, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {studentColumns} from "@/app/recruiter/home/components/student-columns";
-import {DataTable} from "@/app/recruiter/home/components/data-table";
-import {Student} from "@/app/recruiter/home/data/student-schema";
+import {DataTable} from "@/app/recruiter/home/components/data-table/data-table.tsx";
+import {Student, StudentList} from "@/app/recruiter/home/data/student-schema";
 import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
+import {useThrottle} from "@/app/hooks/useThrottle.ts";
+import _ from "lodash";
+import {addFeedback, feedbackReset} from "@/app/recruiter/home/actions.ts";
+export interface StudentDataContextType {
+    studentList: StudentList
+    setStudentList: React.Dispatch<React.SetStateAction<StudentList>>
+    currentStudent: Student | null
+    setCurrentStudent: React.Dispatch<React.SetStateAction<Student>>
+    saved: boolean
+    setSaved: React.Dispatch<React.SetStateAction<boolean>>
+    currRecrFeedback: string
+    setCurrRecrFeedback: React.Dispatch<React.SetStateAction<string>>
+    tempCurrentUser: string
+    editable: () => boolean
+}
+export const StudentDataContext = createContext<StudentDataContextType | null>(null);
 
-
-export default function ClientComponent({students} : {students : any}) {
+export default function ClientComponent({students} : {students : StudentList}) {
+    const [tempCurrentUser, setTempCurrentUser] = useState("Caleb")
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
     const [studentView, setStudentView] = useState<boolean>(true)
     const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
+    const [studentList, setStudentList] = useState<StudentList>(students);
+    const [saved, setSaved] = useState(true)
+    const [currRecrFeedback, setCurrRecrFeedback] = useState(tempCurrentUser)
 
+    const editable = () => currRecrFeedback === tempCurrentUser // CHANGE TO AUTH USER ONCE IMPLEMENTED
+
+    // const [currentRecruiterFeedback, setCurrentRecruiterFeedback] = useState()
     const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
     }
+    function reset() {
+        for (const studentListKey in studentList) {
 
+            feedbackReset(studentListKey).then(e => console.log(e))
+        }
+    }
     function studentClick(name: string) {
         setStudentView(prevState => !prevState)
     }
+    function changeCurrentStudent(student: Student){
+        console.log(student)
+        if (currentStudent != null) {
+            console.log("Student")
+            console.log(currentStudent.id)
+            console.log(studentList)
+            console.log(studentList[currentStudent.id])
+            // studentList[currentStudent!.id] = currentStudent!;
 
+            // setStudentList(studentList)
+            console.log(currentStudent)
+            setStudentList(prevState => ({...prevState, [currentStudent.id]: currentStudent!}))
+        }
+        setCurrRecrFeedback(tempCurrentUser)
+        setCurrentStudent(student)
+    }
     return (
-        // <div className="">
+        <StudentDataContext.Provider  value={{
+            studentList,
+            setStudentList,
+            currentStudent,
+            setCurrentStudent,
+            saved,
+            setSaved,
+            currRecrFeedback,
+            setCurrRecrFeedback,
+            tempCurrentUser,
+            editable
+        }}>
+
+        <div className="">
+            <Button variant={"destructive"} onClick={reset}>
+                RESET
+            </Button>
         <div className="flex flex-row h-full">
             <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
                 <DataTable
-                    setCurrentStudent={setCurrentStudent}
+                    setCurrentStudent={changeCurrentStudent}
                     setStudentView={setStudentView}
-                    data={students}
+                    data={Object.values(studentList)}
                     columns={studentColumns(feedbackFocus)}
                     c={c}
                 />
@@ -61,6 +119,7 @@ export default function ClientComponent({students} : {students : any}) {
                             feedbackFocus={feedbackFocus}
                             setStudentView={setStudentView}
                             currentStudent={currentStudent}
+                            setCurrentStudent={setCurrentStudent}
                             c={c}
                         />
                     </div>
@@ -81,6 +140,8 @@ export default function ClientComponent({students} : {students : any}) {
                 )
             }
         </div>
-        // </div>
+        </div>
+        </StudentDataContext.Provider>
+
     )
 }
