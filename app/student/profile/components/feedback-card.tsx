@@ -16,6 +16,7 @@ import {useAmp} from "next/amp";
 import { StudentInfo } from "./student-info";
 import { ResumeButton } from "./resume-file";
 import { ShowSkills } from "./show-skills";
+import { EditButton } from "./edit-button";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
@@ -36,7 +37,7 @@ export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
                             <AvatarImage src="/avatars/01.png" alt="Avatar"/>
                             <AvatarFallback className="text-3xl">JM</AvatarFallback>
                         </Avatar>
-                            <div>
+                        <div>
                                 <CardTitle className="text-4xl">
                                     Joe Mama
                                 </CardTitle>
@@ -44,7 +45,10 @@ export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
                                     Exercise Science Major
                                 </CardDescription>
 
-                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-end space-x-4 pr-2">
+                        <EditButton></EditButton>
                     </div>
                     <div className={c("hidden flex-1", "xl:flex")}>
                         something was here
@@ -69,12 +73,12 @@ export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
                             {<ShowSkills/>}
                             
                         </div> */}
-                        <div className="space-y-1">
-                            <p className="font-bold text-lg">
+                        <div className="space-y-1 ">
+                            <p className="font-bold text-lg col-start-2">
                                 Resume
                             </p>
                         </div>
-                        <div className="col-start-2">
+                        <div className="pt-0.01">
                             <ResumeButton />
                         </div>
                     </div>
