@@ -6,14 +6,18 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
 
 export function getAuthToken(): string | undefined {
-    return Cookies.get("firebaseIdToken");
+    let token = Cookies.get("firebaseIdToken");
+    if (!token) token = window.sessionStorage.getItem("firebaseIdToken") as string ?? undefined;
+    return token;
 }
 
 export function setAuthToken(token: string): string | undefined {
+    window.sessionStorage.set("firebaseIdToken", token)
     return Cookies.set("firebaseIdToken", token, { secure: true });
 }
 
 export function removeAuthToken(): void {
+    window.sessionStorage.removeItem("firebaseIdToken");
     return Cookies.remove("firebaseIdToken");
 }
 

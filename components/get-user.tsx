@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 
 export async function getUser() {
     const cookieStore = cookies();
-    const authToken = cookieStore.get("firebaseIdToken")?.value;
+    let authToken = cookieStore.get("firebaseIdToken")?.value;
+    if (!authToken) {
+        authToken = window.sessionStorage.getItem("firebaseIdToken") as string ?? undefined;
+    }
     let user: DecodedIdToken | null = null;
     try {
         if (auth && authToken) {
