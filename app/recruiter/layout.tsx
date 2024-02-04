@@ -14,7 +14,7 @@ export default function RecruiterLayout({
     const auth = useAuth();
     useEffect(() => {
         if (!(auth?.isCoordinator || auth?.isCoordinator)) {
-            router.push("/login");
+            router.push("/auth/login");
         }
     }, []);
 

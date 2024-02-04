@@ -26,10 +26,6 @@ export default async function LoginPage() {
         } else {
             return redirect("/candidate/home");
         }
-        // try {
-        // } catch (error) {
-        //     console.error(error);
-        // }
     }
     return (
         <>

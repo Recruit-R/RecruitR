@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
             auth.signOut()
                 .then(() => {
-                    console.log("Signed out");
+                    removeAuthToken();
                     resolve();
                 })
                 .catch(() => {
