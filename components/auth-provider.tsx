@@ -7,17 +7,14 @@ import { auth } from "../firebase/client";
 
 export function getAuthToken(): string | undefined {
     let token = Cookies.get("firebaseIdToken");
-    if (!token) token = window.sessionStorage.getItem("firebaseIdToken") as string ?? undefined;
     return token;
 }
 
 export function setAuthToken(token: string): string | undefined {
-    window.sessionStorage.set("firebaseIdToken", token)
     return Cookies.set("firebaseIdToken", token, { secure: true });
 }
 
 export function removeAuthToken(): void {
-    window.sessionStorage.removeItem("firebaseIdToken");
     return Cookies.remove("firebaseIdToken");
 }
 
@@ -84,8 +81,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         setIsCoordinator(userJson.role === Roles.COORDINATOR);
                         setIsRecruiter(userJson.role === Roles.RECRUITER);
                     }
-                    console.log(userJson);
-                    console.log(isCoordinator, isRecruiter);
                 } else {
                     console.error("Could not get user info");
                 }

@@ -1,20 +1,23 @@
-import Roles from "@/app/types/roles";
-import { getUser } from "@/components/get-user";
+'use client'
+import { useAuth } from "@/components/auth-provider";
 import NavBar from "@/components/nav-bar";
-import { DecodedIdToken } from "firebase-admin/auth";
-import { redirect } from "next/navigation";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
-export default async function RecruiterLayout({
+export default function RecruiterLayout({
     children, // will be a page or nested layout
 }: {
     children: React.ReactNode
 }) {
+    const router = useRouter();
 
-    const user: DecodedIdToken | null = await getUser();
-    if (user === null || !(user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR)) {
-        return redirect("/auth/login");
-    }
+    const auth = useAuth();
+    useEffect(() => {
+        if (!(auth?.isCoordinator || auth?.isCoordinator)) {
+            router.push("/login");
+        }
+    }, []);
+
     return (
         <section className="flex h-screen flex-col grow-0 overflow-y-hidden">
             <div className="flex-0 px-4 border-y"><NavBar /></div>
