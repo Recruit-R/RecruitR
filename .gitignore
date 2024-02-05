@@ -38,3 +38,5 @@ next-env.d.ts
 *.env
 
 **/node_modules
+
+**/service-account.json
