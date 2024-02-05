@@ -99,7 +99,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     }, [auth?.isLoading])
 
     return (
-        <div className='grid gap-6 h-full' {...props}>
+        <div className='grid gap-6' {...props}>
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
