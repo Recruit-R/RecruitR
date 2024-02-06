@@ -18,12 +18,12 @@ import { ResumeButton } from "./resume-file";
 import { ShowSkills } from "./show-skills";
 import { EditButton } from "./edit-button";
 
-interface FeedbackCardProps {
-    feedbackFocus: boolean,
+interface StudentInfoCardProps {
+    editMode: boolean,
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
 
-export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
+export function StudentInfoCard({editMode, c} : StudentInfoCardProps) {
     const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
 
     useEffect(() => {console.log(`RAHHH`)})
@@ -48,7 +48,9 @@ export function FeedbackCard({feedbackFocus, c} : FeedbackCardProps) {
                         </div>
                     </div>
                     <div className="flex items-end space-x-4 pr-2">
-                        <EditButton></EditButton>
+                        <EditButton
+                            pressed = {editMode}
+                        ></EditButton>
                     </div>
                     <div className={c("hidden flex-1", "xl:flex")}>
                         something was here
