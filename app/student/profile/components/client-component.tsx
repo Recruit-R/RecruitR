@@ -26,7 +26,7 @@ export default function ClientComponent({students} : {students : any}) {
     return (
         // <div className="">
         <div className="flex flex-col md:flex-row md:h-full p-1">
-            
+
             <div className="md:w-3/4 bg-background overflow-y-auto overscroll-auto md:overflow-y-scroll md:overscroll-contain md:p-1 md:no-scrollbar pb-4">
             {/* <div>         */}
                 <StudentInfoCard
@@ -38,7 +38,7 @@ export default function ClientComponent({students} : {students : any}) {
                 <EventCard/>
             
             </div>
-            
+
         </div>
         // </div>
     )
