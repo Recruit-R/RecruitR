@@ -28,6 +28,7 @@ if (currentApps.length <= 0) {
 
     firestore = getFirestore(app);
     auth = getAuth(app);
+    storage = getStorage(app);
 } else {
     firestore = getFirestore(currentApps[0]);
     auth = getAuth(currentApps[0]);
