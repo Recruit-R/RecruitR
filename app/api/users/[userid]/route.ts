@@ -1,5 +1,5 @@
 import { auth, firestore } from '@/firebase/server';
-import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { DecodedIdToken } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
 import Roles from "@/app/types/roles";
 
@@ -42,7 +42,7 @@ export async function GET(
             await firestore.doc(`users/${user!.uid}`).create({
                 role: role
             });
-            await getAuth().setCustomUserClaims(user!.uid, customClaims);
+            await auth!.setCustomUserClaims(user!.uid, customClaims);
             return NextResponse.json({ role });
         }
 
