@@ -12,7 +12,8 @@ export function getAuthToken(): string | undefined {
 
 export function setAuthToken(token: string): string | undefined {
     const maxAge = 604800;
-    return Cookies.set("firebaseIdToken", token, { secure: true, expires: maxAge });
+    const secure = process.env.NEXT_PUBLIC_APP_ENV !== "emulator";
+    return Cookies.set("firebaseIdToken", token, { secure: secure, expires: maxAge });
 }
 
 export function removeAuthToken(): void {
