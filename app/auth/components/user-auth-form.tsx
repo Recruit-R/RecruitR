@@ -188,7 +188,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 disabled={auth?.isLoading}
                 onClick={() => {
                     auth?.loginGoogle().then(() => {
-                        console.log('logged in');
+                        auth.setIsLoading(false);
                     }).catch((error) => {
                         console.log(error);
                     });
