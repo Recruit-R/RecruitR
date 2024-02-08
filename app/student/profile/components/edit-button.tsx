@@ -7,7 +7,7 @@ import {useState} from "react";
 export function EditButton({pressed}: {pressed: boolean}){
     const [buttonPress, setPressed] = useState<boolean>(pressed)
 
-    if(buttonPress){
+    if(!buttonPress){
         return (
             <Button onClick={() => setPressed(prevState => !prevState)}>
                 edit
@@ -16,8 +16,15 @@ export function EditButton({pressed}: {pressed: boolean}){
     }
 
     return(
-        <Button onClick={() => setPressed(prevState => !prevState)}>
-            save
-        </Button>
+        <div className="flex">
+            <div className="pr-2">
+                <Button onClick={() => setPressed(prevState => !prevState)}>
+                    save
+                </Button>
+            </div>
+            <Button onClick={() => setPressed(prevState => !prevState)}>
+                cancel
+            </Button>
+        </div>
     )
 }
