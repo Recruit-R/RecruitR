@@ -2,7 +2,7 @@
 import Roles from "@/app/types/roles";
 import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
 
 export function getAuthToken(): string | undefined {
@@ -30,6 +30,7 @@ type AuthContextType = {
     isCoordinator: boolean;
     isRecruiter: boolean;
     isLoading: boolean;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     loginGoogle: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
@@ -170,6 +171,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 isCoordinator,
                 isRecruiter,
                 isLoading,
+                setIsLoading,
                 loginGoogle,
                 loginEmail,
                 createAccountEmail,
