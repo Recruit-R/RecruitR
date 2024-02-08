@@ -8,20 +8,14 @@ import {cn} from "@/lib/utils";
 import {ChevronLeftIcon, ChevronRight, ChevronRightIcon} from "lucide-react";
 import { EventTable } from "./event-table";
 import { EventCard } from "./event-card";
-import { EditMode } from "./edit-mode";
 
 
-export default function ClientComponent({students} : {students : any}) {
+export default function ClientComponent() {
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
     const [editMode, setEditMode] = useState<boolean>(false)
 
     const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
-    }
-    if(editMode){
-        return(
-            <EditMode/>
-        )
     }
     return (
         // <div className="">
@@ -31,6 +25,7 @@ export default function ClientComponent({students} : {students : any}) {
             {/* <div>         */}
                 <StudentInfoCard
                     editMode = {editMode}
+                    setEditMode = {setEditMode}
                     c={c}
                 />
             </div>

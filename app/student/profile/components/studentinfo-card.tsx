@@ -16,14 +16,14 @@ import {useAmp} from "next/amp";
 import { StudentInfo } from "./student-info";
 import { ResumeButton } from "./resume-file";
 import { ShowSkills } from "./show-skills";
-import { EditButton } from "./edit-button";
 
 interface StudentInfoCardProps {
     editMode: boolean,
+    setEditMode: React.Dispatch<React.SetStateAction<boolean>>
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
 
-export function StudentInfoCard({editMode, c} : StudentInfoCardProps) {
+export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProps) {
     const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
 
     useEffect(() => {console.log(`RAHHH`)})
@@ -48,9 +48,10 @@ export function StudentInfoCard({editMode, c} : StudentInfoCardProps) {
                         </div>
                     </div>
                     <div className="flex items-end space-x-4 pr-2">
-                        <EditButton
-                            pressed = {editMode}
-                        ></EditButton>
+                    <Button onClick={() => setEditMode(prevState => !prevState)}
+                    variant={"outline"}>
+                        edit
+                    </Button>
                     </div>
                     <div className={c("hidden flex-1", "xl:flex")}>
                         something was here
