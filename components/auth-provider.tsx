@@ -12,7 +12,7 @@ export function getAuthToken(): string | undefined {
 
 export function setAuthToken(token: string): string | undefined {
     const maxAge = 604800;
-    return Cookies.set("firebaseIdToken", token, { secure: true, maxAge: maxAge });
+    return Cookies.set("firebaseIdToken", token, { secure: true, expires: maxAge });
 }
 
 export function removeAuthToken(): void {
