@@ -1,7 +1,8 @@
+import Roles from "@/app/types/roles";
 import { auth, firestore } from '@/firebase/server';
 import { DecodedIdToken } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
-import Roles from "@/app/types/roles";
+import validateUser from "../../validateUser";
 
 
 export async function GET(
@@ -15,17 +16,9 @@ export async function GET(
             return new NextResponse("No Firestore", { status: 500 });
 
         const authToken =
-            request.headers.get("authorization")?.split("Bearer ")[1] || null;
+            request.headers.get("authorization")?.split("Bearer ")[1] || undefined;
 
-        let user: DecodedIdToken | null = null;
-        if (auth && authToken) {
-            try {
-                user = await auth.verifyIdToken(authToken);
-            } catch (error) {
-                // One possible error is the token being expired, return forbidden
-                console.log(error);
-            }
-        }
+        let user: DecodedIdToken | null = await validateUser(authToken) ?? null;
 
         // validate that user requesting role type is requesting it for themselves
         const valid = user?.uid === params.userid;
