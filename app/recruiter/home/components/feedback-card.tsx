@@ -101,7 +101,11 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             <TextFeedback/>
                         </div>
                     </div>
-                    <Timeline />
+                    <Timeline
+                        events={["Interview 1", "Interview 2", "Interview 3", "Success"]}
+                        currEvent={"Interview 3"}
+                        editable={false}
+                    />
                     {/*<PossiblePlacement/>*/}
 
                 </CardContent>
