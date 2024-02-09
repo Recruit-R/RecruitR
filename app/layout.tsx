@@ -21,9 +21,9 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true} 
         className={`${cn(
-          "min-h-screen bg-background font-sans antialiased h-screen overflow-y-hidden",
+          "bg-background font-sans antialiased h-screen-dynamic overflow-y-hidden",
           inter.variable
-      )} h-screen`}>
+      )} h-screen-dynamic`}>
       <ThemeProvider
           attribute="class"
           defaultTheme="system"
