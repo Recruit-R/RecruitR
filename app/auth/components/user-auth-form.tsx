@@ -60,11 +60,8 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log('submitting', values);
         if (signup) {
-            console.log('creating account');
             auth?.createAccountEmail({ email: values.email, password: values.password }).then(() => {
-                console.log('logged in');
             }).catch((error) => {
                 if (error.code === 'auth/email-already-in-use') {
                     setAuthError(SignupFailure);
@@ -75,7 +72,6 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             });
         } else {
             auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
-                console.log('logged in');
             }).catch((error) => {
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                     setAuthError(LoginFailure);
@@ -96,7 +92,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 router.push('/candidate/home');
             }
         }
-    }, [auth?.isLoading])
+    }, [auth?.isLoading, auth?.currentUser])
 
     return (
         <div className='grid gap-6' {...props}>
@@ -187,11 +183,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 type="button"
                 disabled={auth?.isLoading}
                 onClick={() => {
-                    auth?.loginGoogle().then(() => {
-                        auth.setIsLoading(false);
-                    }).catch((error) => {
-                        console.log(error);
-                    });
+                    auth?.loginGoogle();
                 }}
                 className='w-full'>
                 {auth?.isLoading ? (
