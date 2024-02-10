@@ -8,7 +8,6 @@ interface StudentInfoProps {
 export function StudentInfo({func} : StudentInfoProps) {
     return (
         <div className={func("grid flex-1 items-center h-full grid-cols-1", "xl:grid-cols-2")}>
-            <div className="md:px-4">
                 <p>
                     <span className="font-bold">
                         Year:
@@ -41,7 +40,14 @@ export function StudentInfo({func} : StudentInfoProps) {
                          5.0
                     </span>
                 </p>
-            </div>
+                <p>
+                    <span className="font-bold">
+                        Email:
+                    </span>&nbsp;
+                    <span>
+                         mamafj20@gcc.edu
+                    </span>
+                </p>
         </div>
     )
 }

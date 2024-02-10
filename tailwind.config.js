@@ -65,10 +65,16 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "pulse-richer": {
+          "80%": {
+            opacity: .8,
+          }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-richer": "pulse-richer 2s cubic-bezier(0.8, 0, 0.9, 1) infinite",
       },
     },
   },
