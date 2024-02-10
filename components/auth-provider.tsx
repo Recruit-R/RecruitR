@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [isCoordinator, setIsCoordinator] = useState<boolean>(false);
     const [isRecruiter, setIsRecruiter] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [validSession, setIsValidSession] = useState<boolean>(false);
 
     // Triggers when App is started
     useEffect(() => {
@@ -87,8 +88,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 } else {
                     console.error("Could not get user info");
                 }
-                setAuthToken(await user.getIdToken(true));
-                setIsLoading(false);
+                setAuthToken(await user.getIdToken(true).then((res) => {
+                    setIsLoading(false);
+                    return res;
+                }));
             }
         });
     }, []);
@@ -117,7 +120,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
             signInWithEmailAndPassword(auth, email, password)
                 .then((user) => {
-                    console.log("Signed in!");
                     resolve();
                 })
                 .catch((error) => {
@@ -136,7 +138,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
             signInWithPopup(auth, new GoogleAuthProvider())
                 .then((user) => {
-                    console.log("Signed in!");
                     resolve();
                 })
                 .catch(() => {
