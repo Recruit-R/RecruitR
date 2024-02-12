@@ -30,18 +30,17 @@ export const metadata: Metadata = {
 }
 
 const sidebarNavItems = [
-  {
-    title: "Profile",
-    href: "/recruiter/profile/account",
-  },
+    {
+        title: "Profile",
+        href: "/recruiter/profile/profileform",
+      },
   {
     title: "Account",
-    href: "/recruiter/profile/",
+    href: "/recruiter/profile/account",
   },
   {
     title: "Notifications",
     href: "/recruiter/profile/notifications"
-    ///profile/components/notifications/page",
   },
 ]
 
