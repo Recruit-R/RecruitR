@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { cookies } from 'next/headers';
 import Link from "next/link";
 
+import validateUser from "@/app/api/validateUser";
 import Roles from "@/app/types/roles";
 import { buttonVariants } from "@/components/ui/button";
 import { auth } from "@/firebase/server";
@@ -19,12 +20,16 @@ export default async function LoginPage() {
     const cookieStore = cookies();
     const authToken = cookieStore.get("firebaseIdToken")?.value;
     if (authToken && auth) {
-        let user: DecodedIdToken | null = null
-        user = await auth.verifyIdToken(authToken);
-        if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
-            return redirect("/recruiter/home");
-        } else {
-            return redirect("/candidate/home");
+        let user: DecodedIdToken | null | string = await validateUser(authToken);
+        if (user === "auth/id-token-expired") {
+            return redirect("/refresh");
+        }
+        if (typeof user !== "string") {
+            if (user && (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR)) {
+                return redirect("/recruiter/home");
+            } else {
+                return redirect("/candidate/home");
+            }
         }
     }
     return (
