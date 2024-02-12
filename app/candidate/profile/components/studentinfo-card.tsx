@@ -31,7 +31,7 @@ interface StudentInfoCardProps {
 
 export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
-    useEffect(() => {console.log(`RAHHH`)})
+    // useEffect(() => {console.log(`RAHHH`)})
     return (
         <>
             <Card className="min-h-full ">
@@ -55,7 +55,7 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
 
                             </div>
                     </div>
-                    <div className={`flex flex-col pl-3 items-center`}>
+                    <div className={`flex flex-col pl-3 ml-auto items-center`}>
                         <Button asChild variant={"link"}>
                             <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
                         </Button>

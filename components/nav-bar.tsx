@@ -4,15 +4,18 @@ import {UserNav} from "@/components/user-nav.tsx";
 import Image from "next/image";
 import picture from "@/assets/logo.png"
 
-export default function NavBar() {
+export default function NavBar({studentNav}: {studentNav: boolean}) {
     return (
         <nav className="flex py-3 px-2 bg-background items-center">
-            <Link href={"/recruiter/home"}>
+            <Link href={studentNav ? "/candidate/profile" : "/recruiter/home"}>
                 <Image src={picture} alt={"logo"} width={100} height={50} />
             </Link>
             <div className="flex items-center ml-auto space-x-4">
                 <ModeToggle/>
-                <UserNav />
+                {
+                    !studentNav &&
+                    <UserNav />
+                }
             </div>
 
     </nav>

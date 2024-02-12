@@ -10,7 +10,7 @@ export function EventCard(){
                     
                 </p>
             </CardHeader>
-                <CardContent className="flex flex-col flex-wrap xl:grid xl:grid-cols-2 xl:gap-x-4">
+                <CardContent className="flex flex-col flex-wrap">
                 
                 <EventTable></EventTable>
                 </CardContent>

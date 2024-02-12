@@ -89,7 +89,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             if (auth?.isCoordinator || auth?.isRecruiter) {
                 router.push('/recruiter/home');
             } else {
-                router.push('/candidate/home');
+                router.push('/candidate/profile');
             }
         }
     }, [auth?.isLoading, auth?.currentUser])

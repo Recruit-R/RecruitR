@@ -1,3 +1,4 @@
+'use client'
 import {
     Avatar,
     AvatarFallback,
@@ -15,8 +16,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx"
 import Link from "next/link";
+import {useAuth} from "@/components/auth-provider.tsx";
+import {useRouter} from "next/navigation";
 
 export function UserNav() {
+    const auth = useAuth();
+    const router = useRouter();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -57,7 +62,13 @@ export function UserNav() {
                     <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => {
+                    auth?.logout().then(() => {
+                        router.push("/auth/login");
+                    }).catch((error: any) => {
+                        console.log(error);
+                    });
+                }}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

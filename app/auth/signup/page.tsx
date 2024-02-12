@@ -24,7 +24,7 @@ export default async function SignUpPage() {
         if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
             return redirect("/recruiter/home");
         } else {
-            return redirect("/candidate/home");
+            return redirect("/candidate/profile");
         }
     }
     return (
