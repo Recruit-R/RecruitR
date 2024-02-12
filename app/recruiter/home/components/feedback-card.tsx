@@ -24,6 +24,9 @@ import {ToggleGroup, ToggleGroupItem} from "@radix-ui/react-toggle-group";
 import {ToggleGroupDemo} from "@/app/recruiter/home/components/feedback-card-components/toggle-component-test.tsx";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruiter/home/components/client-component.tsx";
 import { BsCloudCheck } from "react-icons/bs";
+import {ComboboxDemo} from "@/app/recruiter/home/components/dev-components/ComboboxDemo.tsx";
+import {HomeTimeline, Timeline} from "@/app/recruiter/home/components/feedback-card-components/timeline.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 interface FeedbackCardProps {
     feedbackFocus: boolean,
     setStudentView: React.Dispatch<React.SetStateAction<boolean>>,
@@ -54,9 +57,10 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
                 <ChevronLeft className="mr-2 h-4 w-4"/> Back to Search List
             </Button>
+
             <Card className="min-h-full relative">
                 <div className={"absolute top-0 right-0 p-4"}>
-                    {saved ? <BsCloudCheck className={"w-6 h-6 stroke-{.5}"} /> : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-1"}/>}
+                    {saved ? <BsCloudCheck className={"w-6 h-6 stroke-{.5} fill-ring"} /> : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-ring stroke-1"}/>}
                 </div>
                 <CardHeader className="flex flex-row items-center border-b mb-4">
                     <div className="flex flex-1 items-center space-x-4 pr-4">
@@ -79,16 +83,17 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                 </CardHeader>
 
                 <CardContent className={"flex flex-col"}>
-                    <div>
+                    <div className={"flex-row flex space-x-5"}>
                         <ToggleGroupDemo/>
+                        <ComboboxDemo />
                     </div>
-                    <div className={c("flex flex-col flex-wrap", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
+                    <div className={c("flex flex-col flex-wrap pb-2", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
                         <div className="flex flex-col gap-6">
                             <div className={c("flex", "xl:hidden")}>
                                 <StudentInfo func={c} student={currentStudent}/>
                             </div>
 
-                            {/*<InitialFeedback initialFeedback={defaultFeedback.initialFeedback}/>*/}
+                            <InitialFeedback />
                             <PossiblePlacement possiblePlacement={defaultFeedback.possiblePlacement}/>
                             <KnownTech/>
 
@@ -97,6 +102,12 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             <TextFeedback/>
                         </div>
                     </div>
+                    <Separator />
+                    <Timeline
+                        events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
+                        currEvent={"Interview 3"}
+                        editable={false}
+                    />
                     {/*<PossiblePlacement/>*/}
 
                 </CardContent>

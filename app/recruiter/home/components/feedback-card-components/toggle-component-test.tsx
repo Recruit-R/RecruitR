@@ -16,7 +16,7 @@ export function ToggleGroupDemo() {
 
     return (
         <div className={"flex flex-row items-center"}>
-            <div className={"font-bold pr-3"}>Avg. Rating: 4.3</div>
+            <div className={"font-bold pr-3"}>Avg. Rating: {(Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)}</div>
             {
                 currentStudent?.feedback &&
                 Object.keys(currentStudent?.feedback!).some((name) => name !== tempCurrentUser) && (
@@ -29,7 +29,7 @@ export function ToggleGroupDemo() {
                                 return recruiterName !== tempCurrentUser ? (
                                     <ToggleGroupItem value={recruiterName} aria-label="Toggle bold">
 
-                                    {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon className="h-4 w-4" color={"#FFD27D"} />
+                                    {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon className="h-4 w-4 text-ring fill-current" />
                                         <span className="pl-2">{recruiterName}</span>
                                     </ToggleGroupItem>
                                 ) : <></>

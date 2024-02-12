@@ -10,7 +10,7 @@ import {
 import {Textarea} from "@/components/ui/textarea";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FeedbackCard} from "@/app/recruiter/home/components/feedback-card";
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {studentColumns} from "@/app/recruiter/home/components/student-columns";
@@ -31,18 +31,20 @@ export interface StudentDataContextType {
     setCurrRecrFeedback: React.Dispatch<React.SetStateAction<string>>
     tempCurrentUser: string
     editable: () => boolean
+    setTempCurrentUser: React.Dispatch<React.SetStateAction<string>>
 }
 export const StudentDataContext = createContext<StudentDataContextType | null>(null);
 
 export default function ClientComponent({students} : {students : StudentList}) {
     const [tempCurrentUser, setTempCurrentUser] = useState("Caleb")
-    const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
-    const [studentView, setStudentView] = useState<boolean>(true)
+    const [feedbackFocus, setFeedbackFocus] = useState<boolean>(false)
+    const [studentView, setStudentView] = useState<boolean>(false)
     const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
     const [studentList, setStudentList] = useState<StudentList>(students);
     const [saved, setSaved] = useState(true)
+    const [previousStudent, setPreviousStudent] = useState<Student | null>(null);
     const [currRecrFeedback, setCurrRecrFeedback] = useState(tempCurrentUser)
-
+    let lastRating: number | undefined = 0;
     const editable = () => currRecrFeedback === tempCurrentUser // CHANGE TO AUTH USER ONCE IMPLEMENTED
 
     // const [currentRecruiterFeedback, setCurrentRecruiterFeedback] = useState()
@@ -59,21 +61,36 @@ export default function ClientComponent({students} : {students : StudentList}) {
         setStudentView(prevState => !prevState)
     }
     function changeCurrentStudent(student: Student){
-        console.log(student)
-        if (currentStudent != null) {
-            console.log("Student")
-            console.log(currentStudent.id)
-            console.log(studentList)
-            console.log(studentList[currentStudent.id])
-            // studentList[currentStudent!.id] = currentStudent!;
-
-            // setStudentList(studentList)
-            console.log(currentStudent)
-            setStudentList(prevState => ({...prevState, [currentStudent.id]: currentStudent!}))
-        }
+        // console.log(student)
+        // if (currentStudent != null) {
+        //     console.log("Student")
+        //     console.log(currentStudent.id)
+        //     console.log(studentList)
+        //     console.log(studentList[currentStudent.id])
+        //     // studentList[currentStudent!.id] = currentStudent!;
+        //
+        //     // setStudentList(studentList)
+        //     console.log(currentStudent)
+        //     // setStudentList(prevState => ({...prevState, [currentStudent.id]: currentStudent!}))
+        // }
         setCurrRecrFeedback(tempCurrentUser)
-        setCurrentStudent(student)
+        setCurrentStudent((prevStudent) => {
+            prevStudent && setStudentList(prevState => ({...prevState, [prevStudent.id]: prevStudent}))
+            return student
+        })
     }
+    useEffect(() => {
+        console.log(previousStudent)
+        console.log(currentStudent)
+        console.log(previousStudent?.avgRating === currentStudent?.avgRating)
+
+        if ((previousStudent?.avgRating !== currentStudent?.avgRating) && currentStudent?.avgRating !== 0) {
+            console.log("should update data table")
+
+            currentStudent && setStudentList(prevState => ({...prevState, [currentStudent!.id]: {...currentStudent!, "feedback": currentStudent!.feedback, "avgRating": currentStudent!.avgRating}}))
+        }
+        setPreviousStudent(currentStudent);
+    }, [currentStudent])
     return (
         <StudentDataContext.Provider  value={{
             studentList,
@@ -85,13 +102,11 @@ export default function ClientComponent({students} : {students : StudentList}) {
             currRecrFeedback,
             setCurrRecrFeedback,
             tempCurrentUser,
-            editable
+            editable,
+            setTempCurrentUser
         }}>
 
-        <div className="">
-            <Button variant={"destructive"} onClick={reset}>
-                RESET
-            </Button>
+        {/*<div className="">*/}
         <div className="flex flex-row h-full">
             <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
                 <DataTable
@@ -140,7 +155,7 @@ export default function ClientComponent({students} : {students : StudentList}) {
                 )
             }
         </div>
-        </div>
+        {/*</div>*/}
         </StudentDataContext.Provider>
 
     )
