@@ -55,7 +55,7 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
 
                             </div>
                     </div>
-                    <div className={`flex flex-col pl-3 items-center`}>
+                    <div className={`flex flex-col ml-auto pl-3 items-center`}>
                         <Button asChild variant={"link"}>
                             <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
                         </Button>
