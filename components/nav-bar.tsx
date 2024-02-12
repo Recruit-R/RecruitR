@@ -6,7 +6,7 @@ import picture from "@/assets/logo.png"
 
 export default function NavBar() {
     return (
-        <nav className="flex py-3    px-2 bg-background items-center">
+        <nav className="flex py-3 px-2 bg-background items-center">
             <Link href={"/recruiter/home"}>
                 <Image src={picture} alt={"logo"} width={100} height={50} />
             </Link>

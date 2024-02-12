@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
+import {AuthProvider} from "@/components/auth-provider.tsx";
 
 const inter = Inter({ subsets: ['latin'], variable: "--font-sans" })
 
@@ -24,14 +25,16 @@ export default function RootLayout({
           "bg-background font-sans antialiased h-screen-dynamic overflow-y-hidden",
           inter.variable
       )} h-screen-dynamic`}>
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
+      <AuthProvider>
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+      </AuthProvider>
       </body>
     </html>
   )
