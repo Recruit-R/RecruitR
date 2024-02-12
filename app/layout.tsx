@@ -22,7 +22,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true}
         className={`${cn(
-          "min-h-screen bg-background font-sans antialiased h-screen overflow-y-hidden",
+          "md:min-h-screen bg-background font-sans antialiased md:h-screen md:overflow-y-hidden",
           inter.variable
         )} h-screen`}>
         <main>
