@@ -14,11 +14,9 @@ const formSchema = z.object({
 export default async function Page() {
     // const students = await getStudents()
     const events = await getData({ collection_name: 'events', schemaName: 'eventSchema' })
-    console.log(events);
-
 
     return (
         <ClientComponent events={events} />
-        
+
     )
 }

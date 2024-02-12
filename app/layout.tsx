@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
+import { AuthProvider } from '@/components/auth-provider'
 
 const inter = Inter({ subsets: ['latin'], variable: "--font-sans" })
 
@@ -19,19 +20,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        suppressHydrationWarning={true} 
+        suppressHydrationWarning={true}
         className={`${cn(
           "min-h-screen bg-background font-sans antialiased h-screen overflow-y-hidden",
           inter.variable
-      )} h-screen`}>
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
+        )} h-screen`}>
+        <main>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </AuthProvider>
+        </main>
       </body>
     </html>
   )
