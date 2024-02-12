@@ -1,5 +1,6 @@
+import SignOut from "@/app/candidate/components/signout-button";
+import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
-import {ModeToggle} from "@/components/mode-toggle";
 
 export default function NavBar() {
     return (
@@ -12,9 +13,10 @@ export default function NavBar() {
                 >
                     Events
                 </Link>
+                <SignOut />
                 <Link href={"/recruiter/profile"}>ProfImg</Link>
             </div>
-        <ModeToggle/>
-    </nav>
+            <ModeToggle />
+        </nav>
     )
 }

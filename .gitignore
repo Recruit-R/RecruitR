@@ -36,9 +36,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 *.env
+*.log
 
+firebase/service-account.json
 **/node_modules
+<<<<<<< HEAD
 
 service-account.json
 
 **/*.log
+=======
+>>>>>>> 2a8b9239a8e352cc2675b85d4c25517890cb9e07
