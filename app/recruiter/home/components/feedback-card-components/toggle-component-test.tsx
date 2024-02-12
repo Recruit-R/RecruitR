@@ -29,7 +29,7 @@ export function ToggleGroupDemo() {
                                 return recruiterName !== tempCurrentUser ? (
                                     <ToggleGroupItem value={recruiterName} aria-label="Toggle bold">
 
-                                    {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon className="h-4 w-4" color={"#FFD27D"} />
+                                    {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon className="h-4 w-4 text-ring fill-current" />
                                         <span className="pl-2">{recruiterName}</span>
                                     </ToggleGroupItem>
                                 ) : <></>

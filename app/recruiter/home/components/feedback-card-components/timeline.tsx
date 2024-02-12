@@ -35,38 +35,52 @@ export function Timeline({events, currEvent, editable}: TimelineProps) {
         </TooltipProvider>)
     }
     return (
-        <div className={"relative flex items-center py-5"}>
-
-            <Progress value={progressBar} className={"absolute"}>
-            </Progress>
-            <div className={"absolute flex  justify-between w-full"}>
-                {/*{addToolTip("Interview 1", <Checkbox className={"w-6 h-6 "}/>)}*/}
-                {/*<TooltipProvider>*/}
-                {/*    <Tooltip>*/}
-                {/*        <TooltipTrigger>Hover</TooltipTrigger>*/}
-                {/*        <TooltipContent>*/}
-                {/*            <Checkbox className={"w-6 h-6"}/>*/}
-                {/*        </TooltipContent>*/}
-                {/*    </Tooltip>*/}
-                {/*</TooltipProvider>*/}
-                {
-                    events.map((e, idx) => {
-                        return (
-                            addToolTip(e as string,
-                                <Checkbox className={`w-6 h-6 border-secondary bg-secondary`}
-                                          id={e as string}
-                                          checked={idx <= progress}
-                                          onCheckedChange={() => handleCheckedChange(idx)}
-                                />
+        <div>
+            <p className="font-bold py-2 text-lg">
+                Progress
+            </p>
+            <div className={"relative flex items-center py-8"}>
+                <Progress value={progressBar} className={"absolute"}>
+                </Progress>
+                <div className={"absolute flex justify-between w-full"}>
+                    {/*{addToolTip("Interview 1", <Checkbox className={"w-6 h-6 "}/>)}*/}
+                    {/*<TooltipProvider>*/}
+                    {/*    <Tooltip>*/}
+                    {/*        <TooltipTrigger>Hover</TooltipTrigger>*/}
+                    {/*        <TooltipContent>*/}
+                    {/*            <Checkbox className={"w-6 h-6"}/>*/}
+                    {/*        </TooltipContent>*/}
+                    {/*    </Tooltip>*/}
+                    {/*</TooltipProvider>*/}
+                    {
+                        events.map((e, idx) => {
+                            return (
+                                addToolTip(e as string,
+                                    <div className={"relative flex flex-col "}>
+                                        <div className={`absolute  -translate-y-6 
+                                    ${idx !== progress && "max-md:hidden"}
+                                    ${idx === 0 ? "left-0" : idx == events.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}
+                                    `}>
+                                            <label htmlFor={e as string} className={"whitespace-nowrap"}>
+                                                {e}
+                                            </label>
+                                        </div>
+                                        <Checkbox className={`w-6 h-6 border-secondary bg-secondary`}
+                                                  id={e as string}
+                                                  checked={idx <= progress}
+                                                  onCheckedChange={() => handleCheckedChange(idx)}
+                                        />
+                                    </div>
+                                )
                             )
-                        )
-                    })
-                }
-                {/*<Checkbox className={"w-6 h-6"}/>*/}
-                {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
-                {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
-                {/*<Checkbox className={"w-6 h-6 border-secondary bg-secondary"}/>*/}
+                        })
+                    }
+                    {/*<Checkbox className={"w-6 h-6"}/>*/}
+                    {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
+                    {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
+                    {/*<Checkbox className={"w-6 h-6 border-secondary bg-secondary"}/>*/}
 
+                </div>
             </div>
         </div>
     )

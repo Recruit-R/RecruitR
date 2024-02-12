@@ -26,6 +26,7 @@ import {StudentDataContext, StudentDataContextType} from "@/app/recruiter/home/c
 import { BsCloudCheck } from "react-icons/bs";
 import {ComboboxDemo} from "@/app/recruiter/home/components/dev-components/ComboboxDemo.tsx";
 import {HomeTimeline, Timeline} from "@/app/recruiter/home/components/feedback-card-components/timeline.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 interface FeedbackCardProps {
     feedbackFocus: boolean,
     setStudentView: React.Dispatch<React.SetStateAction<boolean>>,
@@ -101,8 +102,9 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             <TextFeedback/>
                         </div>
                     </div>
+                    <Separator />
                     <Timeline
-                        events={["Interview 1", "Interview 2", "Interview 3", "Success"]}
+                        events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
                         currEvent={"Interview 3"}
                         editable={false}
                     />
