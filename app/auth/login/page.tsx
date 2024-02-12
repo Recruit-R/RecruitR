@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { redirect } from "next/navigation";
 import { UserAuthForm } from "../components/user-auth-form";
-
 export const metadata: Metadata = {
     title: "Authentication",
     description: "Authentication forms built using the components.",
@@ -20,14 +19,6 @@ export default async function LoginPage() {
     const cookieStore = cookies();
     const authToken = cookieStore.get("firebaseIdToken")?.value;
     if (authToken && auth) {
-<<<<<<< HEAD
-        let user: DecodedIdToken | null = null
-        user = await auth.verifyIdToken(authToken);
-        if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
-            return redirect("/recruiter/home");
-        } else {
-            return redirect("/candidate/profile");
-=======
         let user: DecodedIdToken | null | string = await validateUser(authToken);
         if (user === "auth/id-token-expired") {
             return redirect("/refresh");
@@ -38,7 +29,6 @@ export default async function LoginPage() {
             } else {
                 return redirect("/candidate/home");
             }
->>>>>>> kw/authentication
         }
     }
     return (
