@@ -1,31 +1,37 @@
-import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
-import app from "../../firebase.config";
-import { z } from "zod";
+import { eventSchema } from "@/app/recruiter/events/data/events-schema";
 import { studentSchema } from "@/app/recruiter/home/data/student-schema";
-import {eventSchema} from "@/app/recruiter/events/data/events-schema";
+import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
+import { z } from "zod";
+import app from "../../firebase.config";
 
 const db = getFirestore(app)
-export default async function getDoument({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
+
+
+export default async function getData({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
     if (document_id === null) {
 
-        let docRef = doc(db, collection_name, document_id);
+        let docRef = doc(db, collection_name, document_id!);
+        console.log(docRef);
     } else {
         let response = await collection(db, collection_name)
         let result = await getDocs(response);
         // console.log(result.docs)
-        let data_list = []
+        let data_list: any = {}
         result.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            if (doc.data() != {}) {
-                data_list.push(doc.data());
+            // console.log(doc.id, " => ", doc.data());
+            if (Object.keys(doc.data()).length !== 0) {
+                let student = doc.data();
+                student.id = doc.id;
+                data_list[doc.id] = student;
             }
         });
+        // console.log(data_list)
         // const students = JSON.parse(result.toString())
-        if (schemaName != null && schemaName === "eventSchema"){
+        if (schemaName != null && schemaName === "eventSchema") {
             return z.array(eventSchema).parse(data_list);
         } else {
-            return z.array(studentSchema).parse(data_list)
+            return z.record(studentSchema).parse(data_list)
         }
     }
 

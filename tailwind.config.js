@@ -56,6 +56,12 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      height: {
+        "screen-dynamic": "100dvh",
+      },
+      minHeight: {
+        "screen-dynamic": "100dvh"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -65,16 +71,16 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        "pulse-richer": {
-          "80%": {
-            opacity: .8,
-          }
+        'reverse-spin': {
+          from: {
+            transform: 'rotate(360deg)'
+          },
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-richer": "pulse-richer 2s cubic-bezier(0.8, 0, 0.9, 1) infinite",
+        'reverse-spin': 'reverse-spin 1s linear infinite'
       },
     },
   },
