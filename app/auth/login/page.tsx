@@ -27,7 +27,7 @@ export default async function LoginPage() {
             if (user && (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR)) {
                 return redirect("/recruiter/home");
             } else {
-                return redirect("/candidate/home");
+                return redirect("/candidate/profile");
             }
         }
     }
