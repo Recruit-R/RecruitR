@@ -21,6 +21,7 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { AboutMeDrawerDialog } from "./about-me-edit";
 import { DialogDemo } from "./about-me-dialog";
 import { PersonalDrawerDialog } from "./personal-edit";
+import { HeaderDrawerDialog } from "./header-edit";
 
 interface StudentInfoCardProps {
     editMode: boolean,
@@ -34,13 +35,17 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
     return (
         <>
             <Card className="min-h-full ">
-                <CardHeader className="flex flex-row items-center divide-x border-b mb-4">
-                    <div className="flex flex-1 items-center space-x-4 pr-4">
-                        <Avatar className="h-20 w-20">
-                            <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">JM</AvatarFallback>
-                        </Avatar>
-                        <div>
+                <CardHeader className="flex flex-row border-b mb-4">
+                    <div className={`flex flex-row pr-3 items-center space-x-4 relative ${editMode && "animate-pulse"} rounded-lg`}>
+                            {
+                                editMode && 
+                                <HeaderDrawerDialog></HeaderDrawerDialog>
+                            }
+                            <Avatar className="h-20 w-20">
+                                <AvatarImage src="/avatars/01.png" alt="Avatar"/>
+                                <AvatarFallback className="text-3xl">JM</AvatarFallback>
+                            </Avatar>
+                            <div>
                                 <CardTitle className="text-4xl">
                                     Joe Mama
                                 </CardTitle>
@@ -48,15 +53,17 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
                                     Exercise Science Major
                                 </CardDescription>
 
-                        </div>
+                            </div>
                     </div>
-                    <div className="flex-col items-center space-x-4">
-                        <Button asChild variant={"outline"}>
+                    <div className={`flex flex-col pl-3 items-center`}>
+                        <Button asChild variant={"link"}>
                             <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
                         </Button>
                         <Button onClick={() => setEditMode(prevState => !prevState)}
-                            variant={"outline"}>
-                            {editMode ? "cancel": "edit"}
+                            variant={"outline"}
+                            className="w-32"
+                            >
+                            {editMode ? "Cancel": "Edit Profile"}
                         </Button>
                     </div>
                 </CardHeader>

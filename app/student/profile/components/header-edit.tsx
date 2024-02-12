@@ -24,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function PersonalDrawerDialog() {
+export function HeaderDrawerDialog() {
   const isDesktop = useScreenWidth()
 
   if (isDesktop >= 768) {
@@ -70,11 +70,21 @@ export function PersonalDrawerDialog() {
 }
 
 function ProfileForm({ className }: React.ComponentProps<"form">) {
-  return (
-    <form className={cn("grid items-start gap-4", className)}>
+    const fileRef = React.useRef();
+    let [file, setFile] = React.useState();
+    const handleChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+    return (
+        <form className={cn("grid items-start gap-4", className)}>
         <div className="grid gap-2">
-            <Label>Year</Label>
-            <Input id="year" defaultValue="Year" />
+            <Label>First Name</Label>
+            <Input id="year" defaultValue="" />
+        </div>
+
+        <div className="grid gap-2">
+            <Label>Last Name</Label>
+            <Input id="year" defaultValue="" />
         </div>
 
         <div className="grid gap-2">
@@ -83,19 +93,12 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
         </div>
 
         <div className="grid gap-2">
-            <Label>University</Label>
-            <Input id="uni" defaultValue="University" />
+            <Label>Profile Image</Label>
+            <Input className = "cursor-pointer" id="profile_pic" name="p_pic" type="file" ref={fileRef} hidden
+                onChange={handleChange} />
         </div>
 
-        <div className="grid gap-2">
-            <Label>GPA</Label>
-            <Input id="gpa" defaultValue="No Value" />
-        </div>
         
-        <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input type="email" id="email" defaultValue="email@domain" />
-        </div>
         
         <Button type="submit">Save changes</Button>
     </form>
