@@ -40,3 +40,5 @@ next-env.d.ts
 **/node_modules
 
 service-account.json
+
+**/*.log
