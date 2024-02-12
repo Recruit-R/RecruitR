@@ -5,7 +5,7 @@ import { studentSchema } from "@/app/recruiter/home/data/student-schema";
 import {eventSchema} from "@/app/recruiter/events/data/events-schema";
 
 const db = getFirestore(app)
-export default async function getDoument({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
+export default async function getData({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
     if (document_id === null) {
 
         let docRef = doc(db, collection_name, document_id);

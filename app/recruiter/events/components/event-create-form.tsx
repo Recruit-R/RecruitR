@@ -27,6 +27,8 @@ import { Input } from "@/components/ui/input"
 import { create } from "@/app/recruiter/events/actions"
 import { DatePicker } from "@/components/ui/date-picker"
 import { DialogClose } from "@/components/ui/dialog"
+import { useContext } from "react"
+import { EventDataContext, EventDataContextType } from "./client-component"
 
 const formSchema = z.object({
     eventName: z.string().min(2, {
@@ -40,6 +42,7 @@ const formSchema = z.object({
 })
 
 export function EventCreateForm({setOpen} : {setOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+    const { refresh } = useContext(EventDataContext) as EventDataContextType
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(
             formSchema.transform((v) => ({
@@ -57,9 +60,12 @@ export function EventCreateForm({setOpen} : {setOpen: React.Dispatch<React.SetSt
     // 2. Define a submit handler.
 
     function onSubmit(data: any) {
-        create(JSON.stringify(data))
+        create(JSON.stringify(data)).then((e) =>
+            {refresh()}
+        )
         setOpen(false);
     }
+    
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
