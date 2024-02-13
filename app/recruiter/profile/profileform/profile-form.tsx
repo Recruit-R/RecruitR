@@ -95,7 +95,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter Name Here" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a

@@ -9,7 +9,7 @@ export default function RecruiterLayout({
     return (
         <section className="flex h-screen-dynamic flex-col grow-0 overflow-y-hidden">
             <div className="flex-0 px-4 border-y"><NavBar studentNav={false}/></div>
-            <div className="flex-1 overflow-y-hidden">
+            <div className="flex-1 overflow-y-scroll">
                 {children}
             </div>
         </section>
