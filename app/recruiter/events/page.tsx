@@ -4,6 +4,8 @@ import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
 import ClientComponent from "@/app/recruiter/events/components/client-component";
+import useScreenWidth from "@/hooks/use-screen-width";
+import { useState } from "react";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -15,9 +17,8 @@ export default async function Page() {
     // const students = await getStudents()
     const events = await getData({ collection_name: 'events', schemaName: 'eventSchema' })
 
-
     return (
-        <ClientComponent events={events} />
-
+        <ClientComponent e={events}/>
+        
     )
 }

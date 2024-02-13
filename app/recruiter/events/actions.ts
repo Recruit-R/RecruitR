@@ -1,8 +1,9 @@
 'use server'
 import { Timestamp } from "firebase/firestore";
 
-import { z } from "zod";
+import {z} from "zod";
 import addData from "@/app/api/addData";
+import getData from "@/app/api/getData";
 import { eventSchema } from "./data/events-schema";
 import { LucideCornerDownLeft } from "lucide-react";
 const formSchema = z.object({
@@ -15,7 +16,10 @@ export async function create(value: string) {
     let obj = JSON.parse(value);
     obj.Time = Timestamp.fromDate(new Date(obj.Time))
 
-    const res = await addData("events", Date.now().toString(), obj)
+    return addData("events", Date.now().toString(), obj)
+}
+export async function getEventData() {
+    return getData({collection_name:"events", schemaName:"eventSchema"})
 }
 function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.
