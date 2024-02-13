@@ -47,7 +47,7 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
                             </Avatar>
                             <div>
                                 <CardTitle className="text-4xl">
-                                    Joe Mama
+                                    Joe Schrieber
                                 </CardTitle>
                                 <CardDescription className="text-md">
                                     Exercise Science Major

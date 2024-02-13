@@ -18,7 +18,7 @@ export default function SignOut() {
                     console.log(error);
                 });
             }}
-            className='w-full'>
+            className='px-4'>
             Sign out
         </Button>
     );
