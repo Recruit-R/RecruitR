@@ -40,5 +40,6 @@ export const config = {
     matcher: [
         '/recruiter/:path*',
         '/candidate/:path*',
+        '/'
     ],
 }
