@@ -8,6 +8,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import React, {useEffect, useState} from "react";
+import {useAuth} from "@/components/auth-provider.tsx";
 
 interface TimelineProps {
     events: Array<String>
@@ -17,6 +18,7 @@ interface TimelineProps {
 export function Timeline({events, currEvent, editable}: TimelineProps) {
     const [progress, setProgress] = useState(events.indexOf(currEvent))
     const [progressBar, setProgressBar] = useState<number>(0)
+    const user = useAuth();
     function handleCheckedChange(idx: number){
         currEvent = events[idx] as string
         setProgress(events.indexOf(currEvent))
@@ -69,6 +71,7 @@ export function Timeline({events, currEvent, editable}: TimelineProps) {
                                                   id={e as string}
                                                   checked={idx <= progress}
                                                   onCheckedChange={() => handleCheckedChange(idx)}
+                                                  disabled={!user?.isCoordinator}
                                         />
                                     </div>
                                 )
