@@ -22,9 +22,9 @@ export default async function SignUpPage() {
         let user: DecodedIdToken | null = null
         user = await auth.verifyIdToken(authToken);
         if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
-            return redirect("/recruiter/home");
+            return redirect("/recruit/home");
         } else {
-            return redirect("/candidate/home");
+            return redirect("/candidate/profile");
         }
     }
     return (
@@ -39,8 +39,8 @@ export default async function SignUpPage() {
                 >
                     Login
                 </Link>
-                <div className="lg:p-8 w-full flex align-center">
-                    <div className="m-auto flex w-1/4 flex-col justify-center space-y-6">
+                <div className="p-8 lg:p-8 w-full flex align-center">
+                    <div className="m-auto flex md:w-1/4 flex-col justify-center space-y-6">
                         <div className="flex flex-col space-y-2 text-center">
                             <h1 className="text-2xl font-semibold tracking-tight">
                                 Sign Up

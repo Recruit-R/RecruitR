@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
     const isCandidate = userRole === Roles.CANDIDATE;
     const isRecruiter = userRole === Roles.RECRUITER || userRole === Roles.COORDINATOR;
-    if (isCandidate && urlTag === 'candidate' || isRecruiter && urlTag === 'recruiter') {
+    if (isCandidate && urlTag === 'candidate' || isRecruiter && urlTag === 'recruit') {
         return NextResponse.next();
     }
 
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
     matcher: [
-        '/recruiter/:path*',
+        '/recruit/:path*',
         '/candidate/:path*',
     ],
 }
