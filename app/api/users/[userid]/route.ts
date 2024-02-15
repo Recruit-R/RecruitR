@@ -10,7 +10,7 @@ export async function GET(
     { params }: { params: { userid: string } }
 ) {
     const wlcList = ['coordinator@example.com']
-    const wlrList = ['recruiter@example.com']
+    const wlrList = ['recruit@example.com']
     try {
         if (!firestore)
             return new NextResponse("No Firestore", { status: 500 });

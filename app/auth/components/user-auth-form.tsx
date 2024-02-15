@@ -87,7 +87,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     useEffect(() => {
         if (!auth?.isLoading && auth?.currentUser) {
             if (auth?.isCoordinator || auth?.isRecruiter) {
-                router.push('/recruiter/home');
+                router.push('/recruit/home');
             } else {
                 router.push('/candidate/profile');
             }

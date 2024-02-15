@@ -22,34 +22,44 @@ import {useRouter} from "next/navigation";
 export function UserNav() {
     const auth = useAuth();
     const router = useRouter();
+    const name = auth?.currentUser?.displayName ?? "Recruiter Context"
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-10 w-10">
                         <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                        <AvatarFallback>SC</AvatarFallback>
+                        <AvatarFallback>{name.split(" ")[0][0]}{name.split(" ")[1][0]}</AvatarFallback>
+
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Karen Smith</p>
+                        <p className={"text-xs font-bold leading-none text-muted-foreground"}>
+                            {auth?.isCoordinator
+                                ? "Coordinator"
+                                : auth?.isRecruiter
+                                    ? "Recruiter"
+                                    : "Unknown Role"
+                            }
+                        </p>
+                        <p className="text-sm font-medium leading-none">{auth?.currentUser?.displayName}</p>
                         <p className="text-xs leading-none text-muted-foreground">
-                            recruiter@example.com
+                            {auth?.currentUser?.email}
                         </p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link href={"/recruiter/profile"}>
+                    <Link href={"/recruit/profile/profileform"}>
                         <DropdownMenuItem>
                             Profile
                             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
-                    <Link href={"recruiter/events"}>
+                    <Link href={"/recruit/events"}>
                         <DropdownMenuItem>
                             Events
                             <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>

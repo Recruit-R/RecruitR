@@ -10,7 +10,7 @@ export default function Home() {
         <span className="text-lg font-semibold">temp routing buttons for development</span>
         <ul>
           <li>
-            <Link className="" href={"/recruiter/home"}><Button variant={"outline"}>
+            <Link className="" href={"/recruit/home"}><Button variant={"outline"}>
               Recruiter Dashboard
             </Button></Link>
           </li>

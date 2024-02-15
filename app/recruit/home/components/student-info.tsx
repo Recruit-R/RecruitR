@@ -3,17 +3,19 @@ import {Student} from "@/app/recruit/home/data/student-schema";
 
 interface StudentInfoProps {
     func: (classnames: string, conditionalNames: string, condition?: boolean) => string,
+    student: Student
 }
 
-export function StudentInfo({func} : StudentInfoProps) {
+export function StudentInfo({func, student} : StudentInfoProps) {
     return (
         <div className={func("grid flex-1 items-center h-full grid-cols-1", "xl:grid-cols-2")}>
+            <div className="md:px-4">
                 <p>
                     <span className="font-bold">
                         Year:
                     </span>&nbsp;
                     <span>
-                        2024
+                        {student.year ? student.year : "N/A"}
                     </span>
                 </p>
                 <p>
@@ -21,7 +23,7 @@ export function StudentInfo({func} : StudentInfoProps) {
                         Major:
                     </span>&nbsp;
                     <span>
-                        Exercise Science
+                        {student.major}
                     </span>
                 </p>
                 <p>
@@ -29,7 +31,7 @@ export function StudentInfo({func} : StudentInfoProps) {
                         University:
                     </span>&nbsp;
                     <span>
-                        Grove City College
+                        {student.university}
                     </span>
                 </p>
                 <p>
@@ -37,17 +39,13 @@ export function StudentInfo({func} : StudentInfoProps) {
                         GPA:
                     </span>&nbsp;
                     <span>
-                         5.0
+                         {student.gpa ? student.gpa : "N/A"}
                     </span>
                 </p>
-                <p>
-                    <span className="font-bold">
-                        Email:
-                    </span>&nbsp;
-                    <span>
-                         mamafj20@gcc.edu
-                    </span>
-                </p>
+            </div>
+            <div className="md:px-4">
+                Resume
+            </div>
         </div>
     )
 }
