@@ -29,8 +29,7 @@ export function UserNav() {
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-10 w-10">
                         <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                        <AvatarFallback>{name.split(" ")[0][0]}{name.split(" ")[1][0]}</AvatarFallback>
-
+                        <AvatarFallback>{name.split(" ")[0][0].toUpperCase()}{name.split(" ")[1][0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
@@ -69,7 +68,15 @@ export function UserNav() {
                         Rapid Sign Up
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    {/*<DropdownMenuItem>Generate QR Code</DropdownMenuItem>*/}
+                    <DropdownMenuItem>Generate QR Code</DropdownMenuItem>
+                    {
+                        auth?.isCoordinator &&
+                        <Link href={"/recruit/manage-recruiters"}>
+                            <DropdownMenuItem>
+                                Manage Recruiters
+                            </DropdownMenuItem>
+                        </Link>
+                    }
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {
