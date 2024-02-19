@@ -9,8 +9,8 @@ export async function GET(
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) {
-    const wlcList = ['coordinator@example.com']
-    const wlrList = ['recruiter@example.com']
+    const whiteListedCoordinators = new Set(['coordinator@example.com'])
+    const whiteListedRecruiters = new Set(['recruiter@example.com'])
     try {
         if (!firestore)
             return new NextResponse("No Firestore", { status: 500 });
@@ -24,13 +24,19 @@ export async function GET(
         const valid = user?.uid === params.userid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
 
+        // const whiteList = await firestore.collection("whitelist").get();
+        // const whiteListedRecruiters = new Set(whiteList.docs.map((doc) => doc.data().email));
+        // const whiteListedCoordinators = new Set(whiteList.docs.map((doc) => doc.data().email));
+
         const userDocument = await firestore
             .collection("users")
             .doc(params.userid)
             .get();
 
+
+
         if (!userDocument.exists) {
-            const role = wlcList.includes(user!.email!) ? Roles.COORDINATOR : wlrList.includes(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
+            const role = whiteListedCoordinators.has(user!.email!) ? Roles.COORDINATOR : whiteListedRecruiters.has(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
             const customClaims = { role: role };
             await firestore.doc(`users/${user!.uid}`).create({
                 role: role
