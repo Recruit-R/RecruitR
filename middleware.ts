@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
     const authToken = request.cookies.get('firebaseIdToken');
     const urlTag = request.nextUrl.pathname.split('/')[1];
     let authUrl = '/auth/login';
+    let recruiterHomeUrl = '/recruit/home';
     if (!authToken) return NextResponse.redirect(new URL(authUrl, request.url));
     const userRole: string | null = await fetch(process.env.API_URL + '/api/validate', {
         headers:
@@ -27,9 +28,19 @@ export async function middleware(request: NextRequest) {
     if (!userRole) return NextResponse.redirect(new URL(authUrl, request.url));
 
     const isCandidate = userRole === Roles.CANDIDATE;
-    const isRecruiter = userRole === Roles.RECRUITER || userRole === Roles.COORDINATOR;
-    if (isCandidate && urlTag === 'candidate' || isRecruiter && urlTag === 'recruit') {
+    const isRecruiter = userRole === Roles.RECRUITER;
+    const isCoordinator = userRole === Roles.COORDINATOR;
+
+    const secondaryUrlTag = request.nextUrl.pathname.split('/')[2];
+    const coordinatorUrls = ['add-recruiter']
+
+    if (isCandidate && urlTag === 'candidate') {
         return NextResponse.next();
+    } else if (urlTag === 'recruit') {
+        if ((isRecruiter && !coordinatorUrls.includes(secondaryUrlTag)) || isCoordinator) {
+            return NextResponse.next();
+        }
+        return NextResponse.redirect(new URL(recruiterHomeUrl, request.url));
     }
 
     return NextResponse.redirect(new URL(authUrl, request.url));
