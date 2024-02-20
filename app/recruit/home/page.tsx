@@ -1,11 +1,9 @@
 import ClientComponent from "@/app/recruit/home/components/client-component";
-import {StudentList, studentSchema} from "@/app/recruit/home/data/student-schema";
+import { StudentList, studentSchema } from "@/app/recruit/home/data/student-schema";
 import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
-import updateData from "@/app/api/updateData";
-import addData from "@/app/api/addData";
 
 
 
@@ -24,15 +22,13 @@ export default async function Page() {
     // const students = await getStudents()
 
     const new_students = await getData({ collection_name: 'users' })
-    console.log()
-    console.log()
     // const res = await addData("users", "kvXYrrCRZnyrkHpnmHc5", {"feedback": {"Karen": {"initial_feedback": 1}}})
     // console.log(res)
 
     // console.log(new_students);
     return (
         // <div>
-         <ClientComponent students={new_students as StudentList} />
+        <ClientComponent students={new_students as StudentList} />
         // </div>
     )
 }

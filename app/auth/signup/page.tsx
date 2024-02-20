@@ -1,13 +1,8 @@
 import { Metadata } from "next";
-import { cookies } from 'next/headers';
 import Link from "next/link";
 
-import Roles from "@/app/types/roles";
 import { buttonVariants } from "@/components/ui/button";
-import { auth } from "@/firebase/server";
 import { cn } from "@/lib/utils";
-import { DecodedIdToken } from "firebase-admin/auth";
-import { redirect } from "next/navigation";
 import { UserAuthForm } from "../components/user-auth-form";
 
 export const metadata: Metadata = {
@@ -16,17 +11,6 @@ export const metadata: Metadata = {
 }
 
 export default async function SignUpPage() {
-    const cookieStore = cookies();
-    const authToken = cookieStore.get("firebaseIdToken")?.value;
-    if (authToken && auth) {
-        let user: DecodedIdToken | null = null
-        user = await auth.verifyIdToken(authToken);
-        if (user.role === Roles.RECRUITER || user.role === Roles.COORDINATOR) {
-            return redirect("/recruit/home");
-        } else {
-            return redirect("/candidate/profile");
-        }
-    }
     return (
         <>
             <div className="relative flex items-center justify-center align-center h-screen">
