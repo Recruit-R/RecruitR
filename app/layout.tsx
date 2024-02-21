@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
+import {AuthProvider} from "@/components/auth-provider.tsx";
 
 const inter = Inter({ subsets: ['latin'], variable: "--font-sans" })
 
@@ -21,17 +22,19 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true} 
         className={`${cn(
-          "md:min-h-screen bg-background font-sans antialiased md:h-screen md:overflow-y-hidden",
+          "bg-background font-sans antialiased h-screen-dynamic md:overflow-y-hidden",
           inter.variable
-      )} h-screen`}>
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
+      )} h-screen-dynamic`}>
+      <AuthProvider>
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+      </AuthProvider>
       </body>
     </html>
   )

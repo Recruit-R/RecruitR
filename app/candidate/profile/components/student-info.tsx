@@ -1,5 +1,5 @@
 import {ClassName} from "postcss-selector-parser";
-import {Student} from "@/app/recruiter/home/data/student-schema";
+import {Student} from "@/app/recruit/home/data/student-schema";
 
 interface StudentInfoProps {
     func: (classnames: string, conditionalNames: string, condition?: boolean) => string,

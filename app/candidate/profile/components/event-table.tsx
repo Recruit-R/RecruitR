@@ -5,7 +5,7 @@ import { EventBox } from "./event-box"
 
 export function EventTable(){
     return (
-        <div className="h-full w-full bg-background p-1">
+        <div className="h-full w-full bg-background">
             <EventBox eventName = {"GCC Career Fair"}
                 eventDate="Oct 6"
                 eventTime="1-5pm">

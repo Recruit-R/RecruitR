@@ -8,8 +8,8 @@ interface EventBoxProps {
 }
 export function EventBox({eventName, eventDate, eventTime}: EventBoxProps){
     return (
-        <Card className="min-h-full ">
-            <CardContent className="flex flex-col flex-wrap xl:grid xl:grid-cols-2 xl:gap-x-4 pt-4">
+        <Card className="min-h-full w-full">
+            <CardContent className="flex flex-col flex-wrap w-full pt-4">
                 <p className="font-bold text-lg">{eventName}</p>
                 <p className="text-sm">{eventDate}  {eventTime}</p>
             </CardContent>

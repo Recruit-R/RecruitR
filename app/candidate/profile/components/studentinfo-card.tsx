@@ -9,7 +9,7 @@ import {ChevronLeft, Edit2Icon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useEffect, useState} from "react";
 //import {set} from "yaml/dist/schema/yaml-1.1/set";
-import {PossiblePlacement} from "@/app/student/profile/components/possible-placement";
+import {PossiblePlacement} from "@/app/candidate/profile/components/possible-placement";
 import {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
 import {useAmp} from "next/amp";
@@ -36,7 +36,7 @@ interface StudentInfoCardProps {
 
 export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
-    useEffect(() => {console.log(`RAHHH`)})
+    // useEffect(() => {console.log(`RAHHH`)})
     return (
         <>
             <Card className="min-h-full ">
@@ -59,7 +59,7 @@ export function StudentInfoCard({editMode, setEditMode, c} : StudentInfoCardProp
                             {editMode ? <HeaderForm></HeaderForm> :
                             <div>
                                 <CardTitle className="text-4xl">
-                                    Joe Mama
+                                    Joe Schrieber
                                 </CardTitle>
                                 <CardDescription className="text-md">
                                     Exercise Science Major
