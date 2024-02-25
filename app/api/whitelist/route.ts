@@ -34,3 +34,42 @@ export async function POST(
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export async function GET(
+    request: NextRequest
+) {
+    try {
+        const authToken: string | null = request.headers.get("authorization")?.split("Bearer ")[1] || null;
+        if (!verifyUserIsCoordinator(authToken)) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+        const whiteList = await firestore!.collection("whitelist").get();
+        const whietListedRecruiters = whiteList.docs.map((doc) => doc.data().email);
+        return new NextResponse(JSON.stringify(whietListedRecruiters), { status: 200 });
+    } catch (error) {
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}
+
+export async function DELETE(
+    request: NextRequest
+) {
+    try {
+        const authToken: string | null = request.headers.get("authorization")?.split("Bearer ")[1] || null;
+        if (!verifyUserIsCoordinator(authToken)) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+        const body = await request.json();
+        const email = body.email;
+        const whiteList = await firestore!.collection("whitelist").where('email', '==', email).get();
+        if (whiteList.empty) {
+            return new NextResponse("Email not found", { status: 404 });
+        }
+        whiteList.forEach(async (doc) => {
+            await doc.ref.delete();
+        });
+        return new NextResponse("Email removed from whitelist", { status: 200 });
+    } catch (error) {
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}
