@@ -1,3 +1,4 @@
+import Roles from "@/app/types/roles";
 import {
     ServiceAccount,
     cert,
@@ -29,11 +30,32 @@ if (currentApps.length <= 0) {
     firestore = getFirestore(app);
     auth = getAuth(app);
     storage = getStorage(app);
+    if (process.env.NEXT_PUBLIC_APP_ENV === "emulator" && firestore !== undefined) {
+        const defaultTestWhitelist = [
+            {
+                "email": "recruiter@example.com",
+                "role": Roles.RECRUITER
+            },
+            {
+                "email": "coordinator@example.com",
+                "role": Roles.COORDINATOR
+            }
+        ]
+        defaultTestWhitelist.forEach(async (user) => {
+            if (firestore) {
+                if ((await firestore.collection("whitelist").where("email", "==", user.email).get()).empty) {
+                    await firestore!.collection("whitelist").add(user);
+                }
+            }
+        });
+    }
+
 } else {
     firestore = getFirestore(currentApps[0]);
     auth = getAuth(currentApps[0]);
     storage = getStorage(currentApps[0]);
 }
+
 
 export { auth, firestore, storage };
 
