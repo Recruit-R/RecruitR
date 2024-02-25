@@ -9,8 +9,8 @@ export async function GET(
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) {
-    const whiteListedCoordinators = new Set(['coordinator@example.com'])
-    const whiteListedRecruiters = new Set(['recruiter@example.com'])
+    // const whiteListedCoordinators = new Set(['coordinator@example.com'])
+    // const whiteListedRecruiters = new Set(['recruiter@example.com'])
     try {
         if (!firestore)
             return new NextResponse("No Firestore", { status: 500 });
@@ -24,9 +24,6 @@ export async function GET(
         const valid = user?.uid === params.userid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
 
-        // const whiteList = await firestore.collection("whitelist").get();
-        // const whiteListedRecruiters = new Set(whiteList.docs.map((doc) => doc.data().email));
-        // const whiteListedCoordinators = new Set(whiteList.docs.map((doc) => doc.data().email));
 
         const userDocument = await firestore
             .collection("users")
@@ -34,8 +31,10 @@ export async function GET(
             .get();
 
 
-
         if (!userDocument.exists) {
+            const whiteList = await firestore.collection("whitelist").get();
+            const whiteListedCoordinators = new Set(whiteList.docs.map((doc) => doc.data().role == Roles.COORDINATOR ? doc.data().email : null).filter((email) => email));
+            const whiteListedRecruiters = new Set(whiteList.docs.map((doc) => doc.data().role == Roles.RECRUITER ? doc.data().email : null).filter((email) => email));
             const role = whiteListedCoordinators.has(user!.email!) ? Roles.COORDINATOR : whiteListedRecruiters.has(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
             const customClaims = { role: role };
             await firestore.doc(`users/${user!.uid}`).create({
