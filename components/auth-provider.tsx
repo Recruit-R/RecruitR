@@ -43,6 +43,7 @@ type AuthContextType = {
     isCoordinator: boolean;
     isRecruiter: boolean;
     isLoading: boolean;
+    getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     loginGoogle: () => Promise<void>;
@@ -186,6 +187,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 isCoordinator,
                 isRecruiter,
                 isLoading,
+                getAuthToken,
                 refresh,
                 setIsLoading,
                 loginGoogle,
