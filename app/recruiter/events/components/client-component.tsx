@@ -26,7 +26,7 @@ export default function ClientComponent({e} : {e: any}) {
     useEffect(() => {
       const currentDate = new Date();
       const pastEvents = events
-      .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time) < currentDate)
+      .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time).toUTCString() < currentDate.toUTCString())
       .sort((a: { Time: Date }, b: { Time: Date }) => new Date(b.Time).getTime() - new Date(a.Time).getTime());
 
       const futureEvents = events
