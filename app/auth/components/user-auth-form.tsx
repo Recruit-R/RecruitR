@@ -167,6 +167,13 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     {authError}
                 </div>
             )}
+            {!signup && (
+                <div className="text-center">
+                    <Link href="/auth/reset">
+                        <span className="text-sm opacity-80 hover:opacity-90 text-primary ease-in-out duration-100">Forgot your password?</span>
+                    </Link>
+                </div>
+            )}
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
