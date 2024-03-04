@@ -19,7 +19,7 @@ const Refresh = () => {
             }
         }
         refresh();
-    }, [auth!.currentUser])
+    }, [auth, auth?.currentUser])
 
     useEffect(() => {
         if (refresh) {

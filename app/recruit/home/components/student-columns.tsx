@@ -4,12 +4,13 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
 
+
 import useScreenWidth from "@/hooks/use-screen-width"
 import { Task } from "../../../tasks/data/schema"
 import { years } from "../data/student-data"
 import { DataTableColumnHeader } from "./data-table/data-table-column-header.tsx"
 
-export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
+export const StudentColumns = (feedbackFocus): ColumnDef<Task>[] => {
   const widthSize = useScreenWidth()
   const breakWidth = 768
   const columns = ([
@@ -77,7 +78,7 @@ export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
     {
       accessorKey: "avgRating",
       header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Avg. Rating" />
+        <DataTableColumnHeader column={column} title="Avg. Rating" />
       ),
       cell: ({ row }) => <div className="w-[80px]">{(Math.round(parseFloat(row.getValue("avgRating")) * 100) / 100).toFixed(2)}</div>,
       enableSorting: true,
@@ -93,7 +94,7 @@ export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
         }
         return 0;
       },
-    sortUndefined: -1
+      sortUndefined: -1
     },
 
     // {

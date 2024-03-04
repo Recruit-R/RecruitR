@@ -75,7 +75,7 @@ export function InitialFeedback() {
                     {
                         [...Array(5)].map((_, i) => {
                             return (
-                                <div className="group" onMouseEnter={() => setHoveredStar(i+1)} onMouseLeave={() => setHoveredStar(0)} onClick={() => setRating((prev) => (i+1 == prev ? 0 : i+1))}>
+                                <div key={'group' + i} className="group" onMouseEnter={() => setHoveredStar(i+1)} onMouseLeave={() => setHoveredStar(0)} onClick={() => setRating((prev) => (i+1 == prev ? 0 : i+1))}>
                                     {compute(i)}
                                 </div>
                             )

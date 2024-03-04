@@ -9,7 +9,7 @@ import { Task } from "../../../tasks/data/schema"
 import { years } from "../data/student-data"
 import { DataTableColumnHeader } from "./data-table-column-header"
 
-export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
+export const StudentColumns = (feedbackFocus): ColumnDef<Task>[] => {
   const widthSize = useScreenWidth()
   const breakWidth = 768
   const columns = ([
