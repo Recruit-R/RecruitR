@@ -27,7 +27,7 @@ import { Label } from "@/components/ui/label"
 export function PersonalDrawerDialog() {
   const isDesktop = useScreenWidth()
 
-  if (isDesktop >= 768) {
+  if (isDesktop && isDesktop >= 768) {
     return (
       <Dialog>
         <DialogTrigger asChild>

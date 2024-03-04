@@ -27,7 +27,7 @@ import { Label } from "@/components/ui/label"
 export function HeaderDrawerDialog() {
   const isDesktop = useScreenWidth()
 
-  if (isDesktop >= 768) {
+  if (isDesktop && isDesktop >= 768) {
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -70,9 +70,9 @@ export function HeaderDrawerDialog() {
 }
 
 function ProfileForm({ className }: React.ComponentProps<"form">) {
-  const fileRef = React.useRef();
+  const fileRef = React.useRef<HTMLInputElement | null>(null);
   let [file, setFile] = React.useState();
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setFile(event.target.files[0]);
   };
   return (

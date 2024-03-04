@@ -1,18 +1,18 @@
-import {Button} from "@/components/ui/button";
-import {Label} from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import React from "react";
-import {useRef} from 'react';
+import { useRef } from 'react';
 
 export function ResumeButton() {
-    const fileRef = React.useRef();
+    const fileRef = React.useRef<HTMLInputElement | null>(null);
     let [file, setFile] = React.useState();
-    const handleChange = (event) => {
+    const handleChange = (event: any) => {
         setFile(event.target.files[0]);
     };
     return (
-        <Button onClick={() => fileRef.current.click()}>
+        <Button onClick={() => fileRef.current && fileRef.current.click()}> // Added null check
             <input id="upload" name="upload" type="file" ref={fileRef} hidden
-          onChange={handleChange} />
+                onChange={handleChange} />
             upload resume
         </Button>
     )
