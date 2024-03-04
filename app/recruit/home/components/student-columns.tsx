@@ -6,11 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 
 import useScreenWidth from "@/hooks/use-screen-width"
-import { Task } from "../../../tasks/data/schema"
 import { years } from "../data/student-data"
 import { DataTableColumnHeader } from "./data-table/data-table-column-header.tsx"
 
-export const StudentColumns = (feedbackFocus): ColumnDef<Task>[] => {
+export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
   const widthSize = useScreenWidth()
   const breakWidth = 768
   const columns = ([
@@ -142,6 +141,6 @@ export const StudentColumns = (feedbackFocus): ColumnDef<Task>[] => {
         return value.includes(row.getValue(id))
       },
     }
-  ] as ColumnDef<Task>[])
-  return feedbackFocus || (widthSize < breakWidth) ? columns.slice(1, 3) : columns
+  ] as ColumnDef<any>[])
+  return feedbackFocus || (widthSize && widthSize < breakWidth) ? columns.slice(1, 3) : columns
 }

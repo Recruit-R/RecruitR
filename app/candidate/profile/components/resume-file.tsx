@@ -10,7 +10,7 @@ export function ResumeButton() {
         setFile(event.target.files[0]);
     };
     return (
-        <Button onClick={() => fileRef.current && fileRef.current.click()}> // Added null check
+        <Button onClick={() => fileRef.current && fileRef.current.click()}>
             <input id="upload" name="upload" type="file" ref={fileRef} hidden
                 onChange={handleChange} />
             upload resume
