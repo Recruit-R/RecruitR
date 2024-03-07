@@ -23,7 +23,7 @@ import {TextFeedback} from "@/app/recruit/home/components/feedback-card-componen
 import {ToggleGroup, ToggleGroupItem} from "@radix-ui/react-toggle-group";
 import {ToggleGroupDemo} from "@/app/recruit/home/components/feedback-card-components/toggle-component-test.tsx";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
-import { BsCloudCheck } from "react-icons/bs";
+import {BsCloudCheck, BsEye} from "react-icons/bs";
 import {ComboboxDemo} from "@/app/recruit/home/components/dev-components/ComboboxDemo.tsx";
 import {HomeTimeline, Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -40,7 +40,7 @@ function tern<Type, Type2>(arg: Type, out: Type2): Type | Type2 {
 }
 export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, setCurrentStudent, c} : FeedbackCardProps) {
     const csf = currentStudent.feedback ? (currentStudent.feedback["Karen"] ? currentStudent.feedback["Karen"] : null ) : null
-    const { saved, currRecrFeedback } = useContext(StudentDataContext) as StudentDataContextType
+    const { saved, currRecrFeedback, editable } = useContext(StudentDataContext) as StudentDataContextType
     const defaultFeedback = csf ? {
         initialFeedback: csf.initial_feedback,
         possiblePlacement: csf.possible_placement,
@@ -60,7 +60,13 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
             <Card className="min-h-full relative">
                 <div className={"absolute top-0 right-0 p-4"}>
-                    {saved ? <BsCloudCheck className={"w-6 h-6 stroke-{.5} fill-ring"} /> : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-ring stroke-1"}/>}
+                    {
+                        !editable()
+                            ? <BsEye className={"w-6 h-6 stroke-{.5} fill-ring"} />
+                            : saved
+                                ? <BsCloudCheck className={"w-6 h-6 stroke-{.5} fill-ring"} />
+                                : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-ring stroke-1"}/>
+                    }
                 </div>
                 <CardHeader className="flex flex-row items-center border-b mb-4">
                     <div className="flex flex-1 items-center space-x-4 pr-4">

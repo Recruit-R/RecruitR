@@ -37,6 +37,7 @@ export const StudentDataContext = createContext<StudentDataContextType | null>(n
 
 export default function ClientComponent({students} : {students : StudentList}) {
     const [tempCurrentUser, setTempCurrentUser] = useState("Caleb")
+
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(false)
     const [studentView, setStudentView] = useState<boolean>(false)
     const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
