@@ -5,7 +5,7 @@ const db = getFirestore(app)
 
 interface DocumentFilter {
     field: string,
-    operator: string,
+    operator: (a: string, b: string) => boolean,
     value: string
 
 }
@@ -51,7 +51,7 @@ export function filterData({ data, filter }:
     for (let i = 0; i < data.docs.length; i++) {
         let doc = data.docs[i];
         // TODO: make this based on filter.operator
-        if (filter !== undefined && !(eval(`'${doc.data()[filter.field]}' ${filter.operator} '${filter.value}'`))) {
+        if (filter !== undefined && !(filter.operator(doc.data()[filter.field], filter.value))) {
             continue;
         }
         let dataPoint = doc.data();

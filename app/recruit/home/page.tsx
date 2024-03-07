@@ -24,7 +24,7 @@ export default async function Page() {
     const students = await getData({
         collection_name: 'users', filter: {
             field: 'role',
-            operator: '==',
+            operator: (a: string, b: string) => a === b,
             value: Roles.CANDIDATE
         }
     })
