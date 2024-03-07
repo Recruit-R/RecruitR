@@ -32,8 +32,6 @@ export async function GET(
             .doc(params.userid)
             .get();
 
-        console.log(userDocument.exists, params.userid, userDocument.exists && userDocument.data());
-
         if (!userDocument.exists) {
             const role = whiteListedCoordinators.has(user!.email!) ? Roles.COORDINATOR : whiteListedRecruiters.has(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
             const customClaims = { role: role };
