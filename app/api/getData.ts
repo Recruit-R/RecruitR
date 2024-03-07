@@ -1,13 +1,20 @@
-import { eventSchema } from "@/app/recruit/events/data/events-schema";
-import { studentSchema } from "@/app/recruit/home/data/student-schema";
-import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
-import { z } from "zod";
+import { DocumentData, collection, doc, getDocs, getFirestore } from "firebase/firestore";
 import app from "../../firebase.config";
 
 const db = getFirestore(app)
 
+interface DocumentFilter {
+    field: string,
+    operator: string,
+    value: string
 
-export default async function getData({ collection_name, document_id, schemaName }: { collection_name: string, document_id?: string, schemaName?: string }) {
+}
+
+
+export default async function getData({ collection_name, document_id, schemaName, filter }:
+    {
+        collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
+    }) {
     if (document_id === null) {
 
         let docRef = doc(db, collection_name, document_id!);
@@ -18,15 +25,7 @@ export default async function getData({ collection_name, document_id, schemaName
         // console.log(result.docs)
         let data_list: any = {};
         if (schemaName !== "eventSchema") {
-            result.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                // console.log(doc.id, " => ", doc.data());
-                if (Object.keys(doc.data()).length !== 0) {
-                    let student = doc.data();
-                    student.id = doc.id;
-                    data_list[doc.id] = student;
-                }
-            });
+            data_list = filterData({ data: result, filter: filter! });
         } else {
             data_list = []
             result.forEach((doc) => {
@@ -39,13 +38,25 @@ export default async function getData({ collection_name, document_id, schemaName
             });
         }
 
-        // console.log(data_list)
-        // const students = JSON.parse(result.toString())
-        if (schemaName != null && schemaName === "eventSchema") {
-            return z.array(eventSchema).parse(data_list);
-        } else {
-            return z.record(studentSchema).parse(data_list)
-        }
+        return data_list
     }
 
+}
+
+export function filterData({ data, filter }:
+    {
+        data: DocumentData, filter: DocumentFilter
+    }) {
+    let filtered_data: any = [];
+    for (let i = 0; i < data.docs.length; i++) {
+        let doc = data.docs[i];
+        // TODO: make this based on filter.operator
+        if (filter !== undefined && !(eval(`'${doc.data()[filter.field]}' ${filter.operator} '${filter.value}'`))) {
+            continue;
+        }
+        let dataPoint = doc.data();
+        dataPoint.id = doc.id;
+        filtered_data.push(dataPoint);
+    }
+    return filtered_data;
 }
