@@ -4,12 +4,11 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
 
+import { DataTableColumnHeader } from "@/app/recruit/home/components/data-table/data-table-column-header"
+import { years } from "@/app/recruit/home/data/student-data"
 import useScreenWidth from "@/hooks/use-screen-width"
-import { Task } from "../../../tasks/data/schema"
-import { years } from "../data/student-data"
-import { DataTableColumnHeader } from "./data-table-column-header"
 
-export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
+export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
   const widthSize = useScreenWidth()
   const breakWidth = 768
   const columns = ([
@@ -98,7 +97,7 @@ export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
       ),
       cell: ({ row }) => {
         const year = years.find(
-          (year) => year.value === row.getValue("year")
+          (year: any) => year.value === row.getValue("year")
         )
 
         if (!year) {
@@ -149,6 +148,6 @@ export const studentColumns = (feedbackFocus): ColumnDef<Task>[] => {
     //   id: "actions",
     //   cell: ({ row }) => <DataTableRowActions row={row} />,
     // },
-  ] as ColumnDef<Task>[])
-  return feedbackFocus || (widthSize < breakWidth) ? columns.slice(1, 3) : columns
+  ] as ColumnDef<any>[])
+  return feedbackFocus || (widthSize && widthSize < breakWidth) ? columns.slice(1, 3) : columns;
 }

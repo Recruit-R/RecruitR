@@ -92,7 +92,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 router.push('/candidate/profile');
             }
         }
-    }, [auth?.isLoading, auth?.currentUser])
+    }, [auth?.isLoading, auth?.currentUser, auth?.isCoordinator, auth?.isRecruiter, router])
 
     return (
         <div className='grid gap-6' {...props}>

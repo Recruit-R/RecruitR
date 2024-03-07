@@ -20,6 +20,19 @@ export function removeAuthToken(): void {
     return Cookies.remove("firebaseIdToken");
 }
 
+export async function refresh(currentUser: User): Promise<boolean> {
+    return currentUser
+        .getIdToken(true) // true will force token refresh
+        .then(async () => {
+            setAuthToken(await currentUser.getIdToken(true))
+            return true;
+        })
+        .catch(() => {
+            console.error("Error refreshing token");
+            return false;
+        })
+}
+
 type EmailAccountProps = {
     email: string;
     password: string;
@@ -30,6 +43,7 @@ type AuthContextType = {
     isCoordinator: boolean;
     isRecruiter: boolean;
     isLoading: boolean;
+    refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     loginGoogle: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
@@ -172,6 +186,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 isCoordinator,
                 isRecruiter,
                 isLoading,
+                refresh,
                 setIsLoading,
                 loginGoogle,
                 loginEmail,

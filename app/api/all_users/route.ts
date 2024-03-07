@@ -1,18 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { firestore } from "@/firebase/server";
-
-export enum ItemAccess {
-    PUBLIC = "PUBLIC",
-    STUDENT = "STUDENT",
-    RECRUITER = "RECRUITER",
-    COORDINATOR = "COORDINATOR",
-}
-
-export type Item = {
-    id: string;
-    title: string;
-    access: ItemAccess;
-}
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {

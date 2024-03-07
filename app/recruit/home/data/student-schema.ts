@@ -1,8 +1,8 @@
-import {record, z} from "zod"
+import { record, z } from "zod"
 
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.
-export const feedbackSchema = z.record(z.object( {
+export const feedbackSchema = z.record(z.object({
   initial_feedback: z.number().optional(),
   possible_placement: z.string().optional(),
   known_tech: z.string().array().optional(),
@@ -24,7 +24,7 @@ export const studentSchema = z.object({
   statusDate: z.union([z.object({
     seconds: z.number(),
     nanoseconds: z.number(),
-  }).transform((object) => {return convert(object.seconds, object.nanoseconds)}), z.undefined()]),
+  }).transform((object) => { return convert(object.seconds, object.nanoseconds) }), z.undefined()]),
   gradYear: z.union([z.number(), z.undefined()]),
   interview2: z.union([z.string(), z.undefined()]),
   interview1: z.union([z.string(), z.undefined()]),
@@ -37,5 +37,5 @@ function convert(seconds: number, nanoseconds: number) {
   // Create a Date object from the seconds and nanoseconds.
   return new Date(seconds * 1000 + nanoseconds / 1000000);
 }
-export type Student = z.infer<typeof studentSchema>
+export type Student = z.infer<typeof studentSchema> | null
 export type StudentList = z.infer<typeof studentListSchema>

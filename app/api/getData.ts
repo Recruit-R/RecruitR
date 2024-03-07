@@ -16,9 +16,8 @@ export default async function getData({ collection_name, document_id, schemaName
         let response = await collection(db, collection_name)
         let result = await getDocs(response);
         // console.log(result.docs)
-        let data_list;
+        let data_list: any = {};
         if (schemaName !== "eventSchema") {
-            data_list = {}
             result.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 // console.log(doc.id, " => ", doc.data());

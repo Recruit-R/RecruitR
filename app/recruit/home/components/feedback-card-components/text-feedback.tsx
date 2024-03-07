@@ -1,18 +1,18 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
-import {z} from "zod";
-import {feedbackSchema} from "@/app/recruit/home/data/student-schema.ts";
-import {Textarea} from "@/components/ui/textarea.tsx";
-import {useThrottle} from "@/app/hooks/useThrottle.ts";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import { z } from "zod";
+import { feedbackSchema } from "@/app/recruit/home/data/student-schema.ts";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import { useThrottle } from "@/app/hooks/useThrottle.ts";
 import _ from "lodash";
-import {addFeedback} from "@/app/recruit/home/actions.ts";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
+import { addFeedback } from "@/app/recruit/home/actions.ts";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
 export function TextFeedback() {
     const { currentStudent,
         setCurrentStudent,
-        studentList,saved,
+        studentList, saved,
         setSaved,
         tempCurrentUser,
         currRecrFeedback,
@@ -31,9 +31,9 @@ export function TextFeedback() {
         // access to latest state here
         if (currRecrFeedback === tempCurrentUser) {
 
-            const mergedObject = _.merge({}, currentStudent!.feedback, {[tempCurrentUser]: {"text_feedback": value}});
-            addFeedback(currentStudent!.id, JSON.stringify({"text_feedback": value}), tempCurrentUser).then(r => setSaved(true))
-            setCurrentStudent((prevState) => ({...prevState, "feedback": mergedObject}))
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: { "text_feedback": value } });
+            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), tempCurrentUser).then(r => setSaved(true))
+            setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
         }
     });
     useEffect(() => {
@@ -47,10 +47,10 @@ export function TextFeedback() {
                 Text Feedback
             </p>
             <Textarea className="h-96"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                      disabled={!editable()}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                disabled={!editable()}
             />
         </>
-)
+    )
 }
