@@ -183,6 +183,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 type="button"
                 disabled={auth?.isLoading}
                 onClick={() => {
+                    console.log('clicked the fucking google login button', auth);
                     auth?.loginGoogle();
                 }}
                 className='w-full'>
