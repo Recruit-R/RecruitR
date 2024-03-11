@@ -11,7 +11,9 @@ const Refresh = () => {
 
     useEffect(() => {
         const currentUser = auth!.currentUser;
-
+        if (!currentUser) {
+            router.push('/auth/login');
+        }
         const refresh = async () => {
             if (currentUser) {
                 const res = await auth!.refresh(currentUser!);
