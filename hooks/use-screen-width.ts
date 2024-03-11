@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function useScreenWidth() {
 
-    const [windowWidth, setWindowWidth] = useState(null);
+    const [windowWidth, setWindowWidth] = useState<number | null>(null);
 
     const isWindow = typeof window !== 'undefined';
 

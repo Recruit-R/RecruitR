@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { DataTableViewOptions } from "./data-table-view-options.tsx";
 
-import { priorities, statuses } from "../../../tasks/data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter.tsx"
-import {years} from "@/app/recruit/home/data/student-data.tsx";
+import { years } from "@/app/recruit/home/data/student-data.tsx";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
@@ -58,9 +57,9 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-        <div className={c("hidden", "md:block", false)}>
-          <DataTableViewOptions table={table} />
-        </div>
+      <div className={c("hidden", "md:block", false)}>
+        <DataTableViewOptions table={table} />
+      </div>
     </div>
   )
 }

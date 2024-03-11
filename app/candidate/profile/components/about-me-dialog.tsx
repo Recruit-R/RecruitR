@@ -15,13 +15,13 @@ export function DialogDemo() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")}/>
+        <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")} />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

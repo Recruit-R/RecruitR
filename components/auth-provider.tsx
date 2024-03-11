@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+                console.log('userresponse', userResponse);
 
                 if (userResponse.ok) {
                     const userJson = await userResponse.json();
@@ -123,6 +124,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 })
                 .catch((error) => {
                     reject(error);
+                    setIsLoading(false);
                 });
         })
     }
@@ -140,6 +142,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 .catch((error) => {
                     console.error("signing in with email and password failed");
                     reject(error);
+                    setIsLoading(false);
+
                 });
         })
     }
@@ -158,6 +162,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 .catch(() => {
                     console.error("signing in with google failed");
                     reject();
+                    setIsLoading(false);
                 });
         });
     }

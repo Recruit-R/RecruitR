@@ -92,7 +92,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 router.push('/candidate/profile');
             }
         }
-    }, [auth?.isLoading, auth?.currentUser])
+    }, [auth?.isLoading, auth?.currentUser, auth?.isCoordinator, auth?.isRecruiter, router])
 
     return (
         <div className='grid gap-6' {...props}>
@@ -183,6 +183,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 type="button"
                 disabled={auth?.isLoading}
                 onClick={() => {
+                    console.log('clicked the fucking google login button', auth);
                     auth?.loginGoogle();
                 }}
                 className='w-full'>

@@ -28,17 +28,17 @@ import { Textarea } from "@/components/ui/textarea"
 export function AboutMeDrawerDialog() {
   const isDesktop = useScreenWidth()
 
-  if (isDesktop >= 768) {
+  if (isDesktop && isDesktop >= 768) {
     return (
       <Dialog>
         <DialogTrigger asChild>
-            <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")}/>
+          <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")} />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit 'About Me'</DialogTitle>
+            <DialogTitle>Edit &apos;About Me&apos;</DialogTitle>
             <DialogDescription>
-              Make changes to your 'About Me' here. Click save when you're done.
+              Make changes to your &apos;About Me&apos; here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <ProfileForm />
@@ -50,13 +50,13 @@ export function AboutMeDrawerDialog() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-      <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")}/>
+        <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")} />
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>Edit profile</DrawerTitle>
           <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DrawerDescription>
         </DrawerHeader>
         <ProfileForm className="px-4" />

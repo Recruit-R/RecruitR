@@ -27,10 +27,10 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination.tsx"
 import { DataTableToolbar } from "./data-table-toolbar.tsx"
-import {Student} from "@/app/recruit/home/data/student-schema.ts";
-import {tree} from "next/dist/build/templates/app-page";
-import {useContext} from "react";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
+import { Student } from "@/app/recruit/home/data/student-schema.ts";
+import { tree } from "next/dist/build/templates/app-page";
+import { useContext } from "react";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
   setStudentView,
   c
 }: DataTableProps<TData, TValue>) {
-  const {currentStudent} = useContext(StudentDataContext) as StudentDataContextType
+  const { currentStudent } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-  const printOutput = (row : Student) => {
+  const printOutput = (row: Student) => {
     console.log(row)
   }
   return (
@@ -89,57 +89,58 @@ export function DataTable<TData, TValue>({
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                          <TableHead key={header.id} colSpan={header.colSpan}>
-                            {header.isPlaceholder
-                                ? null
-                                : flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                )}
-                          </TableHead>
-                      )
-                    })}
-                  </TableRow>
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
               ))}
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                      <TableRow
-                          key={row.id}
-                          data-state={row.getIsSelected() && "selected"}
-                          onClick={() => {
-                            if((row.original as Student).id !== currentStudent?.id ?? "") {
-                              setCurrentStudent(row.original as Student)
-                            }
-                            setStudentView(true)
-                            // table.toggleAllRowsSelected(false)
-                            // row.toggleSelected(!row.getIsSelected())
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    onClick={() => {
+                      const student = row.original as Student;
 
-                          }}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                              {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                              )}
-                            </TableCell>
-                        ))}
-                      </TableRow>
-                  ))
-              ) : (
-                  <TableRow>
-                    <TableCell
-                        colSpan={columns.length}
-                        className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
+                      if (student && student.id !== (currentStudent?.id ?? "")) {
+                        setCurrentStudent(row.original as Student);
+                      }
+                      setStudentView(true);
+                      // table.toggleAllRowsSelected(false)
+                      // row.toggleSelected(!row.getIsSelected())
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
                   </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
