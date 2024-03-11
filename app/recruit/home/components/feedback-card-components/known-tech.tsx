@@ -1,22 +1,22 @@
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import React, {FormEvent, FormEventHandler, useContext, useEffect, useState} from "react";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
-import {boolean, z} from "zod";
-import {useThrottle} from "@/app/hooks/useThrottle.ts";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { boolean, z } from "zod";
+import { useThrottle } from "@/app/hooks/useThrottle.ts";
 import useStateCallback from "@/app/hooks/useStateCallback.ts";
 import addData from "@/app/api/addData.ts";
-import {addFeedback} from "@/app/recruit/home/actions.ts";
-import {bool} from "prop-types";
-import {Form} from "@/components/ui/form.tsx";
-import {Student} from "@/app/recruit/home/data/student-schema.ts";
+import { addFeedback } from "@/app/recruit/home/actions.ts";
+import { bool } from "prop-types";
+import { Form } from "@/components/ui/form.tsx";
+import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import _ from "lodash";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
-import {CheckedState} from "@radix-ui/react-checkbox";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 export function KnownTech() {
     const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
-    const {currentStudent ,
+    const { currentStudent,
         setCurrentStudent,
         studentList, saved,
         setSaved,
@@ -39,10 +39,10 @@ export function KnownTech() {
         // send request to the backend
         // access to latest state here
         if (currRecrFeedback === tempCurrentUser) {
-            const knownTechFeedback = {...(currentStudent?.feedback?.[tempCurrentUser] ?? {}), "known_tech": knownLanguages}
-            const mergedObject = _.merge({}, currentStudent!.feedback, {[tempCurrentUser]: knownTechFeedback});
-            addFeedback(currentStudent!.id, JSON.stringify({"known_tech": knownLanguages}), tempCurrentUser).then(e => (setSaved(true)))
-            setCurrentStudent((prevState) => ({...prevState, feedback: mergedObject}))
+            const knownTechFeedback = { ...(currentStudent?.feedback?.[tempCurrentUser] ?? {}), "known_tech": knownLanguages }
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: knownTechFeedback });
+            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), tempCurrentUser).then(e => (setSaved(true)))
+            setCurrentStudent((prevState: any) => ({ ...prevState, feedback: mergedObject }))
         }
     });
     useEffect(() => {
@@ -51,12 +51,12 @@ export function KnownTech() {
         throttledRequest();
     }, [knownLanguages]);
     const handleCheckedChange = (event: CheckedState, language: string) => {
-            console.log(event)
-            setKnownLanguages(
-                (prevLanguages) =>
-                    event
-                        ? [...prevLanguages, language]
-                        : prevLanguages.filter((lang) => lang !== language));
+        console.log(event)
+        setKnownLanguages(
+            (prevLanguages) =>
+                event
+                    ? [...prevLanguages, language]
+                    : prevLanguages.filter((lang) => lang !== language));
     }
 
 
