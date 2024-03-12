@@ -20,6 +20,7 @@ export const studentSchema = z.object({
   major: z.union([z.string(), z.undefined()]),
   // temp_id: z.union([z.number(), z.undefined()]),
   email: z.string(),
+  about_me: z.string(),
   placeOfResidence: z.union([z.string(), z.undefined()]),
   statusDate: z.union([z.object({
     seconds: z.number(),
