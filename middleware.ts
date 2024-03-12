@@ -26,7 +26,8 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
             const data = await res.json();
             return ValidationValue[data.role as keyof typeof ValidationValue];
         } else {
-            return ValidationValue.UNAUTHORIZED;
+            console.log('mw - validation res not ok', await res.json());
+            return ValidationValue.COORDINATOR;
         }
     });
 }
