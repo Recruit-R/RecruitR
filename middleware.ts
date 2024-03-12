@@ -12,6 +12,7 @@ const ValidationValue = { ...RefreshValue, ...Roles };
 
 export async function getUserRole(authToken: RequestCookie | undefined): Promise<string> {
     if (!authToken) return ValidationValue.UNAUTHORIZED;
+    console.log('mw - auth token:', authToken);
     return await fetch(process.env.API_URL + '/api/validate', {
         headers: { 'Authorization': `Bearer ${authToken.value}` }
     }).then(async (res) => {
@@ -40,13 +41,14 @@ export async function middleware(request: NextRequest) {
     // get user role
     const authToken = request.cookies.get('firebaseIdToken');
     let userRole = await getUserRole(authToken);
+    console.log('mw - user role:', userRole);
 
     // handle refresh
     if (userRole === ValidationValue.REFRESH) return NextResponse.redirect(new URL(refreshUrl, request.url));
 
     if (path === '/') return NextResponse.redirect(new URL(authUrl, request.url));
 
-    // hand auth page rerouting if necessary
+    // handle auth page rerouting if necessary
     if (path.startsWith('/auth')) {
         if (userRole === ValidationValue.UNAUTHORIZED) {
             return NextResponse.next();
