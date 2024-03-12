@@ -15,6 +15,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
     if (!authToken) return ValidationValue.UNAUTHORIZED;
     const baseUrl = checkEnvironment().BASE_URL;
     console.log('mw - base url:', baseUrl);
+    console.log('mw - token', authToken.value);
     return await fetch(baseUrl + '/api/validate', {
         headers: { 'Authorization': `Bearer ${authToken.value}` }
     }).then(async (res) => {
