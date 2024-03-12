@@ -33,8 +33,10 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
     // get path data
+
     const path = request.nextUrl.pathname;
     console.log('middlware handling ', path);
+    console.log('middleware base_url:', checkEnvironment().BASE_URL);
     const authUrl = '/auth/login';
     const recruiterHomeUrl = '/recruit/home';
     const candidateHomeUrl = '/candidate/profile';
