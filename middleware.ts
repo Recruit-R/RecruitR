@@ -3,6 +3,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import Roles from './app/types/roles';
+import { checkEnvironment } from './checkEnvironment';
 
 enum RefreshValue {
     REFRESH = "REFRESH",
@@ -12,10 +13,12 @@ const ValidationValue = { ...RefreshValue, ...Roles };
 
 export async function getUserRole(authToken: RequestCookie | undefined): Promise<string> {
     if (!authToken) return ValidationValue.UNAUTHORIZED;
-    console.log('mw - auth token:', authToken);
-    return await fetch(process.env.API_URL + '/api/validate', {
+    const baseUrl = checkEnvironment().BASE_URL;
+    console.log('mw - base url:', baseUrl);
+    return await fetch(baseUrl + '/api/validate', {
         headers: { 'Authorization': `Bearer ${authToken.value}` }
     }).then(async (res) => {
+        console.log('mw - validation res', res);
         if (res.status === 302) {
             return ValidationValue.REFRESH;
         } else if (res.ok) {
@@ -41,7 +44,6 @@ export async function middleware(request: NextRequest) {
     // get user role
     const authToken = request.cookies.get('firebaseIdToken');
     let userRole = await getUserRole(authToken);
-    console.log('mw - user role:', userRole);
 
     // handle refresh
     if (userRole === ValidationValue.REFRESH) return NextResponse.redirect(new URL(refreshUrl, request.url));
