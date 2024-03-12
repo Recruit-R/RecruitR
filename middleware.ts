@@ -30,6 +30,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
 export async function middleware(request: NextRequest) {
     // get path data
     const path = request.nextUrl.pathname;
+    console.log('middlware handling ', path);
     const authUrl = '/auth/login';
     const recruiterHomeUrl = '/recruit/home';
     const candidateHomeUrl = '/candidate/profile';
