@@ -26,7 +26,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
             const data = await res.json();
             return ValidationValue[data.role as keyof typeof ValidationValue];
         } else {
-            const data = await res.json();
+            const data = res;
             console.log('mw - validation error:', data);
             return ValidationValue.COORDINATOR;
         }
