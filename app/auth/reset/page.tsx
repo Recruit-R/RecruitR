@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -11,6 +12,10 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster"
 import * as z from 'zod';
 import { useToast } from "@/components/ui/use-toast";
+export const metadata: Metadata = {
+    title: "Reset Password",
+    description: "Reset password forms built using the components.",
+}
 
 
 const Reset = () => {
