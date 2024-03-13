@@ -14,12 +14,10 @@ const ValidationValue = { ...RefreshValue, ...Roles };
 export async function getUserRole(authToken: RequestCookie | undefined): Promise<string> {
     if (!authToken) return ValidationValue.UNAUTHORIZED;
     const baseUrl = checkEnvironment().BASE_URL;
-    console.log('mw - base url:', baseUrl);
-    console.log('mw - token', authToken.value);
+
     return await fetch(baseUrl + '/api/validate', {
         headers: { 'Authorization': `Bearer ${authToken.value}` }
     }).then(async (res) => {
-        console.log('mw - validation res', res.status);
         if (res.status === 302) {
             return ValidationValue.REFRESH;
         } else if (res.ok) {
@@ -36,8 +34,6 @@ export async function middleware(request: NextRequest) {
     // get path data
 
     const path = request.nextUrl.pathname;
-    console.log('middlware handling ', path);
-    console.log('middleware base_url:', checkEnvironment().BASE_URL);
     const authUrl = '/auth/login';
     const recruiterHomeUrl = '/recruit/home';
     const candidateHomeUrl = '/candidate/profile';
@@ -47,7 +43,6 @@ export async function middleware(request: NextRequest) {
     // get user role
     const authToken = request.cookies.get('firebaseIdToken');
     let userRole = await getUserRole(authToken);
-    console.log('middleware user role:', userRole);
 
     // handle refresh
     if (userRole === ValidationValue.REFRESH) return NextResponse.redirect(new URL(refreshUrl, request.url));
