@@ -87,10 +87,16 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
                 // check if user exists in database 
 
-                const userResponse = await fetch(`/api/users/${user.uid}`, {
+                const userResponse = await fetch(`/api/users`, {
+                    method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                    body: JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        name: user.displayName,
+                    }),
                 });
                 console.log('userresponse', userResponse);
 
