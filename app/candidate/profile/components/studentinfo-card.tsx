@@ -47,13 +47,19 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const auth = useAuth()
     console.log(auth)
     const [can_data, setCanData] = useState<any>()
+    async function getusersData() {
+        const usersVals = await get_candidate_data(auth!.currentUser!.uid)
+        return usersVals
+    }
+    useEffect(() => {
+        console.log(can_data)
+    }, [can_data])
+
     useEffect(() => 
-    {   async function getusersData() {const usersVals = await get_candidate_data(auth!.currentUser!.uid)
-        console.log(usersVals)
-        return usersVals}
+    {   
         if (auth!.currentUser)
-        setCanData(getusersData())}
-        , [auth!.currentUser])
+            setCanData(getusersData())
+    }, [auth!.currentUser])
     
 
     const formSchema = z.object({
@@ -85,8 +91,12 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log("in on submit SHOULD NOT BE CALLING")
         console.log(values)
         addCandidateData(auth!.currentUser!.uid, values)
+        // setEditMode(prevState => !prevState)
+        if (auth!.currentUser)
+            setCanData(getusersData())
     }
 
 
@@ -140,7 +150,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                         <Button asChild variant={"link"}>
                             <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
                         </Button>
-                        {editMode && <Button type="submit">Save</Button>}
+                        {editMode && <Button type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>}
                         <Button onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"
