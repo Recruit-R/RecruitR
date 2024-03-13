@@ -14,8 +14,9 @@ interface TimelineProps {
     events: Array<String>
     currEvent: string
     editable: boolean
+    c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
-export function Timeline({events, currEvent, editable}: TimelineProps) {
+export function Timeline({events, currEvent, editable, c}: TimelineProps) {
     const [progress, setProgress] = useState(events.indexOf(currEvent))
     const [progressBar, setProgressBar] = useState<number>(0)
     const user = useAuth();
@@ -59,8 +60,8 @@ export function Timeline({events, currEvent, editable}: TimelineProps) {
                             return (
                                 addToolTip(e as string,
                                     <div className={"relative flex flex-col "}>
-                                        <div className={`absolute  -translate-y-6 
-                                    ${idx !== progress && "max-md:hidden"}
+                                        <div className={`absolute -translate-y-6 
+                                    ${idx !== progress && c("hidden", "lg:block max-lg:hidden")}
                                     ${idx === 0 ? "left-0" : idx == events.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}
                                     `}>
                                             <label htmlFor={e as string} className={"whitespace-nowrap"}>

@@ -113,6 +113,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
                         currEvent={"Interview 3"}
                         editable={false}
+                        c={c}
                     />
                     {/*<PossiblePlacement/>*/}
 
