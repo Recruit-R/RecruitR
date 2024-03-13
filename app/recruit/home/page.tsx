@@ -29,6 +29,7 @@ export default async function Page() {
         }
     })
 
+
     const zodStudents = z.array(studentSchema).parse(students)
 
     // console.log(new_students);

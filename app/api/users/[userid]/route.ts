@@ -36,9 +36,9 @@ export async function GET(
             const role = whiteListedCoordinators.has(user!.email!) ? Roles.COORDINATOR : whiteListedRecruiters.has(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
             const customClaims = { role: role };
             await firestore.doc(`users/${user!.uid}`).create({
-                first_name: "",
-                last_name: "",
-                email: "",
+                first_name: "John",
+                last_name: "Doe",
+                email: "temp@email.com",
                 role: role
             });
             await auth!.setCustomUserClaims(user!.uid, customClaims);
@@ -52,3 +52,12 @@ export async function GET(
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+
+// export async function POST(
+//     request: NextRequest
+// ) {
+//     const data = await request.json();
+//     // const { first}
+
+// }
