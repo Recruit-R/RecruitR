@@ -65,7 +65,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const formSchema = z.object({
         first_name: z.string(),
         last_name: z.string(),
-        about_me: z.string(),
+        //about_me: z.string(),
         year: z.string(),
         major: z.string(),
         university: z.string(),
@@ -79,7 +79,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         defaultValues: {
             first_name: "",
             last_name: "",
-            about_me: "",
+            //about_me: "",
             year: "(ex. Sophomore)",
             major: "",
             university: "",
@@ -146,18 +146,17 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             </div>
                             }
                     </div>
-                    <div className={`flex flex-col ml-auto pl-3 items-center`}>
-                        <Button asChild variant={"link"}>
-                            <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
-                        </Button>
-                        {editMode && <Button type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>}
+                    <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
+                        {editMode && <Button className="mr-2" type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>}
                         <Button onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"
                             >
                             {editMode ? "Cancel": "Edit Profile"}
                         </Button>
+                        
                     </div>
+                    
                 </CardHeader>
                 <CardContent className={"flex flex-col flex-wrap xl:grid xl:grid-cols-2 xl:gap-x-4"}>
                 {/*    Initial feedback */}
@@ -171,7 +170,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 <AboutMeDrawerDialog></AboutMeDrawerDialog>
                             } */}
                             
-                            <p className="font-bold text-lg">
+                            {/* <p className="font-bold text-lg">
                                 About Me
                             </p>
                             {editMode ? <AboutMeForm form = {form}></AboutMeForm> : 
@@ -179,7 +178,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 {can_data ?
                                 <p>{can_data.about_me}</p> : <p>About Me</p>}
                             </div>
-                            }
+                            } */}
                             
                         </div>
                         {/* <div className={`relative ${editMode && "outline animate-pulse"} rounded-lg`}>
