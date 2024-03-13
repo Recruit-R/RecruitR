@@ -28,7 +28,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
         } else {
             const data = res;
             console.log('mw - validation error:', data);
-            return ValidationValue.COORDINATOR;
+            return ValidationValue.UNAUTHORIZED;
         }
     });
 }
