@@ -52,7 +52,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         return usersVals
     }
     useEffect(() => {
-        console.log(can_data)
+        //console.log(can_data)
     }, [can_data])
 
     useEffect(() => 
