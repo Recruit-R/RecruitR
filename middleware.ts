@@ -3,6 +3,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import Roles from './app/types/roles';
+import { checkEnvironment } from './checkEnvironment';
 
 enum RefreshValue {
     REFRESH = "REFRESH",
@@ -12,7 +13,9 @@ const ValidationValue = { ...RefreshValue, ...Roles };
 
 export async function getUserRole(authToken: RequestCookie | undefined): Promise<string> {
     if (!authToken) return ValidationValue.UNAUTHORIZED;
-    return await fetch(process.env.API_URL + '/api/validate', {
+    const baseUrl = checkEnvironment().BASE_URL;
+
+    return await fetch(baseUrl + '/api/validate', {
         headers: { 'Authorization': `Bearer ${authToken.value}` }
     }).then(async (res) => {
         if (res.status === 302) {
@@ -29,6 +32,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
     // get path data
+
     const path = request.nextUrl.pathname;
     const authUrl = '/auth/login';
     const recruiterHomeUrl = '/recruit/home';
@@ -45,7 +49,7 @@ export async function middleware(request: NextRequest) {
 
     if (path === '/') return NextResponse.redirect(new URL(authUrl, request.url));
 
-    // hand auth page rerouting if necessary
+    // handle auth page rerouting if necessary
     if (path.startsWith('/auth')) {
         if (userRole === ValidationValue.UNAUTHORIZED) {
             return NextResponse.next();

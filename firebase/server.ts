@@ -7,7 +7,9 @@ import {
 import { Auth, getAuth } from "firebase-admin/auth";
 import { Firestore, getFirestore } from "firebase-admin/firestore";
 import { Storage, getStorage } from "firebase-admin/storage";
-import serviceAccount from "./service-account.json";
+const serviceAccount = JSON.parse(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+);
 
 let firestore: Firestore | undefined = undefined;
 let auth: Auth | undefined = undefined;
@@ -29,6 +31,16 @@ if (currentApps.length <= 0) {
     firestore = getFirestore(app);
     auth = getAuth(app);
     storage = getStorage(app);
+
+    if (process.env.NEXT_PUBLIC_APP_ENV === "emulator") {
+        // add default coordinator to emulator database
+        const whitelistCollection = firestore.collection("whitelist");
+        whitelistCollection.add({
+            email: "coordinator@example.com",
+            role: "COORDINATOR",
+        })
+    }
+
 } else {
     firestore = getFirestore(currentApps[0]);
     auth = getAuth(currentApps[0]);

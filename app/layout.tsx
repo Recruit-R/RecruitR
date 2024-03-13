@@ -1,9 +1,9 @@
+import { AuthProvider } from "@/components/auth-provider.tsx"
+import { ThemeProvider } from "@/components/theme-provider"
+import { cn } from "@/lib/utils"
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
-import {AuthProvider} from "@/components/auth-provider.tsx";
 
 const inter = Inter({ subsets: ['latin'], variable: "--font-sans" })
 
@@ -18,23 +18,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
-        suppressHydrationWarning={true} 
+        suppressHydrationWarning={true}
         className={`${cn(
           "bg-background font-sans antialiased h-screen-dynamic md:overflow-y-hidden",
           inter.variable
-      )} h-screen-dynamic`}>
-      <AuthProvider>
+        )} h-screen-dynamic`}>
+        <AuthProvider>
           <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
             {children}
           </ThemeProvider>
-      </AuthProvider>
+        </AuthProvider>
       </body>
     </html>
   )

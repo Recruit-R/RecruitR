@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {PlusIcon} from "lucide-react";
-import {EventCreateForm} from "@/app/recruit/events/components/event-create-form";
+import { PlusIcon } from "lucide-react";
+import { EventCreateForm } from "@/app/recruit/events/components/event-create-form";
 import { useState } from "react";
 
 export function EventCreationDialog() {
@@ -26,10 +26,10 @@ export function EventCreationDialog() {
                 <DialogHeader>
                     <DialogTitle>Edit profile</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you're done.
+                        Make changes to your profile here. Click save when you&apos;re done.
                     </DialogDescription>
                 </DialogHeader>
-                <EventCreateForm setOpen={setOpen}/>
+                <EventCreateForm setOpen={setOpen} />
                 {/*<DialogFooter>*/}
                 {/*    <Button type="submit">Save changes</Button>*/}
                 {/*</DialogFooter>*/}
