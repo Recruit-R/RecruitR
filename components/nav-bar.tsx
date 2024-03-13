@@ -1,11 +1,11 @@
-import Link from "next/link";
-import {ModeToggle} from "@/components/mode-toggle";
-import {UserNav} from "@/components/user-nav.tsx";
-import Image from "next/image";
-import picture from "@/assets/logo.png"
 import SignOut from "@/app/candidate/components/signout-button.tsx";
+import { ModeToggle } from "@/components/mode-toggle";
+import { UserNav } from "@/components/user-nav.tsx";
+import picture from "@/resources/assets/logo.png";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function NavBar({studentNav}: {studentNav: boolean}) {
+export default function NavBar({ studentNav }: { studentNav: boolean }) {
     return (
         <nav className="flex py-3 px-2 bg-background items-center">
             <Link href={studentNav ? "/candidate/profile" : "/recruit/home"}>
@@ -13,7 +13,7 @@ export default function NavBar({studentNav}: {studentNav: boolean}) {
             </Link>
             <div className="flex items-center ml-auto space-x-4 pr-2">
 
-                <ModeToggle/>
+                <ModeToggle />
                 {
                     !studentNav &&
                     <UserNav />
@@ -23,6 +23,6 @@ export default function NavBar({studentNav}: {studentNav: boolean}) {
             {studentNav &&
                 <SignOut />}
 
-    </nav>
+        </nav>
     )
 }
