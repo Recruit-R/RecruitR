@@ -24,7 +24,7 @@ const Refresh = () => {
 
     useEffect(() => {
         if (refresh) {
-            router.back();
+            router.push('/auth/login');
         }
     }, [refresh])
 
