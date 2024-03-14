@@ -28,12 +28,12 @@ export function RatingRecruiterFeedback() {
             </span>
             </div>
             {/*<span className="font-light text-muted-foreground">Other recruiter feedback:</span>*/}
-            <div>
+            <div className="flex">
                 {
                     currentStudent?.feedback &&
                     Object.keys(currentStudent?.feedback!).some((name) => name !== currentUserEditId) && (
                         <ToggleGroup variant={"outline"} type="single"
-                                     className={"flex flex-row"}
+                                     className={"flex flex-row flex-wrap items-start place-content-start place-items-start justify-items-start"}
                                      onValueChange={(val) => {
                             console.log(val)
                             setCurrRecrFeedback(val === "" ? currentUserEditId : val)
