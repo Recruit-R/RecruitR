@@ -27,6 +27,7 @@ export default function Page() {
 
     
     // Define the list of items based on the booleanCoordinator flag
+    //MdOutlineCancel
     let itemList;
     if (booleanCoordinator) {
         itemList = (
@@ -53,20 +54,20 @@ export default function Page() {
     } else {
         itemList = (
             <>
-                 <div className="flex items-center">
-                 <MdOutlineCancel className="mr-2" />
-                    <span>Add Recruiters</span>
+                <div className="flex items-center">
+                    <MdOutlineCancel className="mr-2 h-5 w-5 text-md text-md" />
+                    <span className={"text-md text-md"}>Add Recruiters</span>
                 </div>
                 <div className="flex items-center">
-                    <IoCheckboxOutline className="mr-2" />
+                    <RiCheckboxCircleLine  className="mr-2 h-5 w-5" />
                     <span>Change Student Feedback</span>
                 </div>
                 <div className="flex items-center">
-                    <IoCheckboxOutline className="mr-2" />
+                    <MdOutlineCancel  className="mr-2 h-5 w-5" />
                     <span>Change Student Status</span>
                 </div>
                 <div className="flex items-center">
-                    <MdOutlineCancel className="mr-2" />
+                    <RiCheckboxCircleLine  className="mr-2 h-5 w-5" />
                     <span>Create/Manage Events</span>
                 </div>
                         
@@ -95,7 +96,7 @@ export default function Page() {
                 <CardContent className="pt-2 gap-2">
 
                     <div className="flex flex-col gap-2">
-                        <Alert className="hover:bg-gray-100">
+                        <Alert className="">
                             <BsPerson className="h-7 w-5"/>
                             <AlertTitle className={"text-xl font-md"}>Role: 
                             <span className={"font-bold"}> {role}</span></AlertTitle>
@@ -106,7 +107,7 @@ export default function Page() {
                                 </ul>
                             </AlertDescription>
                         </Alert>
-                        <Alert className="hover:bg-gray-100">
+                        <Alert className="">
                             <CiMail className="h-7 w-5"/>
                             <AlertTitle className={"text-xl font-md"}>Email: <span
                                 className={"text-md font-light"}>{auth?.currentUser?.email}</span></AlertTitle>
