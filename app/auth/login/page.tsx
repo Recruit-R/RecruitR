@@ -4,6 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserAuthForm } from "../components/user-auth-form";
+import {Button} from "@/components/ui/button";
 export const metadata: Metadata = {
     title: "Authentication",
     description: "Authentication forms built using the components.",
@@ -33,6 +34,11 @@ export default async function LoginPage() {
                             </p>
                         </div>
                         <UserAuthForm signup={false} />
+                        <div className="flex flex-col">
+                            <Button asChild variant={"link"}>
+                                <Link href="/auth/reset" target="_blank">Forgot password?</Link>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
