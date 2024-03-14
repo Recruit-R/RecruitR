@@ -71,11 +71,11 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-ring stroke-1"}/>
                     }
                 </div>
-                <CardHeader className="flex flex-row items-center border-b mb-4">
-                    <div className="flex flex-1 items-center space-x-4 pr-4">
+                <CardHeader className="flex flex-row items-center border-b mb-4 divide-x">
+                    <div className="flex flex-1 items-center space-x-4 pr-4 ">
                         <Avatar className="h-20 w-20">
                             <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">RG</AvatarFallback>
+                            <AvatarFallback className="text-3xl">{currentStudent.first_name[0] ?? "N"}{currentStudent.last_name[0] ?? "A"}</AvatarFallback>
                         </Avatar>
                         <div>
                             <CardTitle className="text-4xl">
@@ -86,7 +86,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             </CardDescription>
                         </div>
                     </div>
-                    <div className={c("hidden flex-1", "xl:flex flex-1")}>
+                    <div className={c("hidden flex-1 ", "xl:flex flex-1 pl-2 ")}>
                         <StudentInfo func={c} student={currentStudent} headerView={true}/>
                     </div>
                 </CardHeader>
