@@ -9,22 +9,22 @@ import {ChevronLeft, Edit2Icon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useEffect, useState} from "react";
 //import {set} from "yaml/dist/schema/yaml-1.1/set";
-import {PossiblePlacement} from "@/app/candidate/profile/components/possible-placement";
+import {PossiblePlacement} from "@/app/candidate/profile/components/personal-info-comps/possible-placement";
 import {cn} from "@/lib/utils";
 import {useAmp} from "next/amp";
-import { StudentInfo } from "./student-info";
-import { ResumeButton } from "./resume-file";
-import { ShowSkills } from "./show-skills";
-import { StatusBar } from "./status-bar";
+import { StudentInfo } from "./personal-info-comps/student-info";
+import { ResumeButton } from "./personal-info-forms/resume-file";
+import { ShowSkills } from "./beta-comps/show-skills";
+import { StatusBar } from "./personal-info-comps/status-bar";
 import { Dialog } from "@radix-ui/react-dialog";
-import { AboutMeDrawerDialog } from "./about-me-edit";
-import { DialogDemo } from "./about-me-dialog";
-import { PersonalDrawerDialog } from "./personal-edit";
-import { HeaderDrawerDialog } from "./header-edit";
-import { AboutMeForm } from "./about-me-form";
-import { PersonalForm } from "./personal-info-form";
-import { HeaderForm } from "./header-form";
-import { ProfPicEdit } from "./prof-pic-form";
+import { AboutMeDrawerDialog } from "./about-me-comps/about-me-edit";
+import { DialogDemo } from "./about-me-comps/about-me-dialog";
+import { PersonalDrawerDialog } from "./beta-comps/personal-edit";
+import { HeaderDrawerDialog } from "./beta-comps/header-edit";
+import { AboutMeForm } from "./about-me-comps/about-me-form";
+import { PersonalForm } from "./personal-info-forms/personal-info-form";
+import { HeaderForm } from "./personal-info-forms/header-form";
+import { ProfPicEdit } from "./personal-info-forms/prof-pic-form";
 import {useRef} from 'react';
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +33,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAuth } from "@/components/auth-provider";
 import addData from "@/app/api/addData";
 import { addCandidateData, get_candidate_data } from "../actions";
+import { Student } from "@/app/recruit/home/data/student-schema";
+import { useRouter } from "next/navigation";
 
 
 interface StudentInfoCardProps {
@@ -44,22 +46,39 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     // useEffect(() => {console.log(`RAHHH`)})
+    //const [pdfName,  setPdfName]= useState<string>("")
+
+
     const auth = useAuth()
-    console.log(auth)
+    //console.log(auth)
     const [can_data, setCanData] = useState<any>()
-    async function getusersData() {
+    // useEffect(() => {
+    //     getUsersData().then(e => setCanData(e))
+    // }, [])
+    async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
         return usersVals
     }
-    useEffect(() => {
-        //console.log(can_data)
-    }, [can_data])
+    async function addCanData(uid: string, values: object){
+        const dundun = await addCandidateData(uid, values)
+        console.log(dundun)
+    }
+    
+    // useEffect(() => {
+    //     //console.log(can_data)
+    // }, [can_data])
+    console.log(can_data)
 
     useEffect(() => 
     {   
         if (auth!.currentUser)
-            setCanData(getusersData())
+           getUsersData().then(e => setCanData(e))
     }, [auth!.currentUser])
+
+
+    // let updateed = can_data
+
+    
     
 
     const formSchema = z.object({
@@ -70,33 +89,43 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
-        email: z.string()
+        resumeURL: z.string(),
 
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            first_name: "",
-            last_name: "",
+            first_name: can_data && can_data.first_name,
+            last_name: can_data ? can_data.last_name : "",
             //about_me: "",
-            year: "(ex. Sophomore)",
-            major: "",
-            university: "",
-            gpa: 0.00,
-            email: ""
+            year: can_data ? can_data.major : "",
+            major: can_data ? can_data.major : "",
+            university: can_data && can_data.university,
+            gpa: can_data ? can_data.gpa : 0.00,
+            resumeURL: can_data ? can_data.resumeURL : "",
         },
     })
 
+    useEffect(()=>{
+        form.reset(can_data)
+    }, [can_data])
     
+
+    const router = useRouter()
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log("in on submit SHOULD NOT BE CALLING")
         console.log(values)
-        addCandidateData(auth!.currentUser!.uid, values)
+        console.log(auth!.currentUser!.uid)
         // setEditMode(prevState => !prevState)
-        if (auth!.currentUser)
-            setCanData(getusersData())
+        if (auth!.currentUser){
+            addCanData(auth!.currentUser!.uid, values)
+            setCanData(getUsersData())
+        }
+
+        //router.refresh()
+        window.location.reload()
     }
 
 
@@ -104,7 +133,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         <>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Card className="min-h-full ">
+            <Card className="min-h-full">
                 <CardHeader className="flex flex-row border-b mb-4">
                     <div className={`flex flex-row pr-3 items-center space-x-4 relative rounded-lg`}>
                             {/* ${editMode && "animate-pulse outline"}{
@@ -114,11 +143,13 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <Avatar className="h-20 w-20">
                                 <AvatarImage src="/avatars/01.png" alt="Avatar"/>
                                 <AvatarFallback className={`text-3x`}>
-                                    {editMode ? 
+                                    {/* {editMode ? 
                                             <ProfPicEdit></ProfPicEdit>
                                             :
                                             <>NA</>
-                                        }
+                                        } */}
+                                    {can_data ? <div className="font-bold text-3xl">{can_data.first_name && can_data.first_name[0]}{can_data.last_name && can_data.last_name[0]}</div> : <>NA</>}
+
                                 </AvatarFallback>
                             </Avatar>
                             {editMode ? <HeaderForm form = {form}></HeaderForm> :
@@ -135,10 +166,10 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 :
                                 <>
                                 <CardTitle className="text-4xl">
-                                    Full Name
+                                    Loading...
                                 </CardTitle>
                                 <CardDescription className="text-md">
-                                    No Major
+                                    Loading...
                                 </CardDescription>
                                 </>
                                 }
@@ -147,13 +178,14 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             }
                     </div>
                     <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
-                        {editMode && <Button className="mr-2" type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>}
-                        <Button onClick={() => setEditMode(prevState => !prevState)}
+                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
+                        <Button type="button" onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"
                             >
                             {editMode ? "Cancel": "Edit Profile"}
                         </Button>
+                        {/* <Button className="mr-2" type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button> */}
                         
                     </div>
                     
@@ -190,11 +222,11 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <p className="font-bold text-lg">
                                 Personal Info
                             </p>
-                            {editMode ? <PersonalForm form = {form}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
+                            {editMode ? <PersonalForm form = {form} can_data = {can_data}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
                         
 
-                        <PossiblePlacement/>
-                        <StatusBar></StatusBar>
+                        <PossiblePlacement can_data={can_data}/>
+                        <StatusBar can_data={can_data}></StatusBar>
                         {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
                                 Skills
@@ -207,9 +239,16 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 Resume
                             </p>
                         </div>
-                        <div className="pt-0.01">
-                            <ResumeButton />
+                        <div className={`${!editMode && 'hidden'} pt-0.01`}>
+                            <ResumeButton form = {form}/>
                         </div>
+                        {!can_data && "Loading..."}
+                        {can_data && (can_data.resumeURL ? (<div>
+                            <Button type = "button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
+                                <Link href={`${can_data.resumeURL && can_data.resumeURL}`} target="_blank">Download My Resume</Link>
+                            </Button>
+                        </div>) : <span className={`${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>) }
+                        
                     </div>
                     
                 </CardContent>

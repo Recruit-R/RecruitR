@@ -3,6 +3,8 @@ import { firestore } from "@/firebase/server";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
 import validateUser from "../validateUser";
+import sendEmail from "../sendEmail";
+import { checkEnvironment } from "@/checkEnvironment";
 
 async function verifyUserIsCoordinator(authToken: string | null) {
     if (authToken === null) return false;
@@ -29,6 +31,8 @@ export async function POST(
             return new NextResponse("Email already exists", { status: 403 });
         }
         await firestore!.collection('whitelist').add({ email: email, role: Roles.RECRUITER });
+
+        sendEmail(email, "RecruitR Invitation", `You're invited to join RecruitR. <a href='${checkEnvironment().BASE_URL}/auth/signup/' target='_blank'>Sign Up</a>`);
         return new NextResponse("Email added to whitelist", { status: 200 });
     } catch (error) {
         return new NextResponse("Internal Error", { status: 500 });
