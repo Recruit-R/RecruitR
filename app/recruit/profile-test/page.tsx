@@ -27,7 +27,6 @@ export default function Page() {
 
     
     // Define the list of items based on the booleanCoordinator flag
-    //MdOutlineCancel
     let itemList;
     if (booleanCoordinator) {
         itemList = (
@@ -37,7 +36,7 @@ export default function Page() {
                     <span className={"text-md text-md"}>Add Recruiters</span>
                 </div>
                 <div className="flex items-center">
-                    <RiCheckboxCircleLine  className="mr-2 h-5 w-5" />
+                <MdOutlineCancel  className="mr-2 h-5 w-5" />
                     <span>Change Student Feedback</span>
                 </div>
                 <div className="flex items-center">
@@ -54,20 +53,20 @@ export default function Page() {
     } else {
         itemList = (
             <>
-                <div className="flex items-center">
-                    <MdOutlineCancel className="mr-2 h-5 w-5 text-md text-md" />
-                    <span className={"text-md text-md"}>Add Recruiters</span>
+                 <div className="flex items-center">
+                 <MdOutlineCancel className="mr-2" />
+                    <span>Add Recruiters</span>
                 </div>
                 <div className="flex items-center">
-                    <RiCheckboxCircleLine  className="mr-2 h-5 w-5" />
+                    <IoCheckboxOutline className="mr-2" />
                     <span>Change Student Feedback</span>
                 </div>
                 <div className="flex items-center">
-                    <MdOutlineCancel  className="mr-2 h-5 w-5" />
+                    <IoCheckboxOutline className="mr-2" />
                     <span>Change Student Status</span>
                 </div>
                 <div className="flex items-center">
-                    <RiCheckboxCircleLine  className="mr-2 h-5 w-5" />
+                    <MdOutlineCancel className="mr-2" />
                     <span>Create/Manage Events</span>
                 </div>
                         
@@ -77,46 +76,15 @@ export default function Page() {
 
 
     return (
-        <div className="h-full p-3">
-            <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden border-2">
-                <CardHeader className={"flex flex-row items-end h-40 p-0 bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90% bg-clip-border"}>
-                    {/*<CardTitle className="text-4xl">*/}
-                    {/*    Profile*/}
-                    {/*</CardTitle>*/}
-                    {/*<Avatar className="h-20 w-20">*/}
-                    {/*    <AvatarImage src="/avatars/01.png" alt="Avatar"/>*/}
-                    {/*    <AvatarFallback className="text-3xl"></AvatarFallback>*/}
-                    {/*</Avatar>*/}
-                    <div className={"text-5xl font-bold px-6 py-2 text-white"}>
-                        {auth?.currentUser?.displayName}
-                    </div>
-                    
-                </CardHeader>
+        <div className="flex h-full">
+           <div className=" w-1/4 h-full bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90%">
+               hi
                 
-                <CardContent className="pt-2 gap-2">
-
-                    <div className="flex flex-col gap-2">
-                        <Alert className="">
-                            <BsPerson className="h-7 w-5"/>
-                            <AlertTitle className={"text-xl font-md"}>Role: 
-                            <span className={"font-bold"}> {role}</span></AlertTitle>
-                            <AlertDescription>
-                              
-                                <ul className="list-disc">
-                                    {itemList}
-                                </ul>
-                            </AlertDescription>
-                        </Alert>
-                        <Alert className="">
-                            <CiMail className="h-7 w-5"/>
-                            <AlertTitle className={"text-xl font-md"}>Email: <span
-                                className={"text-md font-light"}>{auth?.currentUser?.email}</span></AlertTitle>
-
-                        </Alert>
-                    </div>
-                </CardContent>
-            </Card>
-
+           </div>
+           <div className= " w-3/4 h-full bg-stone-400"> 
+            <h1 className= "text-2xl font-bold p-10  ">Information</h1>
+           </div>
+            
         </div>
 
     )
