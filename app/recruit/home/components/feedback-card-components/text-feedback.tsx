@@ -9,12 +9,13 @@ import { useThrottle } from "@/app/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 export function TextFeedback() {
     const { currentStudent,
         setCurrentStudent,
         studentList, saved,
         setSaved,
-        tempCurrentUser,
+        currentUserEditId,
         currRecrFeedback,
         editable,
     } = useContext(StudentDataContext) as StudentDataContextType
@@ -29,10 +30,10 @@ export function TextFeedback() {
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
+        if (editable()) {
 
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: { "text_feedback": value } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), tempCurrentUser).then(r => setSaved(true))
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "text_feedback": value } });
+            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), currentUserEditId).then(r => setSaved(true))
             setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
         }
     });
@@ -42,15 +43,13 @@ export function TextFeedback() {
     }, [value])
 
     return (
-        <>
-            <p className="font-bold pb-2 text-lg">
-                Text Feedback
-            </p>
+        <div>
+            <ElementTitle title={"Text Feedback"} />
             <Textarea className="h-96"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 disabled={!editable()}
             />
-        </>
+        </div>
     )
 }

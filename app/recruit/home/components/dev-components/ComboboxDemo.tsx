@@ -36,14 +36,14 @@ const frameworks = [
 ]
 
 export function ComboboxDemo() {
-    const { tempCurrentUser, setTempCurrentUser, setCurrRecrFeedback } = useContext(StudentDataContext) as StudentDataContextType
+    const { setCurrRecrFeedback , currentUserEditId} = useContext(StudentDataContext) as StudentDataContextType
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState(tempCurrentUser.toLowerCase())
+    const [value, setValue] = React.useState(currentUserEditId.toLowerCase())
 
     useEffect(() => {
-        console.log(tempCurrentUser)
+        console.log(currentUserEditId)
         if (frameworks.some(e => e.value == value)) {
-            setTempCurrentUser(value.charAt(0).toUpperCase() + value.slice(1))
+            // setTempCurrentUser(value.charAt(0).toUpperCase() + value.slice(1))
             setCurrRecrFeedback(value.charAt(0).toUpperCase() + value.slice(1))
         }
     }, [value])

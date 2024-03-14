@@ -13,6 +13,7 @@ import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import _ from "lodash";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 
 export function KnownTech() {
     const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
@@ -21,12 +22,16 @@ export function KnownTech() {
         studentList, saved,
         setSaved,
         currRecrFeedback,
-        tempCurrentUser,
+        currentUserEditId,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
 
     useEffect(() => {
+        console.log(currentStudent?.feedback?.[currRecrFeedback]?.known_tech)
+        console.log(`CURR RECRUITER FEEDBACK ${currRecrFeedback}`)
+        console.log(`CURRENT STUDENT FEEDBACK ${JSON.stringify(currentStudent?.feedback)}`)
+
         setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
     }, [studentList, currRecrFeedback]);
 
@@ -38,10 +43,10 @@ export function KnownTech() {
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
-            const knownTechFeedback = { ...(currentStudent?.feedback?.[tempCurrentUser] ?? {}), "known_tech": knownLanguages }
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: knownTechFeedback });
-            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), tempCurrentUser).then(e => (setSaved(true)))
+        if (editable()) {
+            const knownTechFeedback = { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "known_tech": knownLanguages }
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: knownTechFeedback });
+            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), currentUserEditId).then(e => (setSaved(true)))
             setCurrentStudent((prevState: any) => ({ ...prevState, feedback: mergedObject }))
         }
     });
@@ -62,9 +67,7 @@ export function KnownTech() {
 
     return (
         <div className="space-y-1 max-md:pb-4">
-            <p className="font-bold text-lg">
-                Known Tech
-            </p>
+            <ElementTitle title={"Known Tech"}/>
             <div className="flex flex-wrap gap-2">
                 {
                     languages.map((language) => (

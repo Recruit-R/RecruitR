@@ -1,3 +1,4 @@
+import Roles from "@/app/types/roles";
 import {
     ServiceAccount,
     cert,
@@ -31,11 +32,22 @@ if (currentApps.length <= 0) {
     firestore = getFirestore(app);
     auth = getAuth(app);
     storage = getStorage(app);
+
+    if (process.env.NEXT_PUBLIC_APP_ENV === "emulator") {
+        // add default coordinator to emulator database
+        const whitelistCollection = firestore.collection("whitelist");
+        whitelistCollection.add({
+            email: "coordinator@example.com",
+            role: "COORDINATOR",
+        })
+    }
+
 } else {
     firestore = getFirestore(currentApps[0]);
     auth = getAuth(currentApps[0]);
     storage = getStorage(currentApps[0]);
 }
+
 
 export { auth, firestore, storage };
 
