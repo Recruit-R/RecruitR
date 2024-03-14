@@ -15,7 +15,7 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
         return field ? field : "N/A";
     }
 
-    const fields = {
+    const fields: {[key: string]: any} = {
         "Year": fieldOrNA(student?.year),
         "Major": fieldOrNA(student?.major),
         "University": fieldOrNA(student?.university),

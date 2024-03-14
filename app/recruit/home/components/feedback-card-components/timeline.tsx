@@ -21,7 +21,6 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
     const [progress, setProgress] = useState(events.indexOf(currEvent))
     const [progressBar, setProgressBar] = useState<number>(0)
     const user = useAuth();
-    console.log(user)
     function handleCheckedChange(idx: number){
         currEvent = events[idx] as string
         setProgress(events.indexOf(currEvent))
@@ -48,20 +47,12 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
                 <Progress value={progressBar} className={"absolute"}>
                 </Progress>
                 <div className={"absolute flex justify-between w-full"}>
-                    {/*{addToolTip("Interview 1", <Checkbox className={"w-6 h-6 "}/>)}*/}
-                    {/*<TooltipProvider>*/}
-                    {/*    <Tooltip>*/}
-                    {/*        <TooltipTrigger>Hover</TooltipTrigger>*/}
-                    {/*        <TooltipContent>*/}
-                    {/*            <Checkbox className={"w-6 h-6"}/>*/}
-                    {/*        </TooltipContent>*/}
-                    {/*    </Tooltip>*/}
-                    {/*</TooltipProvider>*/}
+
                     {
                         events.map((e, idx) => {
                             return (
                                 addToolTip(e as string,
-                                    <div className={"relative flex flex-col "}>
+                                    <div className={"relative flex flex-col "} key={idx}>
                                         <div className={`absolute -translate-y-6 
                                     ${idx !== progress && c("hidden", "lg:block max-lg:hidden")}
                                     ${idx === 0 ? "left-0" : idx == events.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}
@@ -72,6 +63,7 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
                                         </div>
                                         <TimelineCheckbox className={`w-6 h-6 border-secondary bg-secondary`}
                                                   id={e as string}
+                                                  key={idx}
                                                   checked={idx <= progress}
                                                   onCheckedChange={() => handleCheckedChange(idx)}
                                                   disabled={!user?.isCoordinator}
@@ -81,11 +73,6 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
                             )
                         })
                     }
-                    {/*<Checkbox className={"w-6 h-6"}/>*/}
-                    {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
-                    {/*<Checkbox className={`w-6 h-6 border-secondary bg-secondary`}/>*/}
-                    {/*<Checkbox className={"w-6 h-6 border-secondary bg-secondary"}/>*/}
-
                 </div>
             </div>
         </div>

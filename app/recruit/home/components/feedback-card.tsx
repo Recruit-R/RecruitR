@@ -25,7 +25,7 @@ import {ToggleGroupDemo} from "@/app/recruit/home/components/feedback-card-compo
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
 import {BsCloudCheck, BsDownload, BsEye} from "react-icons/bs";
 import {ComboboxDemo} from "@/app/recruit/home/components/dev-components/ComboboxDemo.tsx";
-import {HomeTimeline, Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
+import {Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {
     RatingRecruiterFeedback
@@ -42,19 +42,8 @@ function tern<Type, Type2>(arg: Type, out: Type2): Type | Type2 {
     return arg;
 }
 export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, setCurrentStudent, c} : FeedbackCardProps) {
-    const csf = currentStudent.feedback ? (currentStudent.feedback["Karen"] ? currentStudent.feedback["Karen"] : null ) : null
-    const { saved, currRecrFeedback, editable } = useContext(StudentDataContext) as StudentDataContextType
-    const defaultFeedback = csf ? {
-        initialFeedback: csf.initial_feedback,
-        possiblePlacement: csf.possible_placement,
-        knownTech: csf.known_tech ? csf.known_tech! : [],
-        textFeedback: csf.text_feedback
-    } : {
-        initialFeedback: undefined,
-        possiblePlacement: undefined,
-        knownTech: [],
-        textFeedback: undefined
-    }
+    const { saved, currRecrFeedback, editable, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
+
     return (
         <>
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
@@ -75,14 +64,18 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                     <div className="flex flex-1 items-center space-x-4 pr-4 ">
                         <Avatar className="h-20 w-20">
                             <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">{currentStudent.first_name[0] ?? "N"}{currentStudent.last_name[0] ?? "A"}</AvatarFallback>
+                            <AvatarFallback className="text-3xl">{currentStudent?.first_name[0] ?? "N"}{currentStudent?.last_name[0] ?? "A"}</AvatarFallback>
                         </Avatar>
                         <div>
                             <CardTitle className="text-4xl">
-                                {currentStudent.first_name} {currentStudent.last_name}
+                                {(currentStudent?.first_name && currentStudent?.last_name) ?
+                                    <>{currentStudent!.first_name} {currentStudent!.last_name}</>
+                                    :"No Name"}
+                                {/*{currentStudent?.first_name} {currentStudent?.last_name}*/}
                             </CardTitle>
                             <CardDescription className="text-md">
-                                He/him {currRecrFeedback}
+                                {currentStudent ? currentStudent!.email : "No email"}
+
                             </CardDescription>
                         </div>
                     </div>
@@ -103,17 +96,22 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 <div className={"flex flex-row items-center justify-between pb-2"}>
                                     <span className="text-2xl font-medium pb-1">Student Info</span>
                                     <div className="">
-                                        <Button variant={"ghost"}
-                                                className={"font-medium text-muted-foreground text-lg"}>
-                                            <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume
-                                        </Button>
+                                        {/*<Button variant={"ghost"}*/}
+                                        {/*        className={"font-medium text-muted-foreground text-lg"}*/}
+                                        {/*        disabled={!currentStudent?.resumeURL}*/}
+                                        {/*>*/}
+                                        {/*    <Link href={`${currentStudent?.resumeURL && currentStudent!.resumeURL}`}>*/}
+                                        {/*    <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume*/}
+
+                                        {/*    </Link>*/}
+                                        {/*</Button>*/}
                                     </div>
                                 </div>
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
 
-                            <PossiblePlacement possiblePlacement={defaultFeedback.possiblePlacement}/>
+                            <PossiblePlacement/>
                             <KnownTech/>
 
 
