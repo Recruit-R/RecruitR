@@ -14,14 +14,15 @@ export async function addCandidateData(student_id: string, value: object) {
     console.log(student_id)
     console.log(value)
 
-    return addData("users", student_id, value)
+    return await addData("users", student_id, value)
     // console.log("IT WORKED")
     // console.log(res)
 }
 
 export async function get_candidate_data(student_id: string) {
-    // console.log(student_id);
+    console.log(student_id);
     const student = await getData({collection_name: "users", document_id: student_id})
-    return studentSchema.parse(student[0]);
+    console.log(student)
+    return studentSchema.parse(student);
 
 }

@@ -1,4 +1,4 @@
-import { DocumentData, collection, doc, getDocs, getFirestore } from "firebase/firestore";
+import { DocumentData, collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
 import app from "../../firebase.config";
 
 const db = getFirestore(app)
@@ -15,10 +15,10 @@ export default async function getData({ collection_name, document_id, schemaName
     {
         collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
     }) {
-    if (document_id === null) {
+    if (document_id !== null && document_id !== undefined) {
 
         let docRef = doc(db, collection_name, document_id!);
-        console.log(docRef);
+        return (await getDoc(docRef)).data();
     } else {
         let response = await collection(db, collection_name)
         let result = await getDocs(response);
