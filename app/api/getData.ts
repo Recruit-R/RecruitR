@@ -15,7 +15,7 @@ export default async function getData({ collection_name, document_id, schemaName
     {
         collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
     }) {
-    if (document_id !== null) {
+    if (document_id !== null && document_id !== undefined) {
 
         let docRef = doc(db, collection_name, document_id!);
         return (await getDoc(docRef)).data();
