@@ -1,19 +1,21 @@
 import {ClassName} from "postcss-selector-parser";
 import {Student} from "@/app/recruit/home/data/student-schema";
 
-interface StudentInfoProps {
-    func: (classnames: string, conditionalNames: string, condition?: boolean) => string,
-}
 
-export function StudentInfo({func} : StudentInfoProps) {
+
+export function StudentInfo(can_data: any,) {
     return (
-        <div className={func("grid flex-1 items-center h-full grid-cols-1", "xl:grid-cols-2")}>
+        <div className="grid flex-1 items-center h-full grid-cols-1 xl:grid-cols-2">
                 <p>
                     <span className="font-bold">
                         Year:
                     </span>&nbsp;
                     <span>
-                        2024
+                    {can_data ? 
+                        <>{can_data.year}</> :
+                        <p>No Year</p>
+                    }
+
                     </span>
                 </p>
                 <p>
@@ -21,7 +23,10 @@ export function StudentInfo({func} : StudentInfoProps) {
                         Major:
                     </span>&nbsp;
                     <span>
-                        Exercise Science
+                    {can_data ? 
+                        <>{can_data.major}</> :
+                        <p>No Major</p>
+                    }
                     </span>
                 </p>
                 <p>
@@ -29,7 +34,10 @@ export function StudentInfo({func} : StudentInfoProps) {
                         University:
                     </span>&nbsp;
                     <span>
-                        Grove City College
+                    {can_data ? 
+                        <>{can_data.university}</> :
+                        <p>No University</p>
+                    }
                     </span>
                 </p>
                 <p>
@@ -37,7 +45,10 @@ export function StudentInfo({func} : StudentInfoProps) {
                         GPA:
                     </span>&nbsp;
                     <span>
-                         5.0
+                    {can_data ? 
+                        <>{can_data.gpa}</> :
+                        <p>No GPA</p>
+                    }
                     </span>
                 </p>
                 <p>
@@ -45,7 +56,10 @@ export function StudentInfo({func} : StudentInfoProps) {
                         Email:
                     </span>&nbsp;
                     <span>
-                         mamafj20@gcc.edu
+                    {can_data ? 
+                        <>{can_data.email}</> :
+                        <p>No Email</p>
+                    }
                     </span>
                 </p>
         </div>

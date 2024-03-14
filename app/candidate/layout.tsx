@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "@/components/nav-bar";
 
+
 export default function StudentLayout({
     children, // will be a page or nested layout
 }: {

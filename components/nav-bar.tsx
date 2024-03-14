@@ -1,4 +1,5 @@
 import SignOut from "@/app/candidate/components/signout-button.tsx";
+import {Button} from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { UserNav } from "@/components/user-nav.tsx";
 import picture from "@/resources/assets/logo.png";
@@ -12,8 +13,10 @@ export default function NavBar({ studentNav }: { studentNav: boolean }) {
                 <Image src={picture} alt={"logo"} width={100} height={50} />
             </Link>
             <div className="flex items-center ml-auto space-x-4 pr-2">
-
-                <ModeToggle />
+                {studentNav && <Button asChild variant={"link"}>
+                            <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
+                        </Button>}
+                <ModeToggle/>
                 {
                     !studentNav &&
                     <UserNav />
