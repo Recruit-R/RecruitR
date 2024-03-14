@@ -36,9 +36,7 @@ const years = [
 ]
 
 export function ComboboxYear({form, field} : {form: any, field: any}) {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
-  console.log(form)
+  //console.log(form)
   return (
     <Popover>
         <PopoverTrigger asChild>
@@ -48,10 +46,10 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
                       role="combobox"
                       className={cn(
                         "w-[200px] justify-between",
-                        !field.Value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground"
                       )}
                     >
-                      {field.Value
+                      {field.value
                         ? years.find(
                             (year) => year.value === field.value
                           )?.label
@@ -70,7 +68,7 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
                           value={year.label}
                           key={year.value}
                           onSelect={() => {
-                            form.setValue("year", year.value)
+                            form.form.setValue('year', year.value)
                           }}
                         >
                           <Check

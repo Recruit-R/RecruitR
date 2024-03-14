@@ -34,6 +34,7 @@ import { useAuth } from "@/components/auth-provider";
 import addData from "@/app/api/addData";
 import { addCandidateData, get_candidate_data } from "../actions";
 import { Student } from "@/app/recruit/home/data/student-schema";
+import { useRouter } from "next/navigation";
 
 
 interface StudentInfoCardProps {
@@ -95,7 +96,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         },
     })
 
-    
+    const router = useRouter()
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log("in on submit SHOULD NOT BE CALLING")
@@ -106,6 +107,9 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             addCanData(auth!.currentUser!.uid, values)
             setCanData(getUsersData())
         }
+
+        //router.refresh()
+        window.location.reload()
     }
 
 
@@ -156,7 +160,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             }
                     </div>
                     <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
-                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>
+                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                         <Button type="button" onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"

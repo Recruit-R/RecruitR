@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ComboboxYear } from "./comboBoxYears"
 
-export function PersonalForm(form: any, {can_data, className}: {can_data: any, className : React.ComponentProps<"form">}) {
+export function PersonalForm(form: any, {can_data}: {can_data: any}) {
+    console.log(can_data)
     return (
     //   <form className={cn("grid items-start gap-4", className)}>
     //     <div className="grid gap-2">
