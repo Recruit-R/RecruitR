@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { ComboboxYear } from "./comboBoxYears"
+import { ComboboxYear } from "./combo-box-years"
 
 export function PersonalForm(form: any, {can_data}: {can_data: any}) {
     console.log(can_data)

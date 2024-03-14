@@ -6,7 +6,7 @@ import { getStorage, ref } from "firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 
-export function ResumeButton({setPdfName} : {setPdfName: React.Dispatch<React.SetStateAction<string>>}) {
+export function ResumeButton(form : any) {
     const storage = getStorage();
     const fileRef = React.useRef<HTMLInputElement | null>(null);
     const newMetaData = {
@@ -15,12 +15,13 @@ export function ResumeButton({setPdfName} : {setPdfName: React.Dispatch<React.Se
     const handleChange = (event: any) => {
         const resName = event.target.value.split("\\");
         const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
-        uploadBytes(resumeRef, event, newMetaData).then(async (snapshot: any) => {
+        uploadBytes(resumeRef, event).then(async (snapshot: any) => {
             const downLoadURL = await getDownloadURL(snapshot.ref);
-            setPdfName(downLoadURL);
+            form.form.setValue('resumeURL', downLoadURL);
             console.log(downLoadURL);
         })
-        console.log(event.target.value);
+
+        //console.log(event.target.value);
     };
     return (
         <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>

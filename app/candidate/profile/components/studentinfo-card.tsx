@@ -46,7 +46,7 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     // useEffect(() => {console.log(`RAHHH`)})
-    const [pdfName,  setPdfName]= useState<string>("")
+    //const [pdfName,  setPdfName]= useState<string>("")
 
 
     const auth = useAuth()
@@ -83,6 +83,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
+        resumeURL: z.string(),
 
     })
 
@@ -96,6 +97,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             major: "",
             university: "",
             gpa: 0.00,
+            resumeURL: can_data ? can_data.resumeURL : "",
         },
     })
 
@@ -135,7 +137,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                             :
                                             <>NA</>
                                         } */}
-                                    {can_data ? <div className="font-bold text-3xl">{can_data.first_name[0]}{can_data.last_name[0]}</div> : <>NA</>}
+                                    {can_data ? <div className="font-bold text-3xl">{can_data.first_name && can_data.first_name[0]}{can_data.last_name && can_data.last_name[0]}</div> : <>NA</>}
 
                                 </AvatarFallback>
                             </Avatar>
@@ -226,14 +228,14 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 Resume
                             </p>
                         </div>
-                        <div className="pt-0.01">
-                            <ResumeButton setPdfName = {setPdfName}/>
+                        <div className={`${!editMode && 'hidden'} pt-0.01`}>
+                            <ResumeButton form = {form}/>
                         </div>
-                        <div>
-                            <Button type = "button" asChild variant={"link"} className={`${pdfName === "" && 'hidden'}`}>
-                                <Link href={`${pdfName}`} target="_blank">Download My Resume</Link>
+                        {can_data && <div>
+                            <Button type = "button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
+                                <Link href={`${can_data.resumeURL && can_data.resumeURL}`} target="_blank">Download My Resume</Link>
                             </Button>
-                        </div>
+                        </div>}
                     </div>
                     
                 </CardContent>
