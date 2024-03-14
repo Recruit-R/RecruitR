@@ -74,6 +74,11 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         if (auth!.currentUser)
            getUsersData().then(e => setCanData(e))
     }, [auth!.currentUser])
+
+
+    // let updateed = can_data
+
+    
     
 
     const formSchema = z.object({
@@ -101,6 +106,11 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             resumeURL: can_data ? can_data.resumeURL : "",
         },
     })
+
+    useEffect(()=>{
+        form.reset(can_data)
+    }, [can_data])
+    
 
     const router = useRouter()
 
