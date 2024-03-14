@@ -11,14 +11,7 @@ const Refresh = () => {
 
     useEffect(() => {
         const currentUser = auth!.currentUser;
-<<<<<<<< < Temporary merge branch 1
         if (!currentUser) router.push('/auth/login');
-
-=========
-        if (!currentUser) {
-            router.push('/auth/login');
-        }
->>>>>>>>> Temporary merge branch 2
         const refresh = async () => {
             if (currentUser) {
                 const res = await auth!.refresh(currentUser!);

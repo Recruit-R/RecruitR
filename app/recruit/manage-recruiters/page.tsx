@@ -153,7 +153,7 @@ export default function Page() {
                                 {
                                     recruiterEmails.map((recruiter, i) => {
                                         return (
-                                            <Card className="flex items-center justify-between hover:bg-secondary mb-2 mt-2 mr-3" >
+                                            <Card key={i} className="flex items-center justify-between hover:bg-secondary mb-2 mt-2 mr-3" >
                                                 <li className="h-10 flex flex-row gap-2  justify-between w-full " key={recruiter + i}>
                                                     <div className="py-2 pl-3 group hover:rounded-lg transition-all">
                                                         <p>{recruiter}</p>
