@@ -5,6 +5,7 @@ import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/c
 import { useThrottle } from "@/app/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 
 export function PossiblePlacement({ possiblePlacement }: { possiblePlacement: string | undefined }) {
     const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management"]
@@ -42,9 +43,7 @@ export function PossiblePlacement({ possiblePlacement }: { possiblePlacement: st
     }, [placementFeedback]);
     return (
         <div className="space-y-1">
-            <p className="font-bold text-lg">
-                Possible Placement
-            </p>
+            <ElementTitle title={"Possible Placement"} />
             <RadioGroup
                 defaultValue="option-one"
                 value={placementFeedback}

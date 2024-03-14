@@ -9,6 +9,7 @@ import { useThrottle } from "@/app/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 export function TextFeedback() {
     const { currentStudent,
         setCurrentStudent,
@@ -42,15 +43,13 @@ export function TextFeedback() {
     }, [value])
 
     return (
-        <>
-            <p className="font-bold pb-2 text-lg">
-                Text Feedback
-            </p>
+        <div>
+            <ElementTitle title={"Text Feedback"} />
             <Textarea className="h-96"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 disabled={!editable()}
             />
-        </>
+        </div>
     )
 }

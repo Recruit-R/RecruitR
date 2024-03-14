@@ -1,6 +1,8 @@
 import { ClassName } from "postcss-selector-parser";
 import { Student } from "@/app/recruit/home/data/student-schema";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import { BsCloudDownload } from "react-icons/bs";
 
 interface StudentInfoProps {
     func: (classnames: string, conditionalNames: string, condition?: boolean) => string,
@@ -20,7 +22,7 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
         "GPA": fieldOrNA(student?.gpa)
     }
     const body = (
-        <div className="grid grid-cols-2 gap-3 ">
+        <div className="grid grid-cols-2 gap-3">
             {
                 Object.keys(fields).map((key) => (
                     <Card key={key}>
@@ -53,15 +55,12 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
         </div>
 )
     return (
-        <div className={func("grid flex-1 items-center grid-cols-1", "xl:grid-cols-2")}>
+        <div className={func("grid flex-1 items-center grid-cols-1 gap-3", "xl:grid-cols-2")}>
             {student &&
             headerView ?
                 header : body
 
             }
-            <div className="">
-                Resume
-            </div>
         </div>
     )
 }

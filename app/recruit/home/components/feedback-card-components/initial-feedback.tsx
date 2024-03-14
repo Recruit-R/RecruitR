@@ -6,6 +6,7 @@ import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/c
 import { Button } from "@/components/ui/button.tsx";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import { XIcon } from "lucide-react";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 export function InitialFeedback() {
     const { currentStudent,
         setCurrentStudent, studentList,
@@ -46,7 +47,7 @@ export function InitialFeedback() {
     return (
         <div onMouseLeave={() => setHoveredStar(0)} >
 
-            <p className="text-2xl font-medium leading-none tracking-normal pb-2">Initial Feedback</p>
+            <ElementTitle title={"Initial Feedback"} />
 
             <div className={"flex flex-row items-center justify-between"}>
                 <div className={"flex flex-row items-center"}>

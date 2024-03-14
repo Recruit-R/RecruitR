@@ -23,7 +23,7 @@ import {TextFeedback} from "@/app/recruit/home/components/feedback-card-componen
 import {ToggleGroup, ToggleGroupItem} from "@radix-ui/react-toggle-group";
 import {ToggleGroupDemo} from "@/app/recruit/home/components/feedback-card-components/toggle-component-test.tsx";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
-import {BsCloudCheck, BsEye} from "react-icons/bs";
+import {BsCloudCheck, BsDownload, BsEye} from "react-icons/bs";
 import {ComboboxDemo} from "@/app/recruit/home/components/dev-components/ComboboxDemo.tsx";
 import {HomeTimeline, Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -91,29 +91,38 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                     </div>
                 </CardHeader>
 
-                <CardContent className={"flex flex-col"}>
-
-                    <div className={c("flex flex-col flex-wrap pb-4", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
+                <CardContent className={"flex flex-col divide-y space-y-4"}>
+                    <div className={"flex-row flex"}>
+                        <RatingRecruiterFeedback/>
+                        {/*<ComboboxDemo />*/}
+                    </div>
+                    <div className={c("flex flex-col flex-wrap py-4 gap-6", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
                         <div className="flex flex-col gap-6">
-                            <div className={"flex-row flex"}>
-                                <RatingRecruiterFeedback/>
-                                {/*<ComboboxDemo />*/}
-                            </div>
+                            <InitialFeedback/>
                             <div className={c("flex flex-col", "xl:hidden")}>
-                                <span className="text-2xl font-medium pb-2">Student Info</span>
+                                <div className={"flex flex-row items-center justify-between pb-2"}>
+                                    <span className="text-2xl font-medium pb-1">Student Info</span>
+                                    <div className="">
+                                        <Button variant={"ghost"}
+                                                className={"font-medium text-muted-foreground text-lg"}>
+                                            <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume
+                                        </Button>
+                                    </div>
+                                </div>
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
-                            <InitialFeedback/>
+
                             <PossiblePlacement possiblePlacement={defaultFeedback.possiblePlacement}/>
                             <KnownTech/>
 
+
                         </div>
-                        <div className="">
+                        <div className="flex flex-col gap-6">
                             <TextFeedback/>
                         </div>
                     </div>
-                    <Separator />
+                    <Separator/>
                     <Timeline
                         events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
                         currEvent={"Interview 3"}

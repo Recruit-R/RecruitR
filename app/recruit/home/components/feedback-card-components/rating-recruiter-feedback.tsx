@@ -17,14 +17,14 @@ export function RatingRecruiterFeedback() {
 
     return (
 
-        <div className="flex flex-col items-start gap-2">
+        <div className="flex flex-row items-center gap-6">
             <div>
                 <span className="text-2xl font-medium leading-none tracking-tight">Average Rating:</span> &nbsp;
                 <span className="text-2xl text-muted-foreground font-light">
              {(Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)}
             </span>
             </div>
-            <span className="font-light text-muted-foreground">Other recruiter feedback:</span>
+            {/*<span className="font-light text-muted-foreground">Other recruiter feedback:</span>*/}
             <div>
                 {
                     currentStudent?.feedback &&
