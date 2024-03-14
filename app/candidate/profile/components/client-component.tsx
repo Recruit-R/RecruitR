@@ -14,9 +14,6 @@ export default function ClientComponent() {
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    const c = (classnames: string, conditionalNames: string, condition:boolean=true) => {
-        return cn(classnames, (feedbackFocus === condition) && conditionalNames)
-    }
     return (
         // <div className="">
         <div className="flex flex-col md:flex-row md:h-full p-1">
@@ -26,7 +23,6 @@ export default function ClientComponent() {
                 <StudentInfoCard
                     editMode = {editMode}
                     setEditMode = {setEditMode}
-                    c={c}
                 />
             </div>
             <div className={"h-full w-full md:w-1/4 overflow-y-auto overscroll-auto bg-background md:overflow-y-scroll md:overscroll-contain md:p-1"}>
