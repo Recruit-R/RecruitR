@@ -1,4 +1,4 @@
-import sendEmail from "@/app/api/sendEmail";
+import sendEmail from "@/app/api/sendEmail.ts";
 import Roles from "@/app/types/roles";
 import { checkEnvironment } from "@/checkEnvironment";
 import { firestore } from "@/firebase/server";

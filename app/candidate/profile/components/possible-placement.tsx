@@ -10,7 +10,7 @@ export function PossiblePlacement({can_data}: {can_data:any}) {
             </p>
 
             <ul className="list-disc ml-5">
-                {can_data && Object.keys(can_data.feedback).map((da: any) => {
+                {can_data && can_data.feedback && Object.keys(can_data.feedback).map((da: any) => {
                 return (
                     <li key = {da}>
                         {can_data.feedback?.[da].possible_placement}
