@@ -26,7 +26,7 @@ export default function ClientComponent({e} : {e: any}) {
     useEffect(() => {
       const currentDate = new Date();
       const pastEvents = events
-      .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time) < currentDate)
+      .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time).toUTCString() < currentDate.toUTCString())
       .sort((a: { Time: Date }, b: { Time: Date }) => new Date(b.Time).getTime() - new Date(a.Time).getTime());
 
       const futureEvents = events
@@ -37,9 +37,7 @@ export default function ClientComponent({e} : {e: any}) {
       setSortedPastEvents(pastEvents);
       setSortedFutureEvents(futureEvents);
 
-    }, [events]); // Re-run if events change
-  
-  
+    }, [events]); // Re-run if events change 
 
     return (
         <EventDataContext.Provider 
@@ -52,7 +50,7 @@ export default function ClientComponent({e} : {e: any}) {
             <div className="">
                 <EventCreationDialog />
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2">
                 <div className="">
                     <EventsListCard title="Past Events" events={pastEvents}/>
                 </div>
