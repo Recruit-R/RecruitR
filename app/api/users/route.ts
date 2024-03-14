@@ -41,6 +41,7 @@ export async function POST(
                 name = [name[0], name.slice(1).join(" ")]
             }
             const userData = {
+                id: user!.uid,
                 first_name: name[0],
                 last_name: name[1],
                 email: body.email,

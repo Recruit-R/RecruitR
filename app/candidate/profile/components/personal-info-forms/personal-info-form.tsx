@@ -5,10 +5,91 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { ComboboxYear } from "../combo-box-years"
 
-export function PersonalForm(form: any, { className }: React.ComponentProps<"form">) {
+export function PersonalForm(form: any, {can_data}: {can_data: any}) {
+    console.log(can_data)
     return (
-    //   <form className={cn("grid items-start gap-4", className)}>
+
+    <>
+        <FormField control={form.control} name = "year" 
+        render = {({field}) => (
+
+            <>
+            <FormItem>
+                <FormLabel>Year</FormLabel>
+                <br/>
+                <ComboboxYear form = {form} field = {field}/>
+            </FormItem>
+            </>
+            
+        )}></FormField>
+
+        <FormField control={form.control} name = "major" 
+        render = {({field}) => (
+            <>
+                <FormItem>
+                <FormLabel>Major</FormLabel>
+                <FormControl>
+                    <Input id="major"
+                    placeholder={can_data ? can_data.major : ""}
+                    autoCapitalize="none"
+                    {...field}/>
+                </FormControl>
+            </FormItem>
+            </>
+            
+        )}></FormField>
+
+        <FormField control={form.control} name = "university" 
+        render = {({field}) => (
+            <>
+                <FormItem>
+                <FormLabel>University</FormLabel>
+                <FormControl>
+                    <Input id="university"
+                    placeholder={can_data && can_data.university}
+                    autoCapitalize="none"
+                    {...field}/>
+                </FormControl>
+            </FormItem>
+            </>
+            
+        )}></FormField>
+
+        <FormField control={form.control} name = "gpa" 
+        render = {({field}) => (
+            <>
+                <FormItem>
+                <FormLabel>GPA</FormLabel>
+                <FormControl>
+                    <Input id="gpa"
+                    placeholder={can_data && (can_data.gpa ? can_data.gpa : 0)}
+                    {...field}/>
+                </FormControl>
+            </FormItem>
+            </>
+            
+        )}></FormField>
+
+        {/* <FormField control={form.control} name = "email" 
+        render = {({field}) => (
+            <>
+                <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                    <Input id="email"
+                    placeholder=""
+                    typeof="email"
+                    autoCapitalize="none"
+                    {...field}/>
+                </FormControl>
+            </FormItem>
+            </>
+            
+        )}></FormField> */}
+        </>
+            //   <form className={cn("grid items-start gap-4", className)}>
     //     <div className="grid gap-2">
     //         <Label>Year</Label>
     //         <Input id="year" defaultValue="Year" />
@@ -35,87 +116,6 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
     //     </div>
         
     //   </form>
-    <>
-        <FormField control={form.control} name = "year" 
-        render = {({field}) => (
-
-            <>
-                <FormItem>
-                <FormLabel>Year</FormLabel>
-                <FormControl>
-                    <Input id="year"
-                    placeholder=""
-                    autoCapitalize="none"
-                    {...field}/>
-                </FormControl>
-            </FormItem>
-            </>
-            
-        )}></FormField>
-
-        <FormField control={form.control} name = "major" 
-        render = {({field}) => (
-            <>
-                <FormItem>
-                <FormLabel>Major</FormLabel>
-                <FormControl>
-                    <Input id="major"
-                    placeholder=""
-                    autoCapitalize="none"
-                    {...field}/>
-                </FormControl>
-            </FormItem>
-            </>
-            
-        )}></FormField>
-
-        <FormField control={form.control} name = "university" 
-        render = {({field}) => (
-            <>
-                <FormItem>
-                <FormLabel>University</FormLabel>
-                <FormControl>
-                    <Input id="university"
-                    placeholder=""
-                    autoCapitalize="none"
-                    {...field}/>
-                </FormControl>
-            </FormItem>
-            </>
-            
-        )}></FormField>
-
-        <FormField control={form.control} name = "gpa" 
-        render = {({field}) => (
-            <>
-                <FormItem>
-                <FormLabel>GPA</FormLabel>
-                <FormControl>
-                    <Input id="gpa"
-                    {...field}/>
-                </FormControl>
-            </FormItem>
-            </>
-            
-        )}></FormField>
-
-        <FormField control={form.control} name = "email" 
-        render = {({field}) => (
-            <>
-                <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                    <Input id="email"
-                    placeholder=""
-                    typeof="email"
-                    autoCapitalize="none"
-                    {...field}/>
-                </FormControl>
-            </FormItem>
-            </>
-            
-        )}></FormField>
-        </>
     )
   }
   
