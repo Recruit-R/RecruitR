@@ -127,11 +127,12 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <Avatar className="h-20 w-20">
                                 <AvatarImage src="/avatars/01.png" alt="Avatar"/>
                                 <AvatarFallback className={`text-3x`}>
-                                    {editMode ? 
+                                    {/* {editMode ? 
                                             <ProfPicEdit></ProfPicEdit>
                                             :
                                             <>NA</>
-                                        }
+                                        } */}
+                                    <div className="font-bold text-3xl">{can_data.first_name[0]}{can_data.last_name[0]}</div>
                                 </AvatarFallback>
                             </Avatar>
                             {editMode ? <HeaderForm form = {form}></HeaderForm> :
