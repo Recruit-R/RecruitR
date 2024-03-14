@@ -23,7 +23,7 @@ export function ResumeButton({setPdfName} : {setPdfName: React.Dispatch<React.Se
         console.log(event.target.value);
     };
     return (
-        <Button onClick={() => fileRef.current && fileRef.current.click()}>
+        <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>
             <input id="upload" name="upload" type="file" ref={fileRef} hidden
                 onChange={handleChange} />
             Upload Resume

@@ -135,7 +135,8 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                             :
                                             <>NA</>
                                         } */}
-                                    <div className="font-bold text-3xl">{can_data.first_name[0]}{can_data.last_name[0]}</div>
+                                    {can_data ? <div className="font-bold text-3xl">{can_data.first_name[0]}{can_data.last_name[0]}</div> : <>NA</>}
+
                                 </AvatarFallback>
                             </Avatar>
                             {editMode ? <HeaderForm form = {form}></HeaderForm> :
@@ -229,7 +230,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <ResumeButton setPdfName = {setPdfName}/>
                         </div>
                         <div>
-                            <Button asChild variant={"link"} className={`${pdfName === "" && 'hidden'}`}>
+                            <Button type = "button" asChild variant={"link"} className={`${pdfName === "" && 'hidden'}`}>
                                 <Link href={`${pdfName}`} target="_blank">Download My Resume</Link>
                             </Button>
                         </div>
