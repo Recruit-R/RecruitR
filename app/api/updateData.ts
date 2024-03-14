@@ -1,4 +1,4 @@
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import {doc, getFirestore, setDoc, updateDoc} from "firebase/firestore";
 import app from "../../firebase.config";
 
 const db = getFirestore(app)
@@ -7,7 +7,7 @@ export default async function updateData(collection: string, id: string, data: a
     let error = null;
 
     try {
-        result = await updateDoc(doc(db, collection, id), data);
+        result = await setDoc(doc(db, collection, id), data);
     } catch (e) {
         error = e;
     }
