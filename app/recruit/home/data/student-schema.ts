@@ -11,7 +11,7 @@ export const feedbackSchema = z.record(z.object({
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
 export const studentSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   first_name: z.string(),
   last_name: z.string(),
   university: z.union([z.string(), z.undefined()]),

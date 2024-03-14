@@ -99,7 +99,7 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
             
         )}></FormField>
 
-        <FormField control={form.control} name = "email" 
+        {/* <FormField control={form.control} name = "email" 
         render = {({field}) => (
             <>
                 <FormItem>
@@ -114,7 +114,7 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
             </FormItem>
             </>
             
-        )}></FormField>
+        )}></FormField> */}
         </>
     )
   }

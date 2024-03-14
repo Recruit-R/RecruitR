@@ -33,6 +33,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAuth } from "@/components/auth-provider";
 import addData from "@/app/api/addData";
 import { addCandidateData, get_candidate_data } from "../actions";
+import { Student } from "@/app/recruit/home/data/student-schema";
 
 
 interface StudentInfoCardProps {
@@ -45,20 +46,27 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     // useEffect(() => {console.log(`RAHHH`)})
     const auth = useAuth()
-    console.log(auth)
+    //console.log(auth)
     const [can_data, setCanData] = useState<any>()
-    async function getusersData() {
+    // useEffect(() => {
+    //     getUsersData().then(e => setCanData(e))
+    // }, [])
+    async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
         return usersVals
     }
-    useEffect(() => {
-        //console.log(can_data)
-    }, [can_data])
+    async function addCanData(uid: string, values: object){
+        const dundun = await addCandidateData(uid, values)
+        console.log(dundun)
+    }
+    // useEffect(() => {
+    //     //console.log(can_data)
+    // }, [can_data])
 
     useEffect(() => 
     {   
         if (auth!.currentUser)
-            setCanData(getusersData())
+           getUsersData().then(e => setCanData(e))
     }, [auth!.currentUser])
     
 
@@ -70,7 +78,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
-        email: z.string()
 
     })
 
@@ -84,7 +91,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             major: "",
             university: "",
             gpa: 0.00,
-            email: ""
         },
     })
 
@@ -93,10 +99,12 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log("in on submit SHOULD NOT BE CALLING")
         console.log(values)
-        addCandidateData(auth!.currentUser!.uid, values)
+        console.log(auth!.currentUser!.uid)
         // setEditMode(prevState => !prevState)
-        if (auth!.currentUser)
-            setCanData(getusersData())
+        if (auth!.currentUser){
+            addCanData(auth!.currentUser!.uid, values)
+            setCanData(getUsersData())
+        }
     }
 
 
@@ -147,13 +155,14 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             }
                     </div>
                     <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
-                        {editMode && <Button className="mr-2" type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>}
-                        <Button onClick={() => setEditMode(prevState => !prevState)}
+                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>
+                        <Button type="button" onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"
                             >
                             {editMode ? "Cancel": "Edit Profile"}
                         </Button>
+                        {/* <Button className="mr-2" type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button> */}
                         
                     </div>
                     
