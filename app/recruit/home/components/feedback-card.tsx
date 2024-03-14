@@ -27,6 +27,9 @@ import {BsCloudCheck, BsEye} from "react-icons/bs";
 import {ComboboxDemo} from "@/app/recruit/home/components/dev-components/ComboboxDemo.tsx";
 import {HomeTimeline, Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import {
+    RatingRecruiterFeedback
+} from "@/app/recruit/home/components/feedback-card-components/rating-recruiter-feedback.tsx";
 interface FeedbackCardProps {
     feedbackFocus: boolean,
     setStudentView: React.Dispatch<React.SetStateAction<boolean>>,
@@ -83,23 +86,25 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             </CardDescription>
                         </div>
                     </div>
-                    <div className={c("hidden flex-1", "xl:flex")}>
-                        <StudentInfo func={c} student={currentStudent}/>
+                    <div className={c("hidden flex-1", "xl:flex flex-1")}>
+                        <StudentInfo func={c} student={currentStudent} headerView={true}/>
                     </div>
                 </CardHeader>
 
                 <CardContent className={"flex flex-col"}>
-                    <div className={"flex-row flex space-x-5"}>
-                        <ToggleGroupDemo/>
-                        <ComboboxDemo />
-                    </div>
+
                     <div className={c("flex flex-col flex-wrap pb-4", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
                         <div className="flex flex-col gap-6">
-                            <div className={c("flex", "xl:hidden")}>
-                                <StudentInfo func={c} student={currentStudent}/>
+                            <div className={"flex-row flex"}>
+                                <RatingRecruiterFeedback/>
+                                {/*<ComboboxDemo />*/}
+                            </div>
+                            <div className={c("flex flex-col", "xl:hidden")}>
+                                <span className="text-2xl font-medium pb-2">Student Info</span>
+                                <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
-                            <InitialFeedback />
+                            <InitialFeedback/>
                             <PossiblePlacement possiblePlacement={defaultFeedback.possiblePlacement}/>
                             <KnownTech/>
 

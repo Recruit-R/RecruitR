@@ -44,26 +44,25 @@ export function InitialFeedback() {
     }, [rating]);
 
     return (
-        <div onMouseLeave={() => setHoveredStar(0)}>
-            <p className="font-bold text-lg">
-                Initial Feedback
-            </p>
+        <div onMouseLeave={() => setHoveredStar(0)} >
+
+            <p className="text-2xl font-medium leading-none tracking-normal pb-2">Initial Feedback</p>
 
             <div className={"flex flex-row items-center justify-between"}>
                 <div className={"flex flex-row items-center"}>
-                    {
-                        [...Array(5)].map((_, i) => {
-                            return (
-                                <div key={'group' + i} className="group"
-                                     onMouseEnter={() => editable() && setHoveredStar(i + 1)}
-                                     onMouseLeave={() => editable() && setHoveredStar(0)}
-                                     onClick={() => editable() && setRating((prev) =>
-                                         (i + 1 == prev ? 0 : i + 1))}>
-                                    {compute(i)}
-                                </div>
-                            )
-                        })
-                    }
+                        {
+                            [...Array(5)].map((_, i) => {
+                                return (
+                                    <div key={'group' + i} className="group"
+                                         onMouseEnter={() => editable() && setHoveredStar(i + 1)}
+                                         onMouseLeave={() => editable() && setHoveredStar(0)}
+                                         onClick={() => editable() && setRating((prev) =>
+                                             (i + 1 == prev ? 0 : i + 1))}>
+                                        {compute(i)}
+                                    </div>
+                                )
+                            })
+                        }
                 </div>
                 {
                     editable() &&
@@ -76,7 +75,7 @@ export function InitialFeedback() {
 
 
 
-            </div>
+                </div>
         </div>
     )
 }
