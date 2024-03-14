@@ -232,11 +232,12 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                         <div className={`${!editMode && 'hidden'} pt-0.01`}>
                             <ResumeButton form = {form}/>
                         </div>
-                        {can_data && <div>
+                        {can_data && (can_data.resumeURL ? (<div>
                             <Button type = "button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
                                 <Link href={`${can_data.resumeURL && can_data.resumeURL}`} target="_blank">Download My Resume</Link>
                             </Button>
-                        </div>}
+                        </div>) : <span className={`${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>) }
+                        
                     </div>
                     
                 </CardContent>
