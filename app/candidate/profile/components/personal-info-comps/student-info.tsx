@@ -15,7 +15,7 @@ export function StudentInfo({can_data}: {can_data: any}) {
             <span>
             {can_data? 
                 <>{can_data.year}</> :
-                <span>No Year</span>
+                <span>Loading...</span>
             }
 
             </span>
@@ -27,7 +27,7 @@ export function StudentInfo({can_data}: {can_data: any}) {
             <span>
             {can_data? 
                 <>{can_data.major}</> :
-                <span>No Major</span>
+                <span>Loading...</span>
             }
             </span>
         </p>
@@ -38,7 +38,7 @@ export function StudentInfo({can_data}: {can_data: any}) {
             <span>
             {can_data? 
                 <>{can_data.university}</> :
-                <span>No University</span>
+                <span>Loading...</span>
             }
             </span>
         </p>
@@ -49,7 +49,7 @@ export function StudentInfo({can_data}: {can_data: any}) {
             <span>
             {can_data? 
                 <>{can_data.gpa}</> :
-                <span>No GPA</span>
+                <span>Loading...</span>
             }
             </span>
         </p>
@@ -60,7 +60,7 @@ export function StudentInfo({can_data}: {can_data: any}) {
             <span>
             {can_data? 
                 <>{can_data.email}</> :
-                <span>No Email</span>
+                <span>Loading...</span>
             }
             </span>
         </p>

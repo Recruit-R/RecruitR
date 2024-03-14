@@ -5,7 +5,7 @@ export function PossiblePlacement({ can_data }: { can_data: any }) {
             <p className="font-bold text-lg">
                 Possible Placement
             </p>
-
+            {!can_data && <p>Loading...</p>}
             <ul className="list-disc ml-5">
                 {can_data && can_data.feedback ? Object.keys(can_data.feedback).map((da: any) => {
                     return (

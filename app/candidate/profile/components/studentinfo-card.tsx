@@ -13,7 +13,7 @@ import {PossiblePlacement} from "@/app/candidate/profile/components/personal-inf
 import {cn} from "@/lib/utils";
 import {useAmp} from "next/amp";
 import { StudentInfo } from "./personal-info-comps/student-info";
-import { ResumeButton } from "./personal-info-comps/resume-file";
+import { ResumeButton } from "./personal-info-forms/resume-file";
 import { ShowSkills } from "./beta-comps/show-skills";
 import { StatusBar } from "./personal-info-comps/status-bar";
 import { Dialog } from "@radix-ui/react-dialog";
@@ -91,13 +91,13 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            first_name: "",
-            last_name: "",
+            first_name: can_data && can_data.first_name,
+            last_name: can_data ? can_data.last_name : "",
             //about_me: "",
-            year: "",
-            major: "",
-            university: "",
-            gpa: 0.00,
+            year: can_data ? can_data.major : "",
+            major: can_data ? can_data.major : "",
+            university: can_data && can_data.university,
+            gpa: can_data ? can_data.gpa : 0.00,
             resumeURL: can_data ? can_data.resumeURL : "",
         },
     })
@@ -156,10 +156,10 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 :
                                 <>
                                 <CardTitle className="text-4xl">
-                                    Full Name
+                                    Loading...
                                 </CardTitle>
                                 <CardDescription className="text-md">
-                                    No Major
+                                    Loading...
                                 </CardDescription>
                                 </>
                                 }
@@ -232,6 +232,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                         <div className={`${!editMode && 'hidden'} pt-0.01`}>
                             <ResumeButton form = {form}/>
                         </div>
+                        {!can_data && "Loading..."}
                         {can_data && (can_data.resumeURL ? (<div>
                             <Button type = "button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
                                 <Link href={`${can_data.resumeURL && can_data.resumeURL}`} target="_blank">Download My Resume</Link>
