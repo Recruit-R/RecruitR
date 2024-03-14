@@ -59,6 +59,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         const dundun = await addCandidateData(uid, values)
         console.log(dundun)
     }
+    
     // useEffect(() => {
     //     //console.log(can_data)
     // }, [can_data])
