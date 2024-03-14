@@ -65,6 +65,14 @@ export function UserNav() {
                             <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
+                    {auth?.isCoordinator &&
+                    <Link href={"/recruit/manage-recruiters"}>
+                        <DropdownMenuItem>
+                            Manage Recruiters
+                            <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>
+                    }
                     <DropdownMenuItem>
                         Rapid Sign Up
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
