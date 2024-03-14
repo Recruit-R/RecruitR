@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils.ts"
 import {    
     Form,
     FormControl,
@@ -11,13 +11,13 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form.tsx"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button.tsx"
+import { Input } from "@/components/ui/input.tsx"
 
 //ask about this
-import { create } from "@/app/recruit/events/actions"
+import { create } from "@/app/recruit/events/actions.ts"
 
 const recruiterProfileSchema = z.object({
     firstName: z.string().min(1, {

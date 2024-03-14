@@ -8,21 +8,21 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form.tsx"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 
-import useScreenWidth from "@/hooks/use-screen-width";
+import useScreenWidth from "@/hooks/use-screen-width.ts";
 import { useState } from "react";
-import {RecruiterProfileForm} from "@/app/recruit/profile/components/recruiter-profile-form";
-import {AccountForm} from "@/app/recruit/profile/account/account-form";
-import {ProfileForm} from "@/app/recruit/profile/components/profile-form";
+import {RecruiterProfileForm} from "@/app/recruit/settings/components/recruiter-profile-form.tsx";
+import {AccountForm} from "@/app/recruit/settings/account/account-form.tsx";
+import {ProfileForm} from "@/app/recruit/settings/components/profile-form.tsx";
 
 import { Metadata } from "next"
 import Image from "next/image"
 
-import { Separator } from "@/components/ui/separator"
-import { SidebarNav } from "@/components/ui/sidebar-nav"
+import { Separator } from "@/components/ui/separator.tsx"
+import { SidebarNav } from "@/components/ui/sidebar-nav.tsx"
 
 export const metadata: Metadata = {
   title: "Forms",

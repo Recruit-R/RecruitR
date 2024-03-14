@@ -1,5 +1,5 @@
-import { Separator } from "@/components/ui/separator"
-import { ProfileForm } from "@/app/recruit/profile/profileform/profile-form"
+import { Separator } from "@/components/ui/separator.tsx"
+import { ProfileForm } from "@/app/recruit/settings/profileform/profile-form.tsx"
 
 export default function SettingsProfilePage() {
   return (

@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React, { createContext, useEffect, useState } from "react";
+import {useAuth} from "@/components/auth-provider.tsx";
 export interface StudentDataContextType {
     studentList: StudentList
     setStudentList: React.Dispatch<React.SetStateAction<StudentList>>
@@ -21,24 +22,47 @@ export interface StudentDataContextType {
     setSaved: React.Dispatch<React.SetStateAction<boolean>>
     currRecrFeedback: string
     setCurrRecrFeedback: React.Dispatch<React.SetStateAction<string>>
-    tempCurrentUser: string
-    editable: () => boolean
-    setTempCurrentUser: React.Dispatch<React.SetStateAction<string>>
+    editable: () => boolean,
+    currentUserEditId: string
 }
 export const StudentDataContext = createContext<StudentDataContextType | null>(null);
 
 export default function ClientComponent({ students }: { students: StudentList }) {
-    const [tempCurrentUser, setTempCurrentUser] = useState("Caleb")
+    const auth = useAuth()
+    const [currentUserEditId, setCurrentUserEditId] = useState("")
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(false)
     const [studentView, setStudentView] = useState<boolean>(false)
     const [currentStudent, setCurrentStudent] = useState<Student | null>(null)
     const [studentList, setStudentList] = useState<StudentList>(students);
     const [saved, setSaved] = useState(true)
     const [previousStudent, setPreviousStudent] = useState<Student | null>(null);
-    const [currRecrFeedback, setCurrRecrFeedback] = useState(tempCurrentUser)
+    const [currRecrFeedback, setCurrRecrFeedback] = useState("")
+    const [tablePage, setTablePage] = useState(1);
     let lastRating: number | undefined = 0;
-    const editable = () => currRecrFeedback === tempCurrentUser // CHANGE TO AUTH USER ONCE IMPLEMENTED
+    const editable = () => (currRecrFeedback === currentUserEditId) && (currentUserEditId != "") && (currentUserEditId !== null) // CHANGE TO AUTH USER ONCE IMPLEMENTED
+    useEffect(() => {
+        console.log(tablePage)
+    }, [tablePage]);
+    useEffect(() => {
+        if (auth?.currentUser) {
+            let email = auth!.currentUser!.email
+            if (email) {
+                setCurrentUserEditId(email)
+                setCurrRecrFeedback(email)
+            }
+        }
 
+    }, [auth])
+    useEffect(() => {
+        if (auth?.currentUser) {
+            let email = auth!.currentUser!.email
+            if (email) {
+                setCurrentUserEditId(email)
+                setCurrRecrFeedback(email)
+            }
+        }
+
+    }, []);
     // const [currentRecruiterFeedback, setCurrentRecruiterFeedback] = useState()
     const c = (classnames: string, conditionalNames: string, condition: boolean = true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
@@ -54,7 +78,7 @@ export default function ClientComponent({ students }: { students: StudentList })
     }
     function changeCurrentStudent(student: Student) {
 
-        setCurrRecrFeedback(tempCurrentUser)
+        setCurrRecrFeedback(currentUserEditId)
         setCurrentStudent((prevStudent) => {
             prevStudent && setStudentList(prevState => ({ ...prevState, [prevStudent.id]: prevStudent }))
             return student
@@ -82,9 +106,8 @@ export default function ClientComponent({ students }: { students: StudentList })
             setSaved,
             currRecrFeedback,
             setCurrRecrFeedback,
-            tempCurrentUser,
             editable,
-            setTempCurrentUser
+            currentUserEditId
         }}>
 
             {/*<div className="">*/}
@@ -96,6 +119,7 @@ export default function ClientComponent({ students }: { students: StudentList })
                         data={Object.values(studentList)}
                         columns={StudentColumns(feedbackFocus)}
                         c={c}
+                        setPage={setTablePage}
                     />
                 </div>
                 <div className="self-center">

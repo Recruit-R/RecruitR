@@ -31,6 +31,7 @@ import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import { tree } from "next/dist/build/templates/app-page";
 import { useContext } from "react";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import internal from "node:stream";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -38,6 +39,7 @@ interface DataTableProps<TData, TValue> {
   setCurrentStudent: (student: Student) => void
   setStudentView: React.Dispatch<React.SetStateAction<boolean>>
   c: (classnames: string, conditionalNames: string, condition?: boolean) => string
+  setPage: React.Dispatch<React.SetStateAction<number>>
 }
 
 export function DataTable<TData, TValue>({
@@ -45,7 +47,8 @@ export function DataTable<TData, TValue>({
   data,
   setCurrentStudent,
   setStudentView,
-  c
+  c,
+  setPage
 }: DataTableProps<TData, TValue>) {
   const { currentStudent } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
@@ -146,7 +149,7 @@ export function DataTable<TData, TValue>({
           </Table>
         </div>
       </div>
-      <DataTablePagination table={table} c={c} />
+      <DataTablePagination table={table} c={c} setPage={setPage} />
     </div>
   )
 }
