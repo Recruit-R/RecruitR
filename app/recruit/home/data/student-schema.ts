@@ -18,6 +18,7 @@ export const studentSchema = z.object({
   year: z.union([z.string(), z.undefined()]),
   gpa: z.union([z.number(), z.undefined()]),
   major: z.union([z.string(), z.undefined()]),
+  resumeURL: z.union([z.string(), z.undefined()]),
   // temp_id: z.union([z.number(), z.undefined()]),
   email: z.string(),
   //about_me: z.string(),
