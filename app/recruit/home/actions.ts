@@ -16,6 +16,8 @@ export async function addFeedback(student_id: string, value: string, recruiter_i
     // obj.Time = Timestamp.fromDate(new Date(obj.Time))
     console.log("being called")
     console.log("pushed")
+
+    console.log(recruiter_id)
     console.log(student_id)
     console.log(value)
 

@@ -15,7 +15,7 @@ export function TextFeedback() {
         setCurrentStudent,
         studentList, saved,
         setSaved,
-        tempCurrentUser,
+        currentUserEditId,
         currRecrFeedback,
         editable,
     } = useContext(StudentDataContext) as StudentDataContextType
@@ -30,10 +30,10 @@ export function TextFeedback() {
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
+        if (editable()) {
 
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: { "text_feedback": value } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), tempCurrentUser).then(r => setSaved(true))
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "text_feedback": value } });
+            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), currentUserEditId).then(r => setSaved(true))
             setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
         }
     });

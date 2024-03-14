@@ -22,12 +22,16 @@ export function KnownTech() {
         studentList, saved,
         setSaved,
         currRecrFeedback,
-        tempCurrentUser,
+        currentUserEditId,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
 
     useEffect(() => {
+        console.log(currentStudent?.feedback?.[currRecrFeedback]?.known_tech)
+        console.log(`CURR RECRUITER FEEDBACK ${currRecrFeedback}`)
+        console.log(`CURRENT STUDENT FEEDBACK ${JSON.stringify(currentStudent?.feedback)}`)
+
         setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
     }, [studentList, currRecrFeedback]);
 
@@ -39,10 +43,10 @@ export function KnownTech() {
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
-            const knownTechFeedback = { ...(currentStudent?.feedback?.[tempCurrentUser] ?? {}), "known_tech": knownLanguages }
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: knownTechFeedback });
-            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), tempCurrentUser).then(e => (setSaved(true)))
+        if (editable()) {
+            const knownTechFeedback = { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "known_tech": knownLanguages }
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: knownTechFeedback });
+            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), currentUserEditId).then(e => (setSaved(true)))
             setCurrentStudent((prevState: any) => ({ ...prevState, feedback: mergedObject }))
         }
     });

@@ -18,6 +18,14 @@ async function getStudents() {
     return z.array(studentSchema).parse(tasks)
 }
 
+function convert(array: any) {
+    var dict: {[key: string]: any} = {}
+    array.forEach((e: any) => {
+        let id = e.id as string
+        dict[id] = e
+    })
+    return dict;
+}
 export default async function Page() {
     // const students = await getStudents()
 
@@ -30,7 +38,7 @@ export default async function Page() {
     })
 
 
-    const zodStudents = z.array(studentSchema).parse(students)
+    const zodStudents = z.record(studentSchema).parse(convert(students))
 
     // console.log(new_students);
     // const res = await addData("users", "kvXYrrCRZnyrkHpnmHc5", {"feedback": {"Karen": {"initial_feedback": 1}}})

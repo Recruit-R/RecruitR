@@ -7,13 +7,13 @@ import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
 import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 
-export function PossiblePlacement({ possiblePlacement }: { possiblePlacement: string | undefined }) {
+export function PossiblePlacement() {
     const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management"]
     const { currentStudent,
         setCurrentStudent, studentList,
         setSaved,
         currRecrFeedback,
-        tempCurrentUser,
+        currentUserEditId,
         editable } = useContext(StudentDataContext) as StudentDataContextType
     const getFeedback = () => currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? ""
     const [placementFeedback, setPlacementFeedback] = useState(getFeedback)
@@ -25,10 +25,11 @@ export function PossiblePlacement({ possiblePlacement }: { possiblePlacement: st
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: { "possible_placement": placementFeedback } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "possible_placement": placementFeedback }), tempCurrentUser).then(r => setSaved(true))
+        if (editable()) {
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "possible_placement": placementFeedback } });
+            addFeedback(currentStudent!.id, JSON.stringify({ "possible_placement": placementFeedback }), currentUserEditId).then(r => setSaved(true))
             setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
+
         }
 
     });

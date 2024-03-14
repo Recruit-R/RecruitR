@@ -8,17 +8,20 @@ import {StarFilledIcon} from "@radix-ui/react-icons";
 import {useContext} from "react";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {useAuth} from "@/components/auth-provider.tsx";
+import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area.tsx";
 
 export function RatingRecruiterFeedback() {
+    const auth = useAuth()
     const { currentStudent,
         setCurrentStudent, studentList,
         setCurrRecrFeedback,
-        tempCurrentUser} = useContext(StudentDataContext) as StudentDataContextType
+        currentUserEditId} = useContext(StudentDataContext) as StudentDataContextType
 
     return (
 
-        <div className="flex flex-row items-center gap-6">
-            <div>
+        <div className="flex flex-row items-center gap-6 w-full">
+            <div className={"text-nowrap"}>
                 <span className="text-2xl font-medium leading-none tracking-tight">Average Rating:</span> &nbsp;
                 <span className="text-2xl text-muted-foreground font-light">
              {(Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)}
@@ -28,16 +31,19 @@ export function RatingRecruiterFeedback() {
             <div>
                 {
                     currentStudent?.feedback &&
-                    Object.keys(currentStudent?.feedback!).some((name) => name !== tempCurrentUser) && (
-                        <ToggleGroup variant={"outline"} type="single" onValueChange={(val) => {
+                    Object.keys(currentStudent?.feedback!).some((name) => name !== currentUserEditId) && (
+                        <ToggleGroup variant={"outline"} type="single"
+                                     className={"flex flex-row flex-wrap items-start"}
+                                     onValueChange={(val) => {
                             console.log(val)
-                            setCurrRecrFeedback(val === "" ? tempCurrentUser : val)
+                            setCurrRecrFeedback(val === "" ? currentUserEditId : val)
                         }
                         }>
+                            {/*<div className={"gap-2"}>*/}
                             {
                                 Object.keys(currentStudent?.feedback!).map((recruiterName) => {
-                                    return recruiterName !== tempCurrentUser ? (
-                                        <ToggleGroupItem value={recruiterName} aria-label="Toggle bold">
+                                    return recruiterName !== currentUserEditId ? (
+                                        <ToggleGroupItem value={recruiterName} className="bg-background" aria-label="Toggle bold">
 
                                             {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon
                                             className="h-4 w-4 text-ring fill-current"/>
@@ -46,10 +52,11 @@ export function RatingRecruiterFeedback() {
                                     ) : <></>
                                 })
                             }
+                            {/*</div>*/}
+
                         </ToggleGroup>
                     )
                 }
-
             </div>
         </div>
 
