@@ -8,8 +8,8 @@ import React from "react";
 export default function Page() {
     return (
         <div className="h-full p-3">
-            <Card className="md:w-2/5 md:mx-auto md:h-full divide-y">
-                <CardHeader className={"flex flex-row items-end h-40 p-0 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-lg"}>
+            <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden">
+                <CardHeader className={"flex flex-row items-end h-40 p-0 bg-gradient-to-r from-sky-100 to-indigo-100 bg-clip-border"}>
                     {/*<CardTitle className="text-4xl">*/}
                     {/*    Profile*/}
                     {/*</CardTitle>*/}
@@ -17,7 +17,7 @@ export default function Page() {
                     {/*    <AvatarImage src="/avatars/01.png" alt="Avatar"/>*/}
                     {/*    <AvatarFallback className="text-3xl"></AvatarFallback>*/}
                     {/*</Avatar>*/}
-                    <div className={"text-5xl font-light px-6 py-2 text-white"}>
+                    <div className={"text-5xl font-bold px-6 py-2 text-ring"}>
                         Caleb Frey
                     </div>
                 </CardHeader>
