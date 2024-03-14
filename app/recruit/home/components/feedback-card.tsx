@@ -96,14 +96,15 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 <div className={"flex flex-row items-center justify-between pb-2"}>
                                     <span className="text-2xl font-medium pb-1">Student Info</span>
                                     <div className="">
-                                        <Button variant={"ghost"}
-                                                className={"font-medium text-muted-foreground text-lg"}
-                                        >
-                                            {/*<Link href={}>*/}
-                                            <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume
+                                        {/*<Button variant={"ghost"}*/}
+                                        {/*        className={"font-medium text-muted-foreground text-lg"}*/}
+                                        {/*        disabled={!currentStudent?.resumeURL}*/}
+                                        {/*>*/}
+                                        {/*    <Link href={`${currentStudent?.resumeURL && currentStudent!.resumeURL}`}>*/}
+                                        {/*    <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume*/}
 
-                                            {/*</Link>*/}
-                                        </Button>
+                                        {/*    </Link>*/}
+                                        {/*</Button>*/}
                                     </div>
                                 </div>
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>

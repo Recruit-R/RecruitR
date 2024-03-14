@@ -33,7 +33,7 @@ export function RatingRecruiterFeedback() {
                     currentStudent?.feedback &&
                     Object.keys(currentStudent?.feedback!).some((name) => name !== currentUserEditId) && (
                         <ToggleGroup variant={"outline"} type="single"
-                                     className={"flex flex-row flex-wrap items-start"}
+                                     className={"flex flex-row"}
                                      onValueChange={(val) => {
                             console.log(val)
                             setCurrRecrFeedback(val === "" ? currentUserEditId : val)
