@@ -22,15 +22,16 @@ export async function POST(
         const valid = user?.uid === body.uid;
         if (!valid) return new NextResponse("Unauthorized", { status: 401 });
 
-        const whiteList = await firestore.collection("whitelist").get();
-        const whiteListedRecruiters = new Set(whiteList.docs.map((doc) => doc.data()).filter((doc) => doc.role === Roles.RECRUITER).map((doc) => doc.email));
-        const whiteListedCoordinators = new Set(whiteList.docs.map((doc) => doc.data()).filter((doc) => doc.role === Roles.COORDINATOR).map((doc) => doc.email));
         let userDocument = await firestore
             .collection("users")
             .doc(body.uid)
             .get();
 
         if (!userDocument.exists) {
+            const whiteList = await firestore.collection("whitelist").get();
+            const whiteListedCoordinators = new Set(whiteList.docs.map((doc) => doc.data().role == Roles.COORDINATOR ? doc.data().email : null).filter((email) => email));
+            const whiteListedRecruiters = new Set(whiteList.docs.map((doc) => doc.data().role == Roles.RECRUITER ? doc.data().email : null).filter((email) => email));
+
             const role = whiteListedCoordinators.has(user!.email!) ? Roles.COORDINATOR : whiteListedRecruiters.has(user!.email!) ? Roles.RECRUITER : Roles.CANDIDATE;
             const customClaims = { role: role };
             let name = body.name ? body.name.split(" ") : ['Johne', 'Doe'];
