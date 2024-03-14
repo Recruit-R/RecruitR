@@ -44,6 +44,9 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     // useEffect(() => {console.log(`RAHHH`)})
+    const [pdfName,  setPdfName]= useState<string>("")
+
+
     const auth = useAuth()
     console.log(auth)
     const [can_data, setCanData] = useState<any>()
@@ -208,7 +211,12 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             </p>
                         </div>
                         <div className="pt-0.01">
-                            <ResumeButton />
+                            <ResumeButton setPdfName = {setPdfName}/>
+                        </div>
+                        <div>
+                            <Button asChild variant={"link"} className={`${pdfName === "" && 'hidden'}`}>
+                                <Link href={`${pdfName}`} target="_blank">Download My Resume</Link>
+                            </Button>
                         </div>
                     </div>
                     
