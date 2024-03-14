@@ -12,6 +12,7 @@ export function getAuthToken(): string | undefined {
 
 export function setAuthToken(token: string): string | undefined {
     const maxAge = 604800;
+    // const secure = process.env.NEXT_PUBLIC_APP_ENV !== "emulator";
     return Cookies.set("firebaseIdToken", token, { secure: false, expires: maxAge });
 }
 
@@ -42,6 +43,7 @@ type AuthContextType = {
     isCoordinator: boolean;
     isRecruiter: boolean;
     isLoading: boolean;
+    getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     loginGoogle: () => Promise<void>;
@@ -86,10 +88,16 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
                 // check if user exists in database 
 
-                const userResponse = await fetch(`/api/users/${user.uid}`, {
+                const userResponse = await fetch(`/api/users`, {
+                    method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                    body: JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        name: user.displayName,
+                    }),
                 });
                 console.log('userresponse', userResponse);
 
@@ -190,6 +198,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 isCoordinator,
                 isRecruiter,
                 isLoading,
+                getAuthToken,
                 refresh,
                 setIsLoading,
                 loginGoogle,
