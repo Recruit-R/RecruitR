@@ -4,7 +4,7 @@ import {Student} from "@/app/recruit/home/data/student-schema";
 
 
 export function StudentInfo({can_data}: {can_data: any}) {
-    console.log('can data info', can_data);
+    //console.log('can data info', can_data);
     return (
         <div className="grid flex-1 items-center h-full grid-cols-1 xl:grid-cols-2">
     

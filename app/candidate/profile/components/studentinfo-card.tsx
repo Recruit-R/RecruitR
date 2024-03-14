@@ -34,6 +34,7 @@ import { useAuth } from "@/components/auth-provider";
 import addData from "@/app/api/addData";
 import { addCandidateData, get_candidate_data } from "../actions";
 import { Student } from "@/app/recruit/home/data/student-schema";
+import { useRouter } from "next/navigation";
 
 
 interface StudentInfoCardProps {
@@ -45,6 +46,9 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     // useEffect(() => {console.log(`RAHHH`)})
+    //const [pdfName,  setPdfName]= useState<string>("")
+
+
     const auth = useAuth()
     //console.log(auth)
     const [can_data, setCanData] = useState<any>()
@@ -63,6 +67,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     // useEffect(() => {
     //     //console.log(can_data)
     // }, [can_data])
+    console.log(can_data)
 
     useEffect(() => 
     {   
@@ -79,6 +84,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
+        resumeURL: z.string(),
 
     })
 
@@ -92,10 +98,11 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             major: "",
             university: "",
             gpa: 0.00,
+            resumeURL: can_data ? can_data.resumeURL : "",
         },
     })
 
-    
+    const router = useRouter()
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log("in on submit SHOULD NOT BE CALLING")
@@ -106,6 +113,9 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             addCanData(auth!.currentUser!.uid, values)
             setCanData(getUsersData())
         }
+
+        //router.refresh()
+        window.location.reload()
     }
 
 
@@ -123,11 +133,13 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <Avatar className="h-20 w-20">
                                 <AvatarImage src="/avatars/01.png" alt="Avatar"/>
                                 <AvatarFallback className={`text-3x`}>
-                                    {editMode ? 
+                                    {/* {editMode ? 
                                             <ProfPicEdit></ProfPicEdit>
                                             :
                                             <>NA</>
-                                        }
+                                        } */}
+                                    {can_data ? <div className="font-bold text-3xl">{can_data.first_name && can_data.first_name[0]}{can_data.last_name && can_data.last_name[0]}</div> : <>NA</>}
+
                                 </AvatarFallback>
                             </Avatar>
                             {editMode ? <HeaderForm form = {form}></HeaderForm> :
@@ -156,7 +168,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             }
                     </div>
                     <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
-                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit" onClick={() => setEditMode(prevState => !prevState)}>Save</Button>
+                        <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                         <Button type="button" onClick={() => setEditMode(prevState => !prevState)}
                             variant={"outline"}
                             className="w-32"
@@ -203,8 +215,8 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             {editMode ? <PersonalForm form = {form} can_data = {can_data}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
                         
 
-                        <PossiblePlacement/>
-                        <StatusBar></StatusBar>
+                        <PossiblePlacement can_data={can_data}/>
+                        <StatusBar can_data={can_data}></StatusBar>
                         {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
                                 Skills
@@ -217,9 +229,14 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                 Resume
                             </p>
                         </div>
-                        <div className="pt-0.01">
-                            <ResumeButton />
+                        <div className={`${!editMode && 'hidden'} pt-0.01`}>
+                            <ResumeButton form = {form}/>
                         </div>
+                        {can_data && <div>
+                            <Button type = "button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
+                                <Link href={`${can_data.resumeURL && can_data.resumeURL}`} target="_blank">Download My Resume</Link>
+                            </Button>
+                        </div>}
                     </div>
                     
                 </CardContent>
