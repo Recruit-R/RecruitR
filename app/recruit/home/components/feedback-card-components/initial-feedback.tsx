@@ -12,7 +12,8 @@ export function InitialFeedback() {
         currRecrFeedback,
         tempCurrentUser,
         setSaved,
-        setStudentList
+        setStudentList,
+        editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const [rating, setRating] = useState(currentStudent?.feedback?.[currRecrFeedback]?.rating ?? 0)
     const [hoveredStar, setHoveredStar] = useState(0)
@@ -53,16 +54,26 @@ export function InitialFeedback() {
                     {
                         [...Array(5)].map((_, i) => {
                             return (
-                                <div key={'group' + i} className="group" onMouseEnter={() => setHoveredStar(i + 1)} onMouseLeave={() => setHoveredStar(0)} onClick={() => setRating((prev) => (i + 1 == prev ? 0 : i + 1))}>
+                                <div key={'group' + i} className="group"
+                                     onMouseEnter={() => editable() && setHoveredStar(i + 1)}
+                                     onMouseLeave={() => editable() && setHoveredStar(0)}
+                                     onClick={() => editable() && setRating((prev) =>
+                                         (i + 1 == prev ? 0 : i + 1))}>
                                     {compute(i)}
                                 </div>
                             )
                         })
                     }
                 </div>
-                <Button variant={"ghost"} className={"justify-center items-center"} onClick={() => setRating(0)} disabled={rating === 0}>
-                    <XIcon className={"w-4 h-4 mr-1"} /> Clear
-                </Button>
+                {
+                    editable() &&
+                    (
+                        <Button variant={"ghost"} className={"justify-center items-center"} onClick={() => setRating(0)} disabled={rating === 0}>
+                            <XIcon className={"w-4 h-4 mr-1"} /> Clear
+                        </Button>
+                    )
+                }
+
 
 
             </div>

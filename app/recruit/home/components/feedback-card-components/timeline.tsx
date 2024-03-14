@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip"
 import React, {useEffect, useState} from "react";
 import {useAuth} from "@/components/auth-provider.tsx";
+import {TimelineCheckbox} from "@/components/ui/timeline-checkbox.tsx";
 
 interface TimelineProps {
     events: Array<String>
@@ -20,6 +21,7 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
     const [progress, setProgress] = useState(events.indexOf(currEvent))
     const [progressBar, setProgressBar] = useState<number>(0)
     const user = useAuth();
+    console.log(user)
     function handleCheckedChange(idx: number){
         currEvent = events[idx] as string
         setProgress(events.indexOf(currEvent))
@@ -68,7 +70,7 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
                                                 {e}
                                             </label>
                                         </div>
-                                        <Checkbox className={`w-6 h-6 border-secondary bg-secondary`}
+                                        <TimelineCheckbox className={`w-6 h-6 border-secondary bg-secondary`}
                                                   id={e as string}
                                                   checked={idx <= progress}
                                                   onCheckedChange={() => handleCheckedChange(idx)}
