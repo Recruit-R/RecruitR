@@ -9,22 +9,22 @@ import {ChevronLeft, Edit2Icon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useEffect, useState} from "react";
 //import {set} from "yaml/dist/schema/yaml-1.1/set";
-import {PossiblePlacement} from "@/app/candidate/profile/components/possible-placement";
+import {PossiblePlacement} from "@/app/candidate/profile/components/personal-info-comps/possible-placement";
 import {cn} from "@/lib/utils";
 import {useAmp} from "next/amp";
-import { StudentInfo } from "./student-info";
-import { ResumeButton } from "./resume-file";
-import { ShowSkills } from "./show-skills";
-import { StatusBar } from "./status-bar";
+import { StudentInfo } from "./personal-info-comps/student-info";
+import { ResumeButton } from "./personal-info-comps/resume-file";
+import { ShowSkills } from "./beta-comps/show-skills";
+import { StatusBar } from "./personal-info-comps/status-bar";
 import { Dialog } from "@radix-ui/react-dialog";
-import { AboutMeDrawerDialog } from "./about-me-edit";
-import { DialogDemo } from "./about-me-dialog";
-import { PersonalDrawerDialog } from "./personal-edit";
-import { HeaderDrawerDialog } from "./header-edit";
-import { AboutMeForm } from "./about-me-form";
-import { PersonalForm } from "./personal-info-form";
-import { HeaderForm } from "./header-form";
-import { ProfPicEdit } from "./prof-pic-form";
+import { AboutMeDrawerDialog } from "./about-me-comps/about-me-edit";
+import { DialogDemo } from "./about-me-comps/about-me-dialog";
+import { PersonalDrawerDialog } from "./beta-comps/personal-edit";
+import { HeaderDrawerDialog } from "./beta-comps/header-edit";
+import { AboutMeForm } from "./about-me-comps/about-me-form";
+import { PersonalForm } from "./personal-info-forms/personal-info-form";
+import { HeaderForm } from "./personal-info-forms/header-form";
+import { ProfPicEdit } from "./personal-info-forms/prof-pic-form";
 import {useRef} from 'react';
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -123,7 +123,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         <>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Card className="min-h-full ">
+            <Card className="min-h-full">
                 <CardHeader className="flex flex-row border-b mb-4">
                     <div className={`flex flex-row pr-3 items-center space-x-4 relative rounded-lg`}>
                             {/* ${editMode && "animate-pulse outline"}{

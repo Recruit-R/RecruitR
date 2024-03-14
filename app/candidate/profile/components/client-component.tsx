@@ -6,8 +6,8 @@ import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {ChevronLeftIcon, ChevronRight, ChevronRightIcon} from "lucide-react";
-import { EventTable } from "./event-table";
-import { EventCard } from "./event-card";
+import { EventTable } from "./event-box-comps/event-table";
+import { EventCard } from "./event-box-comps/event-card";
 
 
 export default function ClientComponent() {
