@@ -67,6 +67,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     // useEffect(() => {
     //     //console.log(can_data)
     // }, [can_data])
+    console.log(can_data)
 
     useEffect(() => 
     {   
@@ -214,8 +215,8 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             {editMode ? <PersonalForm form = {form} can_data = {can_data}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
                         
 
-                        <PossiblePlacement/>
-                        <StatusBar></StatusBar>
+                        <PossiblePlacement can_data={can_data}/>
+                        <StatusBar can_data={can_data}></StatusBar>
                         {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
                                 Skills
