@@ -88,7 +88,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
             first_name: "",
             last_name: "",
             //about_me: "",
-            year: "(ex. Sophomore)",
+            year: "",
             major: "",
             university: "",
             gpa: 0.00,
@@ -200,7 +200,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                             <p className="font-bold text-lg">
                                 Personal Info
                             </p>
-                            {editMode ? <PersonalForm form = {form}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
+                            {editMode ? <PersonalForm form = {form} can_data = {can_data}></PersonalForm> : <StudentInfo can_data={can_data}></StudentInfo>}                        
                         
 
                         <PossiblePlacement/>

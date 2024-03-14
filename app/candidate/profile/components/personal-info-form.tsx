@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { ComboboxYear } from "./comboBoxYears"
 
-export function PersonalForm(form: any, { className }: React.ComponentProps<"form">) {
+export function PersonalForm(form: any, {can_data, className}: {can_data: any, className : React.ComponentProps<"form">}) {
     return (
     //   <form className={cn("grid items-start gap-4", className)}>
     //     <div className="grid gap-2">
@@ -40,14 +41,10 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
         render = {({field}) => (
 
             <>
-                <FormItem>
+            <FormItem>
                 <FormLabel>Year</FormLabel>
-                <FormControl>
-                    <Input id="year"
-                    placeholder=""
-                    autoCapitalize="none"
-                    {...field}/>
-                </FormControl>
+                <br/>
+                <ComboboxYear form = {form} field = {field}/>
             </FormItem>
             </>
             
@@ -60,7 +57,7 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
                 <FormLabel>Major</FormLabel>
                 <FormControl>
                     <Input id="major"
-                    placeholder=""
+                    placeholder={can_data ? can_data.major : ""}
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
@@ -76,7 +73,7 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
                 <FormLabel>University</FormLabel>
                 <FormControl>
                     <Input id="university"
-                    placeholder=""
+                    placeholder={can_data ? can_data.university : ""}
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
@@ -92,6 +89,7 @@ export function PersonalForm(form: any, { className }: React.ComponentProps<"for
                 <FormLabel>GPA</FormLabel>
                 <FormControl>
                     <Input id="gpa"
+                    placeholder={can_data ? can_data.gpa : 0}
                     {...field}/>
                 </FormControl>
             </FormItem>
