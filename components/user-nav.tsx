@@ -52,7 +52,7 @@ export function UserNav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link href={"/recruit/profile/profileform"}>
+                    <Link href={"/recruit/profile"}>
                         <DropdownMenuItem>
                             Profile
                             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

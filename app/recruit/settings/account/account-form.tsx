@@ -6,15 +6,15 @@ import { format } from "date-fns"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils.ts"
+import { Calendar } from "@/components/ui/calendar.tsx"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command.tsx"
 import {
   Form,
   FormControl,
@@ -23,15 +23,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form.tsx"
+import { Input } from "@/components/ui/input.tsx"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { toast } from "@/components/ui/use-toast"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/popover.tsx"
+import { toast } from "@/components/ui/use-toast.ts"
+import { Button } from "@/components/ui/button.tsx"
 
 const languages = [
   { label: "English", value: "en" },

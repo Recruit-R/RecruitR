@@ -1,5 +1,5 @@
-import { Separator } from "@/components/ui/separator";
-import {NotificationsForm} from "@/app/recruit/profile/notifications/notifications-form";
+import { Separator } from "@/components/ui/separator.tsx";
+import {NotificationsForm} from "@/app/recruit/settings/notifications/notifications-form.tsx";
 
 export default function SettingsNotificationsPage() {
   return (
