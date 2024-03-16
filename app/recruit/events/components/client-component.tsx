@@ -1,6 +1,7 @@
 'use client'
-import {Button} from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+
+//client component that orders all components in events page
+
 import {EventsListCard} from "@/app/recruit/events/components/events-list-card";
 import {RecruiterEvent} from "@/app/recruit/events/data/events-schema";
 import {EventCreationDialog} from "@/app/recruit/events/components/event-creation-dialog";
@@ -13,6 +14,7 @@ export interface EventDataContextType {
     refresh: () => void
 }
 
+//define context to provide event data and refresh function to child components
 export const EventDataContext = createContext<EventDataContextType | null>(null);
 
 export default function ClientComponent({e} : {e: any}) {
@@ -26,9 +28,11 @@ export default function ClientComponent({e} : {e: any}) {
     useEffect(() => {
       const currentDate = new Date();
       const pastEvents = events
+      // sort and filter past events by UTC time
       .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time).toUTCString() < currentDate.toUTCString())
       .sort((a: { Time: Date }, b: { Time: Date }) => new Date(b.Time).getTime() - new Date(a.Time).getTime());
-
+      
+      // sort and filter future events by UTC time
       const futureEvents = events
       .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time) >= currentDate)
       .sort((a: { Time: Date }, b: { Time: Date }) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
@@ -37,15 +41,17 @@ export default function ClientComponent({e} : {e: any}) {
       setSortedPastEvents(pastEvents);
       setSortedFutureEvents(futureEvents);
 
-    }, [events]); // Re-run if events change 
+    // Re-run if events change 
+    }, [events]); 
 
+    //pass sorted events into two event list cards
+    //one card for future events and one card for past events
     return (
         <EventDataContext.Provider 
         value={{
             events,
             refresh
-        }} >
-            
+        }} >      
         <div className="flex flex-col gap-4 p-4 ">
             <div className="">
                 <EventCreationDialog />
@@ -60,6 +66,5 @@ export default function ClientComponent({e} : {e: any}) {
             </div>
         </div>
         </EventDataContext.Provider>
-
     )
 }

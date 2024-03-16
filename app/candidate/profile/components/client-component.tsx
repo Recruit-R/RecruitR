@@ -1,12 +1,7 @@
 'use client'
-import {Textarea} from "@/components/ui/textarea";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+
 import {StudentInfoCard} from "@/app/candidate/profile/components/studentinfo-card";
 import React, {useState} from "react";
-import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
-import {ChevronLeftIcon, ChevronRight, ChevronRightIcon} from "lucide-react";
-import { EventTable } from "./event-box-comps/event-table";
 import { EventCard } from "./event-box-comps/event-card";
 
 
