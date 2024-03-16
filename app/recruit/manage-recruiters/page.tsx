@@ -1,14 +1,12 @@
 'use client'
+
+//manage recruiter page that allows you to add or remove recruiters if a coordinator
+
 import { useEffect, useState } from "react";
 import * as z from 'zod';
-
-//recruit manager-recruiter
-
 import { useAuth } from '@/components/auth-provider';
 import { Button } from "@/components/ui/button";
-import {
-    Card
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -32,7 +30,6 @@ export default function Page() {
             email: "",
         },
     })
-
 
     useEffect(() => {
         const fetchrecruiterEmails = async () => {
@@ -92,7 +89,6 @@ export default function Page() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="grid gap-2" >
                             <div className="grid gap-1 w-1/2 mb-2"  >
-
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -112,7 +108,6 @@ export default function Page() {
                                                     {...field}
                                                 />
                                             </FormControl>
-
                                         </FormItem>
                                     )}>
                                 </FormField>
@@ -141,12 +136,9 @@ export default function Page() {
         <>
             <div className="flex flex-col gap-4 p-4 ">
                 <b>Add Recruiter</b>
-
-                <AddRecruiterBar />
-
+                    <AddRecruiterBar />
                 <b>Recruiter List</b>
                 <div className="h-full">
-
                     <div className="py-2 pl-3 w-3/4 group hover:rounded border border-gray-200 bg-gray-white rounded-lg transition-all">
                         {recruiterEmails.length > 0 &&
                             <ul className="h-full">
@@ -167,7 +159,6 @@ export default function Page() {
                                             </Card>
                                         )
                                     })
-
                                 }
                             </ul>
                         }
