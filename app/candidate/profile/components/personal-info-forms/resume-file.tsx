@@ -11,7 +11,7 @@ export function ResumeButton(form : any) {
     const metadata = {
         contentType: "application/pdf"
     }
-    const [progresspercent, setProgresspercent] = useState(0);
+    const [progressPercent, setProgressPercent] = useState(0);
     const handleChange = (event: any) => {
         event.preventDefault()
         const file = event.target[0]?.files[0]
@@ -26,7 +26,7 @@ export function ResumeButton(form : any) {
             (snapshot) => {
                 const progress =
                         Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                        setProgresspercent(progress);
+                        setProgressPercent(progress);
                 console.log('Upload is ' + progress + '% done');
                 switch (snapshot.state) {
                     case 'paused':
@@ -70,13 +70,6 @@ export function ResumeButton(form : any) {
             }
         )
 
-        // uploadBytes(resumeRef, event, metadata).then(async (snapshot: any) => {
-        //     const downLoadURL = await getDownloadURL(snapshot.ref);
-        //     form.form.setValue('resumeURL', downLoadURL);
-        //     console.log(downLoadURL);
-        // })
-
-        //console.log(event.target.value);
     };
     return (
         <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>

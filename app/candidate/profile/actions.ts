@@ -6,8 +6,6 @@ import { studentSchema } from "@/app/recruit/home/data/student-schema";
 
 import * as z from 'zod';
 export async function addCandidateData(student_id: string, value: object) {
-    console.log("being called")
-    console.log("pushed")
     console.log(student_id)
     console.log(value)
 

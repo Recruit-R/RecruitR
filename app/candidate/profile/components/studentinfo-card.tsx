@@ -35,9 +35,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
 
     const auth = useAuth()
     const [canData, setCanData] = useState<any>()
-    // useEffect(() => {
-    //     getUsersData().then(e => setCanData(e))
-    // }, [])
     async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
         return usersVals
@@ -47,9 +44,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
         console.log(newCanData)
     }
     
-    // useEffect(() => {
-    //     //console.log(canData)
-    // }, [canData])
     console.log(canData)
 
     useEffect(() => 
@@ -93,7 +87,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const router = useRouter()
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("in on submit SHOULD NOT BE CALLING")
         console.log(values)
         console.log(auth!.currentUser!.uid)
         if (auth!.currentUser){

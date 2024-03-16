@@ -60,7 +60,7 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandEmpty>No language found.</CommandEmpty>
+          <CommandEmpty>No year found.</CommandEmpty>
           <CommandGroup>
               {years.map((year) => (
                 <CommandItem
