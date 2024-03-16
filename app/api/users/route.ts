@@ -88,6 +88,6 @@ export async function POST(
     }
 }
 
-export async function getAuthToken(request: NextRequest) {
+function getAuthToken(request: NextRequest) {
     return request.headers.get("authorization")?.split("Bearer ")[1];
 }
