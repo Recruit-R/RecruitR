@@ -1,14 +1,10 @@
 "use client"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ComboboxYear } from "../combo-box-years"
 
-export function PersonalForm(form: any, {can_data}: {can_data: any}) {
-    console.log(can_data)
+export function PersonalForm(form: any, {canData}: {canData: any}) {
+    console.log(canData)
     return (
 
     <>
@@ -32,7 +28,7 @@ export function PersonalForm(form: any, {can_data}: {can_data: any}) {
                 <FormLabel>Major</FormLabel>
                 <FormControl>
                     <Input id="major"
-                    placeholder={can_data ? can_data.major : ""}
+                    placeholder={canData ? canData.major : ""}
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
@@ -48,7 +44,7 @@ export function PersonalForm(form: any, {can_data}: {can_data: any}) {
                 <FormLabel>University</FormLabel>
                 <FormControl>
                     <Input id="university"
-                    placeholder={can_data && can_data.university}
+                    placeholder={canData && canData.university}
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
@@ -64,7 +60,7 @@ export function PersonalForm(form: any, {can_data}: {can_data: any}) {
                 <FormLabel>GPA</FormLabel>
                 <FormControl>
                     <Input id="gpa"
-                    placeholder={can_data && (can_data.gpa ? can_data.gpa : 0)}
+                    placeholder={canData && (canData.gpa ? canData.gpa : 0)}
                     {...field}/>
                 </FormControl>
             </FormItem>
@@ -89,33 +85,6 @@ export function PersonalForm(form: any, {can_data}: {can_data: any}) {
             
         )}></FormField> */}
         </>
-            //   <form className={cn("grid items-start gap-4", className)}>
-    //     <div className="grid gap-2">
-    //         <Label>Year</Label>
-    //         <Input id="year" defaultValue="Year" />
-    //     </div>
-
-    //     <div className="grid gap-2">
-    //         <Label>Major</Label>
-    //         <Input id="major" defaultValue="Major" />
-    //     </div>
-
-    //     <div className="grid gap-2">
-    //         <Label>University</Label>
-    //         <Input id="uni" defaultValue="University" />
-    //     </div>
-
-    //     <div className="grid gap-2">
-    //         <Label>GPA</Label>
-    //         <Input id="gpa" defaultValue="No Value" />
-    //     </div>
-        
-    //     <div className="grid gap-2">
-    //         <Label htmlFor="email">Email</Label>
-    //         <Input type="email" id="email" defaultValue="email@domain" />
-    //     </div>
-        
-    //   </form>
     )
   }
   
