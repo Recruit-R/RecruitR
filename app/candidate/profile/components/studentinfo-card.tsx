@@ -60,8 +60,8 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     
 
     const formSchema = z.object({
-        firstName: z.string(),
-        lastName: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
         //about_me: z.string(),
         year: z.string(),
         major: z.string(),
@@ -74,8 +74,8 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstName: canData && canData.first_name,
-            lastName: canData ? canData.last_name : "",
+            first_name: canData && canData.first_name,
+            last_name: canData ? canData.last_name : "",
             //about_me: "",
             year: canData ? canData.major : "",
             major: canData ? canData.major : "",
@@ -122,7 +122,7 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
                                             :
                                             <>NA</>
                                         } */}
-                                    {canData ? <div className="font-bold text-3xl">{canData.firstName && canData.firstName[0]}{canData.lastName && canData.lastName[0]}</div> : <>NA</>}
+                                    {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
                                 </AvatarFallback>
                             </Avatar>

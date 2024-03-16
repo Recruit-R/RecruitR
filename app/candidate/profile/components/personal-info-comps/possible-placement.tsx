@@ -10,7 +10,7 @@ export function PossiblePlacement({ canData }: { canData: any }) {
                 {canData && canData.feedback ? Object.keys(canData.feedback).map((da: any) => {
                     return (
                         <li key={da}>
-                            {canData.feedback?.[da].possiblePlacement}
+                            {canData.feedback?.[da].possible_placement}
                         </li>
                     )
                 }) : <span className="-ml-5">N/A</span>}
