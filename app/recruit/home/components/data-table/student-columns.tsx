@@ -2,12 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox.tsx"
 
 
-import useScreenWidth from "@/hooks/use-screen-width"
-import { years } from "../data/student-data"
-import { DataTableColumnHeader } from "./data-table/data-table-column-header.tsx"
+import useScreenWidth from "@/hooks/use-screen-width.ts"
+import { years } from "../../data/student-data.tsx"
+import { DataTableColumnHeader } from "./data-table-column-header.tsx"
 
 export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
   const widthSize = useScreenWidth()
@@ -95,25 +95,6 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       },
       sortUndefined: -1
     },
-
-    // {
-    //   accessorKey: "title",
-    //   header: ({ column }) => (
-    //     <DataTableColumnHeader column={column} title="Title" />
-    //   ),
-    //   cell: ({ row }) => {
-    //     const label = labels.find((label) => label.value === row.original.label)
-    //
-    //     return (
-    //       <div className="flex space-x-2">
-    //         {label && <Badge variant="outline">{label.label}</Badge>}
-    //         <span className="max-w-[500px] truncate font-medium">
-    //           {row.getValue("title")}
-    //         </span>
-    //       </div>
-    //     )
-    //   },
-    // },
     {
       accessorKey: "year",
       header: ({ column }) => (
@@ -130,9 +111,6 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
 
         return (
           <div className="flex w-[100px] items-center">
-            {/*{status.icon && (*/}
-            {/*  <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />*/}
-            {/*)}*/}
             <span>{year.label}</span>
           </div>
         )

@@ -28,6 +28,7 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
     useEffect(() => {
         setProgressBar(100/(events.length-1) * progress)
     }, [progress])
+
     function addToolTip(content: string, component: React.JSX.Element) {
         return (<TooltipProvider>
             <Tooltip>

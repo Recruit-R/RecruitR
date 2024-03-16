@@ -115,7 +115,6 @@ export function StudentInfoCard({editMode, setEditMode} : StudentInfoCardProps) 
     const router = useRouter()
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("in on submit SHOULD NOT BE CALLING")
         console.log(values)
         console.log(auth!.currentUser!.uid)
         // setEditMode(prevState => !prevState)

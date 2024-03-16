@@ -3,12 +3,12 @@ import { Bold, Italic, Underline } from "lucide-react"
 import {
     ToggleGroup,
     ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+} from "@/components/ui/toggle-group.tsx"
 import {StarFilledIcon} from "@radix-ui/react-icons";
 import {useContext} from "react";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
+import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area.tsx";
 
 export function ToggleGroupDemo() {
     const { currentStudent,

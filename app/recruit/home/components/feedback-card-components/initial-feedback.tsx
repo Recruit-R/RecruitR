@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import * as _ from 'lodash';
-import { useThrottle } from "@/app/hooks/useThrottle.ts";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import { useThrottle } from "@/hooks/useThrottle.ts";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import { XIcon } from "lucide-react";
@@ -31,6 +31,8 @@ export function InitialFeedback() {
         setRating(getFeedback())
     }, [studentList, currRecrFeedback]);
 
+    // repeated hook as useThrottledRequest, but has to handle average rating as well,
+    //  as to why it is repeated
     const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
@@ -45,13 +47,11 @@ export function InitialFeedback() {
                 avgRating = ratings!.reduce((a, b) => a + b) / ratings.length
 
             }
-            // console.log(avgRating)
             addFeedback(currentStudent!.id, JSON.stringify({"rating": rating}), currentUserEditId)
                 .then(e => updateAvgRating(currentStudent!.id, JSON.stringify(avgRating)))
                 .then(r => setSaved(true))
 
             setCurrentStudent((prevState: any) => ({...prevState, "feedback": mergedObject, avgRating: avgRating ?? undefined}))
-            // setCurrentStudent((prevState) => ({...prevState}))
         }
 
     });
