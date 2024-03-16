@@ -14,7 +14,7 @@ async function StudentListLoader() {
     const students = await getStudentList();
     return <Dashboard studentData={students} />
 }
-export async function StudentListWithSuspense({
+async function StudentListWithSuspense({
       students,
   }: {
     students?: StudentList;
