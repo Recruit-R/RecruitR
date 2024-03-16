@@ -57,8 +57,6 @@ export function EventCreateForm({setOpen} : {setOpen: React.Dispatch<React.SetSt
         },
     })
 
-    // 2. Define a submit handler.
-
     function onSubmit(data: any) {
         create(JSON.stringify(data)).then((e) =>
             {refresh()}

@@ -1,7 +1,5 @@
 import ClientComponent from "@/app/candidate/profile/components/client-component";
-import getData from "../../api/getData";
 import React, { useState } from "react";
-import addData from "@/app/api/addData";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
