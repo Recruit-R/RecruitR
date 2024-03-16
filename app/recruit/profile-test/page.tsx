@@ -1,5 +1,7 @@
 'use client'
 
+//this is a testing page used to look at other design options for coordinator or recrutier profile
+
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"

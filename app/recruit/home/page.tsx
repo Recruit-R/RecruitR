@@ -6,8 +6,6 @@ import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
 
-
-
 async function getStudents() {
     const data = await fs.readFile(
         path.join(process.cwd(), "app/recruit/home/data/student_data.json")
@@ -26,9 +24,8 @@ function convert(array: any) {
     })
     return dict;
 }
-export default async function Page() {
-    // const students = await getStudents()
 
+export default async function Page() {
     const students = await getData({
         collection_name: 'users', filter: {
             field: 'role',
@@ -36,19 +33,8 @@ export default async function Page() {
             value: Roles.CANDIDATE
         }
     })
-
-
     const zodStudents = z.record(studentSchema).parse(convert(students))
-
-    // console.log(new_students);
-    // const res = await addData("users", "kvXYrrCRZnyrkHpnmHc5", {"feedback": {"Karen": {"initial_feedback": 1}}})
-    // console.log(res)
-
-    // console.log(new_students);
-    return (
-        // <div>
-        //     testing
-        // </div>
+    return (   
         <ClientComponent students={zodStudents as unknown as StudentList} />
     )
 }
