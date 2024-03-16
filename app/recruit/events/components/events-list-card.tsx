@@ -38,11 +38,7 @@ export function EventsListCard({ title, events }: EventsListCardProps) {
                             </div>
                             {selectedEvent === event && (
                                 <div className="absolute z-10 bg-white p-4 border rounded-md shadow-md">
-                                    {/* Additional information for the hover popup */}
-                                    {/* You can customize this part based on your requirements */}
                                     <div>{event.Title}</div>
-                                    <div>What other info do we want</div>
-                                    <div>Where do we enter details</div>
                                 </div>
                             )}
                         </div>

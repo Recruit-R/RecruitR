@@ -31,6 +31,7 @@ export default function Page() {
         },
     })
 
+    //fetch emails from firebase whitelist
     useEffect(() => {
         const fetchrecruiterEmails = async () => {
             const response = await fetch('/api/whitelist');

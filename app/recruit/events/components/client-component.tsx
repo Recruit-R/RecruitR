@@ -44,6 +44,8 @@ export default function ClientComponent({e} : {e: any}) {
     // Re-run if events change 
     }, [events]); 
 
+    //pass sorted events into two event list cards
+    //one card for future events and one card for past events
     return (
         <EventDataContext.Provider 
         value={{
