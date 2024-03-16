@@ -72,19 +72,12 @@ export function UserNav() {
                         </DropdownMenuItem>
                     </Link>
                     }
-                    <DropdownMenuItem>
-                        Rapid Sign Up
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>Generate QR Code</DropdownMenuItem>
-                    {
-                        auth?.isCoordinator &&
-                        <Link href={"/recruit/manage-recruiters"}>
-                            <DropdownMenuItem>
-                                Manage Recruiters
-                            </DropdownMenuItem>
-                        </Link>
-                    }
+                    {/*<DropdownMenuItem>*/}
+                    {/*    Rapid Sign Up*/}
+                    {/*    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
+                    {/*</DropdownMenuItem>*/}
+                    {/*<DropdownMenuItem>Generate QR Code</DropdownMenuItem>*/}
+
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {
