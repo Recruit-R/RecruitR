@@ -1,10 +1,6 @@
-import {ClassName} from "postcss-selector-parser";
-import {Student} from "@/app/recruit/home/data/student-schema";
 
-
-
-export function StudentInfo({can_data}: {can_data: any}) {
-    //console.log('can data info', can_data);
+export function StudentInfo({canData}: {canData: any}) {
+    //console.log('can data info', canData);
     return (
         <div className="grid flex-1 items-center h-full grid-cols-1 xl:grid-cols-2">
     
@@ -13,8 +9,8 @@ export function StudentInfo({can_data}: {can_data: any}) {
                 Year:
             </span>&nbsp;
             <span>
-            {can_data? 
-                <>{can_data.year}</> :
+            {canData? 
+                <>{canData.year}</> :
                 <span>Loading...</span>
             }
 
@@ -25,8 +21,8 @@ export function StudentInfo({can_data}: {can_data: any}) {
                 Major:
             </span>&nbsp;
             <span>
-            {can_data? 
-                <>{can_data.major}</> :
+            {canData? 
+                <>{canData.major}</> :
                 <span>Loading...</span>
             }
             </span>
@@ -36,8 +32,8 @@ export function StudentInfo({can_data}: {can_data: any}) {
                 University:
             </span>&nbsp;
             <span>
-            {can_data? 
-                <>{can_data.university}</> :
+            {canData? 
+                <>{canData.university}</> :
                 <span>Loading...</span>
             }
             </span>
@@ -47,8 +43,8 @@ export function StudentInfo({can_data}: {can_data: any}) {
                 GPA:
             </span>&nbsp;
             <span>
-            {can_data? 
-                <>{can_data.gpa}</> :
+            {canData? 
+                <>{canData.gpa}</> :
                 <span>Loading...</span>
             }
             </span>
@@ -58,8 +54,8 @@ export function StudentInfo({can_data}: {can_data: any}) {
                 Email:
             </span>&nbsp;
             <span>
-            {can_data? 
-                <>{can_data.email}</> :
+            {canData? 
+                <>{canData.email}</> :
                 <span>Loading...</span>
             }
             </span>
