@@ -3,17 +3,17 @@ import { record, z } from "zod"
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.
 export const feedbackSchema = z.record(z.object({
-  initial_feedback: z.number().optional(),
-  possible_placement: z.string().optional(),
-  known_tech: z.string().array().optional(),
-  text_feedback: z.string().optional(),
+  initialFeedback: z.number().optional(),
+  possiblePlacement: z.string().optional(),
+  knownTech: z.string().array().optional(),
+  textFeedback: z.string().optional(),
   rating: z.number().optional()
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
 export const studentSchema = z.object({
   id: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   university: z.union([z.string(), z.undefined()]),
   year: z.union([z.string(), z.undefined()]),
   gpa: z.union([z.number(), z.undefined()]),
