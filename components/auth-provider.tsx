@@ -2,8 +2,10 @@
 import Roles from "@/app/types/roles";
 import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
+
 
 export function getAuthToken(): string | undefined {
     let token = Cookies.get("firebaseIdToken");
@@ -59,15 +61,17 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [isCoordinator, setIsCoordinator] = useState<boolean>(false);
     const [isRecruiter, setIsRecruiter] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [validSession, setIsValidSession] = useState<boolean>(false);
+    const router = useRouter();
 
     // Triggers when App is started
     useEffect(() => {
         if (!auth) return;
 
+        // Triggers on auth change (user signin/signout)
         return auth.onAuthStateChanged(async (user) => {
-            // Triggers when user signs out
             setIsLoading(true);
+
+            // if user logging out
             if (!user) {
                 setCurrentUser(null);
                 setIsCoordinator(false);
@@ -81,42 +85,71 @@ export const AuthProvider = ({ children }: { children: any }) => {
             if (user) {
                 setCurrentUser(user);
 
-                // Check if is coordinator
+                // Check user role
                 const tokenValues = await user.getIdTokenResult();
                 setIsRecruiter(tokenValues.claims.role === Roles.RECRUITER);
                 setIsCoordinator(tokenValues.claims.role === Roles.COORDINATOR);
 
-                // check if user exists in database 
+                const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
-                const userResponse = await fetch(`/api/users`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        uid: user.uid,
-                        email: user.email,
-                        name: user.displayName,
-                    }),
-                });
-                console.log('userresponse', userResponse);
+                console.log("isNewUser", isNewUser);
 
+                // make new user in db if user is new, get user role
+                let userResponse;
+                if (isNewUser) {
+                    userResponse = await fetch(`/api/users`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            uid: user.uid,
+                            email: user.email,
+                            name: user.displayName,
+                        }),
+                    });
+                } else {
+                    userResponse = await fetch(`/api/users`, {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                }
+
+                console.log('user response', userResponse);
+                // check user role and update states
                 if (userResponse.ok) {
                     const userJson = await userResponse.json();
-                    if (userJson?.role) {
-                        setIsCoordinator(userJson.role === Roles.COORDINATOR);
-                        setIsRecruiter(userJson.role === Roles.RECRUITER);
-                    }
+                    console.log('userjson:', userJson);
+                    setIsCoordinator(userJson.role === Roles.COORDINATOR);
+                    setIsRecruiter(userJson.role === Roles.RECRUITER);
+
+
+                    // set auth token
+                    setAuthToken(await user.getIdToken(true).then((res) => {
+                        setIsLoading(false);
+                        return res;
+                    }));
                 } else {
-                    console.error("Could not get user info");
+                    console.error("Could not get user info, returned error code:", userResponse.status);
                 }
-                setAuthToken(await user.getIdToken(true).then((res) => {
-                    setIsLoading(false);
-                    return res;
-                }));
+
             }
         });
     }, []);
+
+
+    useEffect(() => {
+        // on auth change, redirect to correct page
+        console.log('rerouting', isCoordinator, isRecruiter);
+        if (isCoordinator || isRecruiter) {
+            router.push('/recruit/home');
+        } else {
+            router.push('/candidate/profile');
+        }
+    }, [isCoordinator, isRecruiter, router]);
+
 
     function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve, reject) => {
