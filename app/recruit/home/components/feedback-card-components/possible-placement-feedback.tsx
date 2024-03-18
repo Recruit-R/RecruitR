@@ -1,13 +1,14 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import React, { FormEvent, useContext, useEffect, useState } from "react";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
-import { useThrottle } from "@/app/hooks/useThrottle.ts";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+import { useThrottle } from "@/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
 import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 
-export function PossiblePlacement() {
+export function PossiblePlacementFeedback() {
     const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management"]
     const { currentStudent,
         setCurrentStudent, studentList,
@@ -22,26 +23,13 @@ export function PossiblePlacement() {
         setPlacementFeedback(getFeedback)
     }, [studentList, currRecrFeedback]);
 
-    const throttledRequest = useThrottle(() => {
-        // send request to the backend
-        // access to latest state here
-        if (editable()) {
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "possible_placement": placementFeedback } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "possible_placement": placementFeedback }), currentUserEditId).then(r => setSaved(true))
-            setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "possible_placement": placementFeedback },
+        localData: { "possible_placement": placementFeedback },
+        dependency: placementFeedback,
+    })
 
-        }
-
-    });
-    // function handleEvent(e: FormEvent<HTMLButtonElement>| undefined) {
-    //     console.log(e)
-    //     placementFeedback = e?.target.
-    // }
-
-    useEffect(() => {
-        setSaved(false)
-        throttledRequest();
-    }, [placementFeedback]);
     return (
         <div className="space-y-1">
             <ElementTitle title={"Possible Placement"} />

@@ -1,40 +1,41 @@
-import ClientComponent from "@/app/recruit/home/components/client-component";
+import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
 import { StudentList, studentSchema } from "@/app/recruit/home/data/student-schema";
 import Roles from "@/app/types/roles";
 import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
+import {getStudentList} from "@/app/recruit/home/actions.ts";
+import {Suspense} from "react";
+import {headers} from "next/headers";
 
-async function getStudents() {
-    const data = await fs.readFile(
-        path.join(process.cwd(), "app/recruit/home/data/student_data.json")
+
+async function StudentListLoader() {
+    const students = await getStudentList();
+    return <Dashboard studentData={students} />
+}
+async function StudentListWithSuspense({
+      students,
+  }: {
+    students?: StudentList;
+}) {
+    if (students) {
+        return <Dashboard studentData={students} />
+    }
+
+    return (
+        <Suspense fallback={"Testing Loader"}>
+            <StudentListLoader />
+        </Suspense>
     )
-
-    const tasks = JSON.parse(data.toString())
-
-    return z.array(studentSchema).parse(tasks)
 }
-
-function convert(array: any) {
-    var dict: {[key: string]: any} = {}
-    array.forEach((e: any) => {
-        let id = e.id as string
-        dict[id] = e
-    })
-    return dict;
-}
-
 export default async function Page() {
-    const students = await getData({
-        collection_name: 'users', filter: {
-            field: 'role',
-            operator: (a: string, b: string) => a === b,
-            value: Roles.CANDIDATE
-        }
-    })
-    const zodStudents = z.record(studentSchema).parse(convert(students))
-    return (   
-        <ClientComponent students={zodStudents as unknown as StudentList} />
+
+    let students: StudentList | undefined;
+    if (headers().get("accept")?.includes("text/html")) {
+        students = await getStudentList();
+    }
+    return (
+        <StudentListWithSuspense students={students} />
     )
 }

@@ -3,19 +3,20 @@ import { Label } from "@/components/ui/label.tsx";
 import React, { FormEvent, FormEventHandler, useContext, useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { boolean, z } from "zod";
-import { useThrottle } from "@/app/hooks/useThrottle.ts";
-import useStateCallback from "@/app/hooks/useStateCallback.ts";
+import { useThrottle } from "@/hooks/useThrottle.ts";
+import useStateCallback from "@/hooks/useStateCallback.ts";
 import addData from "@/app/api/addData.ts";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
 import { bool } from "prop-types";
 import { Form } from "@/components/ui/form.tsx";
 import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import _ from "lodash";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 
-export function KnownTech() {
+export function KnownTechFeedback() {
     const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
     const { currentStudent,
         setCurrentStudent,
@@ -28,33 +29,15 @@ export function KnownTech() {
     const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
 
     useEffect(() => {
-        console.log(currentStudent?.feedback?.[currRecrFeedback]?.known_tech)
-        console.log(`CURR RECRUITER FEEDBACK ${currRecrFeedback}`)
-        console.log(`CURRENT STUDENT FEEDBACK ${JSON.stringify(currentStudent?.feedback)}`)
-
         setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
     }, [studentList, currRecrFeedback]);
 
-    // useEffect(() => {
-    //     console.log(currentStudent?.feedback)
-    // }, [currentStudent]);
-
-
-    const throttledRequest = useThrottle(() => {
-        // send request to the backend
-        // access to latest state here
-        if (editable()) {
-            const knownTechFeedback = { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "known_tech": knownLanguages }
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: knownTechFeedback });
-            addFeedback(currentStudent!.id, JSON.stringify({ "known_tech": knownLanguages }), currentUserEditId).then(e => (setSaved(true)))
-            setCurrentStudent((prevState: any) => ({ ...prevState, feedback: mergedObject }))
-        }
-    });
-    useEffect(() => {
-        console.log(knownLanguages)
-        setSaved(false)
-        throttledRequest();
-    }, [knownLanguages]);
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "known_tech": knownLanguages },
+        localData: { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "known_tech": knownLanguages },
+        dependency: knownLanguages
+    })
     const handleCheckedChange = (event: CheckedState, language: string) => {
         console.log(event)
         setKnownLanguages(
@@ -63,8 +46,6 @@ export function KnownTech() {
                     ? [...prevLanguages, language]
                     : prevLanguages.filter((lang) => lang !== language));
     }
-
-
     return (
         <div className="space-y-1 max-md:pb-4">
             <ElementTitle title={"Known Tech"}/>

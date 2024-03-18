@@ -18,7 +18,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {useContext, useEffect} from "react";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
 
 const frameworks = [
     {

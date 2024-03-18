@@ -1,35 +1,23 @@
 "use client"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-import {Label} from "@/components/ui/label";
-import {Checkbox} from "@/components/ui/checkbox";
-import {StudentInfo} from "@/app/recruit/home/components/student-info";
-import Link from "next/link";
-import {Bold, ChevronLeft, Italic, Underline, Loader2, RefreshCcw} from "lucide-react";
+import {StudentInfo} from "@/app/recruit/home/components/data-table/student-info.tsx";
+import {ChevronLeft, RefreshCcw} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useContext, useEffect} from "react";
-import {PossiblePlacement} from "@/app/recruit/home/components/feedback-card-components/possible-placement.tsx";
-import {Textarea} from "@/components/ui/textarea";
-import {cn} from "@/lib/utils";
-import {Feedback, Student} from "@/app/recruit/home/data/student-schema";
-import {useAmp} from "next/amp";
-import {json} from "node:stream/consumers";
-import {KnownTech} from "@/app/recruit/home/components/feedback-card-components/known-tech.tsx";
+import {PossiblePlacementFeedback} from "@/app/recruit/home/components/feedback-card-components/possible-placement-feedback.tsx";
+import {Student} from "@/app/recruit/home/data/student-schema";
+import {KnownTechFeedback} from "@/app/recruit/home/components/feedback-card-components/known-tech-feedback.tsx";
 import {InitialFeedback} from "@/app/recruit/home/components/feedback-card-components/initial-feedback.tsx";
-import getData from "@/app/api/getData.ts";
-import {get_student_feedback} from "@/app/recruit/home/actions.ts";
 import {TextFeedback} from "@/app/recruit/home/components/feedback-card-components/text-feedback.tsx";
-import {ToggleGroup, ToggleGroupItem} from "@radix-ui/react-toggle-group";
-import {ToggleGroupDemo} from "@/app/recruit/home/components/feedback-card-components/toggle-component-test.tsx";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/client-component.tsx";
-import {BsCloudCheck, BsDownload, BsEye} from "react-icons/bs";
-import {ComboboxDemo} from "@/app/recruit/home/components/dev-components/ComboboxDemo.tsx";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
+import {BsCloudCheck, BsEye} from "react-icons/bs";
 import {Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {
     RatingRecruiterFeedback
 } from "@/app/recruit/home/components/feedback-card-components/rating-recruiter-feedback.tsx";
+
 interface FeedbackCardProps {
     feedbackFocus: boolean,
     setStudentView: React.Dispatch<React.SetStateAction<boolean>>,
@@ -85,50 +73,34 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                 </CardHeader>
 
                 <CardContent className={"flex flex-col divide-y space-y-4"}>
-                    <div className={"flex-row flex"}>
-                        <RatingRecruiterFeedback/>
-                        {/*<ComboboxDemo />*/}
-                    </div>
+                    <RatingRecruiterFeedback/>
                     <div className={c("flex flex-col flex-wrap py-4 gap-6", "xl:grid xl:grid-cols-2 xl:gap-x-4")}>
                         <div className="flex flex-col gap-6">
                             <InitialFeedback/>
                             <div className={c("flex flex-col", "xl:hidden")}>
                                 <div className={"flex flex-row items-center justify-between pb-2"}>
                                     <span className="text-2xl font-medium pb-1">Student Info</span>
-                                    <div className="">
-                                        <Button variant={"ghost"}
-                                               className={"font-medium text-muted-foreground text-lg"}
-                                               disabled={!currentStudent?.resumeURL}
-                                        >
-                                           <Link href={`${currentStudent?.resumeURL && currentStudent!.resumeURL}`}>
-                                           <BsDownload className="h-5 w-5 mr-2 stroke-1"/> Resume
-
-                                           </Link>
-                                        </Button>
-                                    </div>
                                 </div>
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
-
-                            <PossiblePlacement/>
-                            <KnownTech/>
-
-
+                            <PossiblePlacementFeedback/>
+                            <KnownTechFeedback/>
                         </div>
+
                         <div className="flex flex-col gap-6">
                             <TextFeedback/>
                         </div>
                     </div>
+
                     <Separator/>
+
                     <Timeline
                         events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
                         currEvent={"Interview 3"}
                         editable={false}
                         c={c}
                     />
-                    {/*<PossiblePlacement/>*/}
-
                 </CardContent>
             </Card>
         </>

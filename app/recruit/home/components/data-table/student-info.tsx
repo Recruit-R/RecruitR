@@ -1,5 +1,5 @@
 import { ClassName } from "postcss-selector-parser";
-import { Student } from "@/app/recruit/home/data/student-schema";
+import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import { BsCloudDownload } from "react-icons/bs";
