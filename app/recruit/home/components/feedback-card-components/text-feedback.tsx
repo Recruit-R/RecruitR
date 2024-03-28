@@ -5,16 +5,18 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { z } from "zod";
 import { feedbackSchema } from "@/app/recruit/home/data/student-schema.ts";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import { useThrottle } from "@/app/hooks/useThrottle.ts";
+import { useThrottle } from "@/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 export function TextFeedback() {
     const { currentStudent,
         setCurrentStudent,
         studentList, saved,
         setSaved,
-        tempCurrentUser,
+        currentUserEditId,
         currRecrFeedback,
         editable,
     } = useContext(StudentDataContext) as StudentDataContextType
@@ -26,31 +28,21 @@ export function TextFeedback() {
     }, [studentList, currRecrFeedback]);
 
 
-    const throttledRequest = useThrottle(() => {
-        // send request to the backend
-        // access to latest state here
-        if (currRecrFeedback === tempCurrentUser) {
-
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [tempCurrentUser]: { "text_feedback": value } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), tempCurrentUser).then(r => setSaved(true))
-            setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
-        }
-    });
-    useEffect(() => {
-        setSaved(false)
-        throttledRequest();
-    }, [value])
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "text_feedback": value },
+        localData: { "text_feedback": value },
+        dependency: value,
+    })
 
     return (
-        <>
-            <p className="font-bold pb-2 text-lg">
-                Text Feedback
-            </p>
+        <div>
+            <ElementTitle title={"Text Feedback"} />
             <Textarea className="h-96"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 disabled={!editable()}
             />
-        </>
+        </div>
     )
 }

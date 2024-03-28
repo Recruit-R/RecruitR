@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as z from 'zod';
 
 import { useAuth } from "@/components/auth-provider";
@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,7 +20,6 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
     const [authSuccessful, setAuthSuccessful] = useState<boolean>(true);
     const [authError, setAuthError] = useState<any>(null);
-    const router = useRouter();
     const formSchema = z.object({
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
@@ -60,8 +58,14 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        // verify auth is available
+        if (auth === null) {
+            console.error("Auth not available");
+            return;
+        }
+
         if (signup) {
-            auth?.createAccountEmail({ email: values.email, password: values.password }).then(() => {
+            auth.createAccountEmail({ email: values.email, password: values.password }).then(() => {
             }).catch((error) => {
                 if (error.code === 'auth/email-already-in-use') {
                     setAuthError(SignupFailure);
@@ -71,7 +75,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 setAuthSuccessful(false);
             });
         } else {
-            auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
+            auth.loginEmail({ email: values.email, password: values.password }).then(() => {
             }).catch((error) => {
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                     setAuthError(LoginFailure);
@@ -83,16 +87,6 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             });
         }
     }
-
-    useEffect(() => {
-        if (!auth?.isLoading && auth?.currentUser) {
-            if (auth?.isCoordinator || auth?.isRecruiter) {
-                router.push('/recruit/home');
-            } else {
-                router.push('/candidate/profile');
-            }
-        }
-    }, [auth?.isLoading, auth?.currentUser, auth?.isCoordinator, auth?.isRecruiter, router])
 
     return (
         <div className='grid gap-6' {...props}>
@@ -183,7 +177,6 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 type="button"
                 disabled={auth?.isLoading}
                 onClick={() => {
-                    console.log('clicked the fucking google login button', auth);
                     auth?.loginGoogle();
                 }}
                 className='w-full'>

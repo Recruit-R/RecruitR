@@ -1,46 +1,41 @@
-import ClientComponent from "@/app/recruit/home/components/client-component";
+import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
 import { StudentList, studentSchema } from "@/app/recruit/home/data/student-schema";
 import Roles from "@/app/types/roles";
 import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import getData from "../../api/getData";
+import {getStudentList} from "@/app/recruit/home/actions.ts";
+import {Suspense} from "react";
+import {headers} from "next/headers";
 
 
-
-async function getStudents() {
-    const data = await fs.readFile(
-        path.join(process.cwd(), "app/recruit/home/data/student_data.json")
-    )
-
-    const tasks = JSON.parse(data.toString())
-
-    return z.array(studentSchema).parse(tasks)
+async function StudentListLoader() {
+    const students = await getStudentList();
+    return <Dashboard studentData={students} />
 }
+async function StudentListWithSuspense({
+      students,
+  }: {
+    students?: StudentList;
+}) {
+    if (students) {
+        return <Dashboard studentData={students} />
+    }
 
-export default async function Page() {
-    // const students = await getStudents()
-
-    const students = await getData({
-        collection_name: 'users', filter: {
-            field: 'role',
-            operator: (a: string, b: string) => a === b,
-            value: Roles.CANDIDATE
-        }
-    })
-
-
-    const zodStudents = z.array(studentSchema).parse(students)
-
-    // console.log(new_students);
-    // const res = await addData("users", "kvXYrrCRZnyrkHpnmHc5", {"feedback": {"Karen": {"initial_feedback": 1}}})
-    // console.log(res)
-
-    // console.log(new_students);
     return (
-        // <div>
-        //     testing
-        // </div>
-        <ClientComponent students={zodStudents as unknown as StudentList} />
+        <Suspense fallback={"Testing Loader"}>
+            <StudentListLoader />
+        </Suspense>
+    )
+}
+export default async function Page() {
+
+    let students: StudentList | undefined;
+    if (headers().get("accept")?.includes("text/html")) {
+        students = await getStudentList();
+    }
+    return (
+        <StudentListWithSuspense students={students} />
     )
 }
