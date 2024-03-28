@@ -130,6 +130,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
                 } else {
                     console.error("Could not get user info, returned error code:", userResponse);
+                    removeAuthToken();
                     setIsLoading(false);
                 }
 
