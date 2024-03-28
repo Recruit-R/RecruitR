@@ -177,7 +177,9 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 type="button"
                 disabled={auth?.isLoading}
                 onClick={() => {
-                    auth?.loginGoogle();
+                    auth?.loginGoogle().catch((error) => {
+                        console.log(error);
+                    });
                 }}
                 className='w-full'>
                 {auth?.isLoading ? (
