@@ -42,8 +42,7 @@ type EmailAccountProps = {
 
 type AuthContextType = {
     currentUser: User | null;
-    isCoordinator: boolean;
-    isRecruiter: boolean;
+    userRole: Roles | null;
     isLoading: boolean;
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
@@ -58,8 +57,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [isCoordinator, setIsCoordinator] = useState<boolean>(false);
-    const [isRecruiter, setIsRecruiter] = useState<boolean>(false);
+    const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
 
@@ -74,8 +72,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             // if user logging out
             if (!user) {
                 setCurrentUser(null);
-                setIsCoordinator(false);
-                setIsRecruiter(false);
+                setUserRole(null);
                 removeAuthToken();
                 setIsLoading(false);
                 return;
@@ -90,9 +87,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setCurrentUser(user);
 
                 // Check user role
-                const tokenValues = await user.getIdTokenResult();
-                setIsRecruiter(tokenValues.claims.role === Roles.RECRUITER);
-                setIsCoordinator(tokenValues.claims.role === Roles.COORDINATOR);
+                // const tokenValues = await user.getIdTokenResult();
+                // setUserRole(tokenValues.claims.role as Roles);
 
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
@@ -130,8 +126,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         return json;
                     });
                     console.log('userjson:', userJson);
-                    setIsCoordinator(userJson.role === Roles.COORDINATOR);
-                    setIsRecruiter(userJson.role === Roles.RECRUITER);
+                    setUserRole(userJson.role as Roles);
 
                 } else {
                     console.error("Could not get user info, returned error code:", userResponse);
@@ -145,13 +140,14 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     useEffect(() => {
         // on auth change, redirect to correct page
-        console.log('rerouting', isCoordinator, isRecruiter);
-        if (isCoordinator || isRecruiter) {
+        console.log('rerouting', userRole);
+        if (userRole === null) return;
+        if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
             router.push('/recruit/home');
         } else {
             router.push('/candidate/profile');
         }
-    }, [isCoordinator, isRecruiter, router]);
+    }, [userRole, router]);
 
 
     function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
@@ -231,8 +227,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         <AuthContext.Provider
             value={{
                 currentUser,
-                isCoordinator,
-                isRecruiter,
+                userRole,
                 isLoading,
                 getAuthToken,
                 refresh,
