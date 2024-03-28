@@ -81,8 +81,12 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 return;
             }
 
-            const token = await user.getIdToken(true);
             if (user) {
+                const token = await user.getIdToken(true).then((token) => {
+                    // set auth token
+                    setAuthToken(token);
+                    return token;
+                });
                 setCurrentUser(user);
 
                 // Check user role
@@ -92,7 +96,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
-                console.log("isNewUser", isNewUser);
+                console.log("isNewUser", user);
 
                 // make new user in db if user is new, get user role
                 let userResponse;
@@ -109,7 +113,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         }),
                     });
                 } else {
-                    userResponse = await fetch(`/api/users`, {
+                    userResponse = await fetch(`/api/users?` + new URLSearchParams({
+                        uid: user.uid,
+                    }), {
                         method: 'GET',
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -117,22 +123,19 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     });
                 }
 
-                console.log('user response', userResponse);
                 // check user role and update states
                 if (userResponse.ok) {
-                    const userJson = await userResponse.json();
+                    const userJson = await userResponse.json().then((json) => {
+                        setIsLoading(false);
+                        return json;
+                    });
                     console.log('userjson:', userJson);
                     setIsCoordinator(userJson.role === Roles.COORDINATOR);
                     setIsRecruiter(userJson.role === Roles.RECRUITER);
 
-
-                    // set auth token
-                    setAuthToken(await user.getIdToken(true).then((res) => {
-                        setIsLoading(false);
-                        return res;
-                    }));
                 } else {
-                    console.error("Could not get user info, returned error code:", userResponse.status);
+                    console.error("Could not get user info, returned error code:", userResponse);
+                    setIsLoading(false);
                 }
 
             }
