@@ -76,6 +76,11 @@ export async function POST(
             email: body.email,
             role: role
         }
+        // verify user does not already exist
+        const userDocument = await firestore.doc(`users/${user!.uid}`).get();
+        if (userDocument.exists) {
+            return NextResponse.json(userData);
+        }
 
         // push user data to firestore and add custom claims data
         await firestore.doc(`users/${user!.uid}`).create(userData);
