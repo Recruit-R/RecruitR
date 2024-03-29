@@ -126,6 +126,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         return json;
                     });
                     console.log('userjson:', userJson);
+                    await user.getIdToken(true).then((token) => {
+                        // set auth token
+                        setAuthToken(token);
+                    });
                     setUserRole(userJson.role as Roles);
 
                 } else {
