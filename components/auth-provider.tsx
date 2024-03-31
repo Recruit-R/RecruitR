@@ -92,8 +92,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
-                console.log("isNewUser", user);
-
                 // make new user in db if user is new, get user role
                 let userResponse;
                 if (isNewUser) {
@@ -125,7 +123,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         setIsLoading(false);
                         return json;
                     });
-                    console.log('userjson:', userJson);
                     await user.getIdToken(true).then((token) => {
                         // set auth token
                         setAuthToken(token);
@@ -145,7 +142,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     useEffect(() => {
         // on auth change, redirect to correct page
-        console.log('rerouting', userRole);
         if (userRole === null) return;
         if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
             router.push('/recruit/home');
