@@ -2,7 +2,7 @@
 import Roles from "@/app/types/roles";
 import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
 
@@ -60,9 +60,11 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const pathname = usePathname();
 
     // Triggers when App is started
     useEffect(() => {
+        console.log('loading this cause what the fuck');
         if (!auth) return;
 
         // Triggers on auth change (user signin/signout)
@@ -143,10 +145,14 @@ export const AuthProvider = ({ children }: { children: any }) => {
     useEffect(() => {
         // on auth change, redirect to correct page
         if (userRole === null) return;
-        if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
-            router.push('/recruit/home');
+        if (pathname === '/auth/login' || pathname === '/auth/signup') {
+            if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
+                // if (router.)
+            } else {
+                router.push('/candidate/profile');
+            }
         } else {
-            router.push('/candidate/profile');
+            router.forward();
         }
     }, [userRole, router]);
 
