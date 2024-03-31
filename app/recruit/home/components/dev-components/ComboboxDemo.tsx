@@ -17,8 +17,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import {useContext, useEffect} from "react";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
+import { useContext, useEffect } from "react";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 
 const frameworks = [
     {
@@ -36,12 +36,11 @@ const frameworks = [
 ]
 
 export function ComboboxDemo() {
-    const { setCurrRecrFeedback , currentUserEditId} = useContext(StudentDataContext) as StudentDataContextType
+    const { setCurrRecrFeedback, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState(currentUserEditId.toLowerCase())
 
     useEffect(() => {
-        console.log(currentUserEditId)
         if (frameworks.some(e => e.value == value)) {
             // setTempCurrentUser(value.charAt(0).toUpperCase() + value.slice(1))
             setCurrRecrFeedback(value.charAt(0).toUpperCase() + value.slice(1))
