@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+// import microsoft icon
+import { BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
@@ -188,6 +190,24 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     <Icons.google className="mr-2 h-4 w-4" />
                 )}{" "}
                 Google
+            </Button>
+            <Button
+                variant="outline"
+                type="button"
+                disabled={auth?.isLoading}
+                onClick={() => {
+                    auth?.loginMicrosoft().catch((error) => {
+                        console.log(error);
+                    });
+                }}
+                className='w-full'
+            >
+                {auth?.isLoading ? (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                    <BsMicrosoft className="mr-2 h-4 w-4" />
+                )}{" "}
+                Microsoft
             </Button>
         </div>
     )

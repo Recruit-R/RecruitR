@@ -1,11 +1,10 @@
 "use client";
 import Roles from "@/app/types/roles";
-import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
-
 
 export function getAuthToken(): string | undefined {
     let token = Cookies.get("firebaseIdToken");
@@ -47,6 +46,7 @@ type AuthContextType = {
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    loginMicrosoft: () => Promise<void>;
     loginGoogle: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
     const pathname = usePathname();
+
 
     // Triggers when App is started
     useEffect(() => {
@@ -203,9 +204,31 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new GoogleAuthProvider())
                 .then((user) => {
                     resolve();
+                    setIsLoading(false);
                 })
                 .catch(() => {
                     console.error("signing in with google failed");
+                    reject();
+                    setIsLoading(false);
+                });
+        });
+    }
+
+    function loginMicrosoft(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setIsLoading(true);
+            if (!auth) {
+                reject();
+                return;
+            }
+            signInWithPopup(auth, new OAuthProvider('microsoft.com'))
+                .then((user) => {
+                    console.log(user);
+                    resolve();
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("signing in with microsoft failed", error);
                     reject();
                     setIsLoading(false);
                 });
@@ -223,8 +246,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     removeAuthToken();
                     resolve();
                 })
-                .catch(() => {
-                    console.error("signing out failed");
+                .catch((error) => {
+                    console.error("signing out failed", error);
                     reject();
                 });
         });
@@ -240,6 +263,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 refresh,
                 setIsLoading,
                 loginGoogle,
+                loginMicrosoft,
                 loginEmail,
                 createAccountEmail,
                 logout,
