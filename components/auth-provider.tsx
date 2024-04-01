@@ -48,6 +48,7 @@ type AuthContextType = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     loginMicrosoft: () => Promise<void>;
     loginGoogle: () => Promise<void>;
+    loginGithub: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     logout: () => Promise<void>;
@@ -235,6 +236,26 @@ export const AuthProvider = ({ children }: { children: any }) => {
         });
     }
 
+    function loginGithub(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setIsLoading(true);
+            if (!auth) {
+                reject();
+                return;
+            }
+            signInWithPopup(auth, new OAuthProvider('github.com'))
+                .then((user) => {
+                    resolve();
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("signing in with github failed", error);
+                    reject();
+                    setIsLoading(false);
+                });
+        });
+    }
+
     function logout(): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!auth) {
@@ -264,6 +285,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setIsLoading,
                 loginGoogle,
                 loginMicrosoft,
+                loginGithub,
                 loginEmail,
                 createAccountEmail,
                 logout,
