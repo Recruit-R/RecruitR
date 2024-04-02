@@ -1,11 +1,10 @@
 "use client";
 import Roles from "@/app/types/roles";
-import { GoogleAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
-
 
 export function getAuthToken(): string | undefined {
     let token = Cookies.get("firebaseIdToken");
@@ -22,19 +21,6 @@ export function removeAuthToken(): void {
     return Cookies.remove("firebaseIdToken");
 }
 
-export async function refresh(currentUser: User): Promise<boolean> {
-    return currentUser
-        .getIdToken(true) // true will force token refresh
-        .then(async () => {
-            setAuthToken(await currentUser.getIdToken(true))
-            return true;
-        })
-        .catch(() => {
-            console.error("Error refreshing token");
-            return false;
-        })
-}
-
 type EmailAccountProps = {
     email: string;
     password: string;
@@ -47,7 +33,9 @@ type AuthContextType = {
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    loginMicrosoft: () => Promise<void>;
     loginGoogle: () => Promise<void>;
+    loginGithub: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
     logout: () => Promise<void>;
@@ -60,6 +48,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const pathname = usePathname();
+
 
     // Triggers when App is started
     useEffect(() => {
@@ -143,13 +133,34 @@ export const AuthProvider = ({ children }: { children: any }) => {
     useEffect(() => {
         // on auth change, redirect to correct page
         if (userRole === null) return;
-        if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
-            router.push('/recruit/home');
+        if (pathname === '/auth/login' || pathname === '/auth/signup') {
+            if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
+                router.push('/recruit/home');
+            } else {
+                router.push('/candidate/profile');
+            }
         } else {
-            router.push('/candidate/profile');
+            if (pathname === '/auth/refresh') {
+                router.back();
+            }
         }
     }, [userRole, router]);
 
+    async function refresh(currentUser: User): Promise<boolean> {
+        return currentUser
+            .getIdToken(true) // true will force token refresh
+            .then(async (token) => {
+                setAuthToken(token)
+                if (pathname === '/auth/refresh') {
+                    router.back();
+                }
+                return true;
+            })
+            .catch(() => {
+                console.error("Error refreshing token");
+                return false;
+            })
+    }
 
     function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -197,9 +208,51 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new GoogleAuthProvider())
                 .then((user) => {
                     resolve();
+                    setIsLoading(false);
                 })
                 .catch(() => {
                     console.error("signing in with google failed");
+                    reject();
+                    setIsLoading(false);
+                });
+        });
+    }
+
+    function loginMicrosoft(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setIsLoading(true);
+            if (!auth) {
+                reject();
+                return;
+            }
+            signInWithPopup(auth, new OAuthProvider('microsoft.com'))
+                .then((user) => {
+                    console.log(user);
+                    resolve();
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("signing in with microsoft failed", error);
+                    reject();
+                    setIsLoading(false);
+                });
+        });
+    }
+
+    function loginGithub(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setIsLoading(true);
+            if (!auth) {
+                reject();
+                return;
+            }
+            signInWithPopup(auth, new OAuthProvider('github.com'))
+                .then((user) => {
+                    resolve();
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("signing in with github failed", error);
                     reject();
                     setIsLoading(false);
                 });
@@ -217,8 +270,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     removeAuthToken();
                     resolve();
                 })
-                .catch(() => {
-                    console.error("signing out failed");
+                .catch((error) => {
+                    console.error("signing out failed", error);
                     reject();
                 });
         });
@@ -234,6 +287,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 refresh,
                 setIsLoading,
                 loginGoogle,
+                loginMicrosoft,
+                loginGithub,
                 loginEmail,
                 createAccountEmail,
                 logout,
