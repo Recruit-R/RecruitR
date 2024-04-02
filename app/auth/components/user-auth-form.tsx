@@ -23,6 +23,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const [authSuccessful, setAuthSuccessful] = useState<boolean>(true);
     const [authError, setAuthError] = useState<any>(null);
     const formSchema = z.object({
+        name: z.string(),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
@@ -30,6 +31,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
         },
@@ -95,8 +97,35 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-2">
-                        <div className="grid gap-1">
+                    <div className="grid gap-1">
+                        <div className="grid mb-1">
+                            {signup && (
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="sr-only" htmlFor="name">
+                                                Name
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="name"
+                                                    placeholder="name"
+                                                    type="name"
+                                                    autoCapitalize="none"
+                                                    autoComplete="name"
+                                                    autoCorrect="off"
+                                                    disabled={auth?.isLoading}
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            {signup && <FormMessage className="text-center" />}
+
+                                        </FormItem>
+                                    )}>
+                                </FormField>
+                            )}
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -108,7 +137,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                         <FormControl>
                                             <Input
                                                 id="email"
-                                                placeholder="name@example.com"
+                                                placeholder="email@example.com"
                                                 type="email"
                                                 autoCapitalize="none"
                                                 autoComplete="email"
