@@ -21,19 +21,6 @@ export function removeAuthToken(): void {
     return Cookies.remove("firebaseIdToken");
 }
 
-export async function refresh(currentUser: User): Promise<boolean> {
-    return currentUser
-        .getIdToken(true) // true will force token refresh
-        .then(async () => {
-            setAuthToken(await currentUser.getIdToken(true))
-            return true;
-        })
-        .catch(() => {
-            console.error("Error refreshing token");
-            return false;
-        })
-}
-
 type EmailAccountProps = {
     email: string;
     password: string;
@@ -66,7 +53,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     // Triggers when App is started
     useEffect(() => {
-        console.log('loading this cause what the fuck');
         if (!auth) return;
 
         // Triggers on auth change (user signin/signout)
@@ -149,15 +135,32 @@ export const AuthProvider = ({ children }: { children: any }) => {
         if (userRole === null) return;
         if (pathname === '/auth/login' || pathname === '/auth/signup') {
             if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
-                // if (router.)
+                router.push('/recruit/home');
             } else {
                 router.push('/candidate/profile');
             }
         } else {
-            router.forward();
+            if (pathname === '/auth/refresh') {
+                router.back();
+            }
         }
     }, [userRole, router]);
 
+    async function refresh(currentUser: User): Promise<boolean> {
+        return currentUser
+            .getIdToken(true) // true will force token refresh
+            .then(async (token) => {
+                setAuthToken(token)
+                if (pathname === '/auth/refresh') {
+                    router.back();
+                }
+                return true;
+            })
+            .catch(() => {
+                console.error("Error refreshing token");
+                return false;
+            })
+    }
 
     function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve, reject) => {
