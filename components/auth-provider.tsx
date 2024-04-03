@@ -1,6 +1,8 @@
 "use client";
+import { addCandidateData } from "@/app/candidate/profile/actions";
 import Roles from "@/app/types/roles";
-import { GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { splitName } from "@/lib/utils";
+import { GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -22,6 +24,7 @@ export function removeAuthToken(): void {
 }
 
 type EmailAccountProps = {
+    name?: string;
     email: string;
     password: string;
 };
@@ -77,9 +80,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setCurrentUser(user);
 
                 // Check user role
-                // const tokenValues = await user.getIdTokenResult();
-                // setUserRole(tokenValues.claims.role as Roles);
-
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
                 // make new user in db if user is new, get user role
@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         body: JSON.stringify({
                             uid: user.uid,
                             email: user.email,
-                            name: user.displayName,
+                            name: user.displayName ?? "john doe",
                         }),
                     });
                 } else {
@@ -146,6 +146,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         }
     }, [userRole, router]);
 
+
     async function refresh(currentUser: User): Promise<boolean> {
         return currentUser
             .getIdToken(true) // true will force token refresh
@@ -162,14 +163,20 @@ export const AuthProvider = ({ children }: { children: any }) => {
             })
     }
 
-    function createAccountEmail({ email, password }: EmailAccountProps): Promise<void> {
+    function createAccountEmail({ name, email, password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!auth) {
                 reject();
                 return;
             }
             createUserWithEmailAndPassword(auth, email, password)
-                .then((user) => {
+                .then((res) => {
+                    updateProfile(res.user, { displayName: name });
+                    const sepName = splitName(name);
+                    addCandidateData(res.user.uid as string, {
+                        first_name: sepName[0],
+                        last_name: sepName[1]
+                    })
                     resolve();
                 })
                 .catch((error) => {

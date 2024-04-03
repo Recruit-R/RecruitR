@@ -69,7 +69,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         }
 
         if (signup) {
-            auth.createAccountEmail({ email: values.email, password: values.password }).then(() => {
+            auth.createAccountEmail({ name: values.name, email: values.email, password: values.password }).then(() => {
             }).catch((error) => {
                 if (error.code === 'auth/email-already-in-use') {
                     setAuthError(SignupFailure);
