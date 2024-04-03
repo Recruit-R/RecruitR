@@ -17,6 +17,9 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {
     RatingRecruiterFeedback
 } from "@/app/recruit/home/components/feedback-card-components/rating-recruiter-feedback.tsx";
+import {useAuth} from "@/components/auth-provider.tsx";
+import Roles from "@/app/types/roles.ts";
+import {DeleteStudent} from "@/app/recruit/home/components/feedback-card-components/delete-student.tsx";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
@@ -31,7 +34,7 @@ function tern<Type, Type2>(arg: Type, out: Type2): Type | Type2 {
 }
 export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, setCurrentStudent, c} : FeedbackCardProps) {
     const { saved, currRecrFeedback, editable, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
-
+    const auth = useAuth();
     return (
         <>
             <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
@@ -52,7 +55,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                     <div className="flex flex-1 items-center space-x-4 pr-4 ">
                         <Avatar className="h-20 w-20">
                             <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">{currentStudent?.first_name[0] ?? "N"}{currentStudent?.last_name[0] ?? "A"}</AvatarFallback>
+                            <AvatarFallback className="text-3xl">{currentStudent?.first_name[0].toUpperCase() ?? "N"}{currentStudent?.last_name[0].toUpperCase() ?? "A"}</AvatarFallback>
                         </Avatar>
                         <div>
                             <CardTitle className="text-4xl">
@@ -101,6 +104,11 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         editable={false}
                         c={c}
                     />
+                    {
+                        auth?.userRole === Roles.COORDINATOR
+                        && <DeleteStudent/>
+
+                    }
                 </CardContent>
             </Card>
         </>
