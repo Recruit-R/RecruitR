@@ -59,6 +59,56 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         )
     }
 
+    const OAuthButton = ({ authType, authTitle, Logo }: { authType: () => Promise<void>, authTitle: string, Logo: React.ElementType }) => {
+        return (
+            <Button
+                variant="outline"
+                type="button"
+                disabled={auth?.isLoading}
+                onClick={() => authType()}
+                className='w-full'
+            >
+                {auth?.isLoading ? (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                    <Logo className="mr-2 h-4 w-4" />
+                )}{" "}
+                {authTitle}
+            </Button>
+        )
+    }
+
+    const AuthFormField = ({ id, type, placeholder, autoComplete, label }: { id: any, type: string, placeholder: string, autoComplete: string, label: string }) => {
+        return (
+            <FormField
+                control={form.control}
+                name={id}
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel className="sr-only" htmlFor={id}>
+                            {label}
+                        </FormLabel>
+                        <FormControl>
+                            <Input
+                                id={id}
+                                placeholder={placeholder}
+                                type={type}
+                                autoCapitalize="none"
+                                autoComplete={autoComplete}
+                                autoCorrect="off"
+                                disabled={auth?.isLoading}
+                                {...field}
+                            />
+                        </FormControl>
+                        {signup && <FormMessage className="text-center" />}
+
+                    </FormItem>
+                )}>
+            </FormField>
+        )
+    }
+
+
     const auth = useAuth();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -100,82 +150,10 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     <div className="grid gap-1">
                         <div className="grid mb-1">
                             {signup && (
-                                <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="sr-only" htmlFor="name">
-                                                Name
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="name"
-                                                    placeholder="name"
-                                                    type="name"
-                                                    autoCapitalize="none"
-                                                    autoComplete="name"
-                                                    autoCorrect="off"
-                                                    disabled={auth?.isLoading}
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            {signup && <FormMessage className="text-center" />}
-
-                                        </FormItem>
-                                    )}>
-                                </FormField>
+                                <AuthFormField id="name" type="text" placeholder="Name" autoComplete="name" label="Name" />
                             )}
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="sr-only" htmlFor="email">
-                                            Email
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="email"
-                                                placeholder="email@example.com"
-                                                type="email"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={auth?.isLoading}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        {signup && <FormMessage className="text-center" />}
-
-                                    </FormItem>
-                                )}>
-                            </FormField>
-
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="sr-only" htmlFor="email">
-                                            Password
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="password"
-                                                placeholder="password"
-                                                type="password"
-                                                autoCapitalize="none"
-                                                disabled={auth?.isLoading}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        {signup && <FormMessage className="text-center" />}
-
-                                    </FormItem>
-                                )}>
-                            </FormField>
-
+                            <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" />
+                            <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" />
                         </div>
 
                         <Button disabled={auth?.isLoading}>
@@ -187,6 +165,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     </div>
                 </form>
             </Form>
+
             {!authSuccessful && (
                 <div className={cn("text-sm font-medium text-destructive")}>
                     {authError}
@@ -203,61 +182,9 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 </div>
             </div>
 
-            <Button
-                variant="outline"
-                type="button"
-                disabled={auth?.isLoading}
-                onClick={() => {
-                    auth?.loginGoogle().catch((error) => {
-                        console.log(error);
-                    });
-                }}
-                className='w-full'>
-                {auth?.isLoading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <Icons.google className="mr-2 h-4 w-4" />
-                )}{" "}
-                Google
-            </Button>
-            <Button
-                variant="outline"
-                type="button"
-                disabled={auth?.isLoading}
-                onClick={() => {
-                    auth?.loginMicrosoft().catch((error) => {
-                        console.log(error);
-                    });
-                }}
-                className='w-full'
-            >
-                {auth?.isLoading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <BsMicrosoft className="mr-2 h-4 w-4" />
-                )}{" "}
-                Microsoft
-            </Button>
-            <Button
-                variant="outline"
-                type="button"
-                disabled={auth?.isLoading}
-                onClick={() => {
-                    auth?.loginGithub().catch((error) => {
-                        console.log(error);
-                    });
-                }}
-                className='w-full'
-            >
-                {auth?.isLoading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <BsGithub className="mr-2 h-4 w-4" />
-                )}{" "}
-                Github
-            </Button>
-
-
+            <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
+            <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
+            <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
         </div>
     )
 }
