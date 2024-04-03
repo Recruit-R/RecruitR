@@ -1,15 +1,16 @@
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
-import {Progress} from "@/components/ui/progress.tsx";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import { Progress } from "@/components/ui/progress.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import React, {useEffect, useState} from "react";
-import {useAuth} from "@/components/auth-provider.tsx";
-import {TimelineCheckbox} from "@/components/ui/timeline-checkbox.tsx";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "@/components/auth-provider.tsx";
+import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
+import Roles from "@/app/types/roles";
 
 interface TimelineProps {
     events: Array<String>
@@ -17,16 +18,16 @@ interface TimelineProps {
     editable: boolean
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
-export function Timeline({events, currEvent, editable, c}: TimelineProps) {
+export function Timeline({ events, currEvent, editable, c }: TimelineProps) {
     const [progress, setProgress] = useState(events.indexOf(currEvent))
     const [progressBar, setProgressBar] = useState<number>(0)
     const user = useAuth();
-    function handleCheckedChange(idx: number){
+    function handleCheckedChange(idx: number) {
         currEvent = events[idx] as string
         setProgress(events.indexOf(currEvent))
     }
     useEffect(() => {
-        setProgressBar(100/(events.length-1) * progress)
+        setProgressBar(100 / (events.length - 1) * progress)
     }, [progress])
 
     function addToolTip(content: string, component: React.JSX.Element) {
@@ -63,11 +64,11 @@ export function Timeline({events, currEvent, editable, c}: TimelineProps) {
                                             </label>
                                         </div>
                                         <TimelineCheckbox className={`w-6 h-6 border-secondary bg-secondary`}
-                                                  id={e as string}
-                                                  key={idx}
-                                                  checked={idx <= progress}
-                                                  onCheckedChange={() => handleCheckedChange(idx)}
-                                                  disabled={!user?.isCoordinator}
+                                            id={e as string}
+                                            key={idx}
+                                            checked={idx <= progress}
+                                            onCheckedChange={() => handleCheckedChange(idx)}
+                                            disabled={user?.userRole !== Roles.COORDINATOR}
                                         />
                                     </div>
                                 )

@@ -7,21 +7,20 @@ import validateUser from "../validateUser";
 
 export async function GET(
     request: NextRequest,
-    params: { id: string }
 ) {
     try {
         // verify firestore is available
         if (!firestore) return new NextResponse("No Firestore", { status: 500 });
 
         // validate authentication and get user from bearer token
-        const userId = params.id;
-        const authToken: string | undefined = await getAuthToken(request);
-        if (authToken === undefined) return new NextResponse("Unauthorized", { status: 401 });
+        const userId = request.nextUrl.searchParams.get('uid')
+        const authToken: string | undefined = getAuthToken(request);
+        if (authToken === undefined) return new NextResponse("Unauthorized - bad token", { status: 401 });
         let user: DecodedIdToken | null = await validateUser(authToken) ?? null;
 
         // validate that user requesting role type is requesting it for themselves
         const valid = user?.uid === userId;
-        if (!valid) return new NextResponse("Unauthorized", { status: 401 });
+        if (!valid) return new NextResponse("Unauthorized - bad userid", { status: 401 });
 
         // get user data from firestore
         let userDocument = await firestore
@@ -49,7 +48,7 @@ export async function POST(
         if (!firestore) return new NextResponse("No Firestore", { status: 500 });
 
         // validate authentication and get user from bearer token
-        const authToken = await getAuthToken(request);
+        const authToken = getAuthToken(request);
         let user: DecodedIdToken | null = await validateUser(authToken) ?? null;
         const body = await request.json();
 
@@ -76,6 +75,11 @@ export async function POST(
             last_name: name[1],
             email: body.email,
             role: role
+        }
+        // verify user does not already exist
+        const userDocument = await firestore.doc(`users/${user!.uid}`).get();
+        if (userDocument.exists) {
+            return NextResponse.json(userData);
         }
 
         // push user data to firestore and add custom claims data

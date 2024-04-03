@@ -45,7 +45,6 @@ export default function Page() {
     }, []);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
         // check if recruiter exists
         const response = await fetch('/api/whitelist', {
             method: 'POST',
@@ -56,7 +55,6 @@ export default function Page() {
             body: JSON.stringify({ email: values.email })
         })
         if (response.ok) {
-            console.log('success');
             setAuthError(null);
             setRecruiterEmails([...recruiterEmails, values.email]);
             form.reset();
@@ -76,7 +74,6 @@ export default function Page() {
             body: JSON.stringify({ email: email })
         })
         if (response.ok) {
-            console.log('success');
             setRecruiterEmails(recruiterEmails.filter((recruiterEmail) => recruiterEmail !== email));
         } else {
             console.log('error', response);
@@ -137,7 +134,7 @@ export default function Page() {
         <>
             <div className="flex flex-col gap-4 p-4 ">
                 <b>Add Recruiter</b>
-                    <AddRecruiterBar />
+                <AddRecruiterBar />
                 <b>Recruiter List</b>
                 <div className="h-full">
                     <div className="py-2 pl-3 w-3/4 group hover:rounded border border-gray-200 bg-gray-white rounded-lg transition-all">

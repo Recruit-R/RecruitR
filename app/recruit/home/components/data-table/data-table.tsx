@@ -27,9 +27,9 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination.tsx"
 import { DataTableToolbar } from "./data-table-toolbar.tsx"
-import {Student, StudentList} from "@/app/recruit/home/data/student-schema.ts";
+import { Student, StudentList } from "@/app/recruit/home/data/student-schema.ts";
 import { tree } from "next/dist/build/templates/app-page";
-import {useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import internal from "node:stream";
 
@@ -82,9 +82,6 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-  const printOutput = (row: Student) => {
-    console.log(row)
-  }
   return (
     <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2">
       <DataTableToolbar table={table} c={c} />

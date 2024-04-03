@@ -24,7 +24,6 @@ export async function POST(
         }
 
         const body = await request.json();
-        console.log('got here');
         const email = body.email;
         const isEmailInWhiteList = (await firestore!.collection('whitelist').where('email', '==', email).get()).empty;
         if (!isEmailInWhiteList) {
