@@ -34,7 +34,6 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
     const [canData, setCanData] = useState<any>()
     async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
-        console.log('user vals', usersVals);
         return usersVals
     }
     async function addCanData(uid: string, values: object) {

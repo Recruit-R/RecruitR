@@ -30,7 +30,6 @@ export default async function getData({ collection_name, document_id, schemaName
             data_list = []
             result.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
-                // console.log(doc.id, " => ", doc.data());
                 if (Object.keys(doc.data()).length !== 0) {
                     let event = doc.data();
                     data_list.push(event);
