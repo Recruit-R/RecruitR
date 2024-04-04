@@ -2,11 +2,13 @@
 import { addCandidateData } from "@/app/candidate/profile/actions";
 import Roles from "@/app/types/roles";
 import { splitName } from "@/lib/utils";
-import { GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
+import { AuthError, GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/client";
+
 
 export function getAuthToken(): string | undefined {
     let token = Cookies.get("firebaseIdToken");
@@ -32,6 +34,7 @@ type EmailAccountProps = {
 type AuthContextType = {
     currentUser: User | null;
     userRole: Roles | null;
+    error: React.JSX.Element | null;
     isLoading: boolean;
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
@@ -50,6 +53,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<React.JSX.Element | null>(null);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -146,6 +150,47 @@ export const AuthProvider = ({ children }: { children: any }) => {
         }
     }, [userRole, router]);
 
+    const LoginFailure = () => {
+        return (
+            <div className='text-center'>
+                <span>Incorrect email or password. <br />Try again or </span>
+                <Link className='underline' href="/auth/signup" >
+                    sign up instead
+                </Link>
+            </div>
+        )
+    }
+
+    const SignupFailure = () => {
+        return (
+            <div className='text-center'>
+                <span>An account with this email already exists. <br /> Please </span>
+                <Link className='underline' href="/auth/login" >
+                    login instead
+                </Link>
+            </div>
+        )
+    }
+
+    const GeneralAuthFailure = ({ authCode }: { authCode: string }) => {
+        return (
+            <span>
+                An error occurred. Please try again. If the problem persists, please contact support. <br />
+                Error code: {authCode}
+            </span>
+        )
+    }
+
+    function parseAuthError(authError: AuthError) {
+        if (authError.code === 'auth/email-already-in-use') {
+            setError(<SignupFailure />);
+        } else if (['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-credential'].includes(authError.code)) {
+            setError(<LoginFailure />);
+        } else {
+            setError(<GeneralAuthFailure authCode={authError.code} />);
+        }
+    }
+
 
     async function refresh(currentUser: User): Promise<boolean> {
         return currentUser
@@ -180,7 +225,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                 })
                 .catch((error) => {
-                    reject(error);
+                    parseAuthError(error);
                     setIsLoading(false);
                 });
         })
@@ -197,10 +242,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                 })
                 .catch((error) => {
-                    console.error("signing in with email and password failed");
                     reject(error);
+                    parseAuthError(error);
                     setIsLoading(false);
-
                 });
         })
     }
@@ -217,9 +261,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                     setIsLoading(false);
                 })
-                .catch(() => {
-                    console.error("signing in with google failed");
-                    reject();
+                .catch((error) => {
+                    reject(error);
+                    parseAuthError(error);
                     setIsLoading(false);
                 });
         });
@@ -239,8 +283,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    console.error("signing in with microsoft failed", error);
-                    reject();
+                    reject(error);
+                    parseAuthError(error);
                     setIsLoading(false);
                 });
         });
@@ -261,6 +305,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 .catch((error) => {
                     console.error("signing in with github failed", error);
                     reject();
+                    parseAuthError(error);
                     setIsLoading(false);
                 });
         });
@@ -290,6 +335,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 currentUser,
                 userRole,
                 isLoading,
+                error,
                 getAuthToken,
                 refresh,
                 setIsLoading,
