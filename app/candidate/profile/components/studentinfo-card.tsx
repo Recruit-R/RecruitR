@@ -54,7 +54,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
-        resumeURL: z.string(),
+        resumeURL: z.string().optional(),
 
     })
 
@@ -107,6 +107,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                             :
                                             <>NA</>
                                         } */}
+
                                         {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
                                     </AvatarFallback>
@@ -116,7 +117,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                         {canData ?
                                             <>
                                                 <CardTitle className="text-4xl">
-                                                    {canData.firstName} {canData.lastName}
+                                                    {canData.first_name} {canData.last_name}
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
                                                     {canData.major}
