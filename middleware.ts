@@ -22,7 +22,7 @@ export async function getUserRole(authToken: RequestCookie | undefined): Promise
             return ValidationValue.REFRESH;
         } else if (res.ok) {
             const data = await res.json();
-            return ValidationValue[data.role as keyof typeof ValidationValue];
+            return ValidationValue[(data.role as keyof typeof ValidationValue) ?? ValidationValue.UNAUTHORIZED];
         } else {
             return ValidationValue.UNAUTHORIZED;
         }
@@ -39,7 +39,6 @@ export async function middleware(request: NextRequest) {
     const candidateHomeUrl = '/candidate/profile';
     const refreshUrl = '/auth/refresh';
     const coordinatorUrls = ['add-recruiter'];
-
     // get user role
     const authToken = request.cookies.get('firebaseIdToken');
     let userRole = await getUserRole(authToken);

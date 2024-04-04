@@ -41,21 +41,21 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <FormControl id = 'year'>
+        <FormControl id='year'>
           <Button
             variant="outline"
             role="combobox"
             className={cn(
               "w-[200px] justify-between",
               !field.value && "text-muted-foreground"
-              )}
-            >
-              {field.value
-                ? years.find(
-                  (year) => year.value === field.value
-                )?.label
-                : "Select year"}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            )}
+          >
+            {field.value
+              ? years.find(
+                (year) => year.value === field.value
+              )?.label
+              : "Select year"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </FormControl>
       </PopoverTrigger>
@@ -78,11 +78,11 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
                       year.value === field.value
                       ? "opacity-100"
                       : "opacity-0"
-                    )}
-                  />
-                  {year.label}
-                </CommandItem>
-              ))}
+                  )}
+                />
+                {year.label}
+              </CommandItem>
+            ))}
           </CommandGroup>
         </Command>
       </PopoverContent>

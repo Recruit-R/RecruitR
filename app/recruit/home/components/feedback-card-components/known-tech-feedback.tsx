@@ -13,8 +13,8 @@ import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import _ from "lodash";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
-import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
+import { ElementTitle } from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import { useThrottledRequest } from "@/hooks/useThrottledRequest.ts";
 
 export function KnownTechFeedback() {
     const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
@@ -39,7 +39,6 @@ export function KnownTechFeedback() {
         dependency: knownLanguages
     })
     const handleCheckedChange = (event: CheckedState, language: string) => {
-        console.log(event)
         setKnownLanguages(
             (prevLanguages) =>
                 event
@@ -48,7 +47,7 @@ export function KnownTechFeedback() {
     }
     return (
         <div className="space-y-1 max-md:pb-4">
-            <ElementTitle title={"Known Tech"}/>
+            <ElementTitle title={"Known Tech"} />
             <div className="flex flex-wrap gap-2">
                 {
                     languages.map((language) => (

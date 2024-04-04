@@ -16,8 +16,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx"
 import Link from "next/link";
-import {useAuth} from "@/components/auth-provider.tsx";
-import {useRouter} from "next/navigation";
+import { useAuth } from "@/components/auth-provider.tsx";
+import { useRouter } from "next/navigation";
+import Roles from "@/app/types/roles";
 
 export function UserNav() {
     const auth = useAuth();
@@ -37,9 +38,9 @@ export function UserNav() {
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                         <p className={"text-xs font-bold leading-none text-muted-foreground"}>
-                            {auth?.isCoordinator
+                            {auth?.userRole === Roles.COORDINATOR
                                 ? "Coordinator"
-                                : auth?.isRecruiter
+                                : auth?.userRole === Roles.RECRUITER
                                     ? "Recruiter"
                                     : "Unknown Role"
                             }
@@ -64,13 +65,13 @@ export function UserNav() {
                             <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
-                    {auth?.isCoordinator &&
-                    <Link href={"/recruit/manage-recruiters"}>
-                        <DropdownMenuItem>
-                            Manage Recruiters
-                            <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                    </Link>
+                    {auth?.userRole === Roles.COORDINATOR &&
+                        <Link href={"/recruit/manage-recruiters"}>
+                            <DropdownMenuItem>
+                                Manage Recruiters
+                                <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                        </Link>
                     }
                     {/*<DropdownMenuItem>*/}
                     {/*    Rapid Sign Up*/}

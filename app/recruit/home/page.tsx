@@ -1,13 +1,8 @@
+import { getStudentList } from "@/app/recruit/home/actions.ts";
 import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
-import { StudentList, studentSchema } from "@/app/recruit/home/data/student-schema";
-import Roles from "@/app/types/roles";
-import { promises as fs } from "fs";
-import path from "path";
-import { z } from "zod";
-import getData from "../../api/getData";
-import {getStudentList} from "@/app/recruit/home/actions.ts";
-import {Suspense} from "react";
-import {headers} from "next/headers";
+import { StudentList } from "@/app/recruit/home/data/student-schema";
+import { headers } from "next/headers";
+import { Suspense } from "react";
 
 
 async function StudentListLoader() {
@@ -15,8 +10,8 @@ async function StudentListLoader() {
     return <Dashboard studentData={students} />
 }
 async function StudentListWithSuspense({
-      students,
-  }: {
+    students,
+}: {
     students?: StudentList;
 }) {
     if (students) {
