@@ -37,8 +37,9 @@ const years = [
 
 export function ComboboxYear({form, field} : {form: any, field: any}) {
   //console.log(form)
+  const [open, setOpen] = React.useState(false)
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <FormControl id = 'year'>
           <Button
@@ -68,6 +69,7 @@ export function ComboboxYear({form, field} : {form: any, field: any}) {
                   key={year.value}
                   onSelect={() => {
                     form.form.setValue('year', year.value)
+                    setOpen(false)
                   }}
                 >
                   <Check
