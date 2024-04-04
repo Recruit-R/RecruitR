@@ -172,6 +172,14 @@ export const AuthProvider = ({ children }: { children: any }) => {
         )
     }
 
+    const AccountExistsFailure = ({ authCode }: { authCode: string }) => {
+        return (
+            <span>
+                An account with this credential already exists. Please login with the same provider you used to create the account.
+            </span>
+        )
+    }
+
     const GeneralAuthFailure = ({ authCode }: { authCode: string }) => {
         return (
             <span>
@@ -186,6 +194,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
             setError(<SignupFailure />);
         } else if (['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-credential'].includes(authError.code)) {
             setError(<LoginFailure />);
+        } else if (authError.code === 'auth/account-exists-with-different-credential') {
+            setError(<AccountExistsFailure authCode={authError.code} />)
         } else {
             setError(<GeneralAuthFailure authCode={authError.code} />);
         }
@@ -209,9 +219,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function createAccountEmail({ name, email, password }: EmailAccountProps): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             createUserWithEmailAndPassword(auth, email, password)
@@ -232,17 +242,16 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function loginEmail({ email, password: password }: EmailAccountProps): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             signInWithEmailAndPassword(auth, email, password)
-                .then((user) => {
+                .then(() => {
                     resolve();
                 })
                 .catch((error) => {
-                    reject(error);
                     parseAuthError(error);
                     setIsLoading(false);
                 });
@@ -250,19 +259,18 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function loginGoogle(): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             setIsLoading(true);
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             signInWithPopup(auth, new GoogleAuthProvider())
-                .then((user) => {
+                .then(() => {
                     resolve();
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    reject(error);
                     parseAuthError(error);
                     setIsLoading(false);
                 });
@@ -270,20 +278,18 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function loginMicrosoft(): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             setIsLoading(true);
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             signInWithPopup(auth, new OAuthProvider('microsoft.com'))
-                .then((user) => {
-                    console.log(user);
+                .then(() => {
                     resolve();
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    reject(error);
                     parseAuthError(error);
                     setIsLoading(false);
                 });
@@ -291,20 +297,19 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function loginGithub(): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             setIsLoading(true);
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             signInWithPopup(auth, new OAuthProvider('github.com'))
-                .then((user) => {
+                .then(() => {
                     resolve();
                     setIsLoading(false);
                 })
                 .catch((error) => {
                     console.error("signing in with github failed", error);
-                    reject();
                     parseAuthError(error);
                     setIsLoading(false);
                 });
@@ -314,7 +319,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     function logout(): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!auth) {
-                reject();
+                setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             auth.signOut()
@@ -323,8 +328,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve();
                 })
                 .catch((error) => {
-                    console.error("signing out failed", error);
-                    reject();
+                    reject(error);
                 });
         });
     }

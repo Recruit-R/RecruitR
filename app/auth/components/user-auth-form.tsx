@@ -143,8 +143,6 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
             <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
             <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-
-            {auth!.error}
         </div>
     )
 }
