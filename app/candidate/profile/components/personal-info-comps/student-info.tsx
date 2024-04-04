@@ -1,3 +1,4 @@
+import { Icons } from "@/components/ui/icons";
 
 export function StudentInfo({canData}: {canData: any}) {
     //console.log('can data info', canData);
@@ -11,7 +12,7 @@ export function StudentInfo({canData}: {canData: any}) {
             <span>
             {canData? 
                 <>{canData.year}</> :
-                <span>Loading...</span>
+                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
             }
 
             </span>
@@ -23,7 +24,7 @@ export function StudentInfo({canData}: {canData: any}) {
             <span>
             {canData? 
                 <>{canData.major}</> :
-                <span>Loading...</span>
+                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
             }
             </span>
         </p>
@@ -34,7 +35,7 @@ export function StudentInfo({canData}: {canData: any}) {
             <span>
             {canData? 
                 <>{canData.university}</> :
-                <span>Loading...</span>
+                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
             }
             </span>
         </p>
@@ -45,7 +46,7 @@ export function StudentInfo({canData}: {canData: any}) {
             <span>
             {canData? 
                 <>{canData.gpa}</> :
-                <span>Loading...</span>
+                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
             }
             </span>
         </p>
@@ -56,7 +57,7 @@ export function StudentInfo({canData}: {canData: any}) {
             <span>
             {canData? 
                 <>{canData.email}</> :
-                <span>Loading...</span>
+                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
             }
             </span>
         </p>

@@ -1,35 +1,81 @@
-import { Button } from "@/components/ui/button";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { useRef } from 'react';
-import { getStorage, ref, uploadBytesResumable} from "firebase/storage";
-import { uploadBytes, uploadString } from "firebase/storage";
-import { getDownloadURL } from "firebase/storage";
+// import { Button } from "@/components/ui/button";
+// import React, { Dispatch, SetStateAction, useState } from "react";
+// import { useRef } from 'react';
+// import { getStorage, ref, uploadBytesResumable} from "firebase/storage";
+// import { uploadBytes, uploadString } from "firebase/storage";
+// import { getDownloadURL } from "firebase/storage";
 
-export function ResumeButton(form : any) {
-    const [file, setFile] = useState("");
-    const [percent, setPercent] = useState(0);
-    let resName = ""
+// export function ResumeButton(form : any) {
+//     const storage = getStorage();
+//     const fileRef = React.useRef<HTMLInputElement | null>(null);
+//     const metadata = {
+//         contentType: "application/pdf"
+//     }
+//     const [progressPercent, setProgressPercent] = useState(0);
+//     const handleChange = (event: any) => {
+//         event.preventDefault()
+//         const file = event.target[0]?.files[0]
+//         if(!file){
+//             return;
+//         }
+//         const resName = event.target.value.split("\\");
+//         const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
+//         const uploadTask = uploadBytesResumable(resumeRef, resName.slice(resName.length - 1), metadata);
 
-    function handleChange(event: any) {
-        resName = event.target.files[0].value.split("\\")
-        setFile(event.target.files[0])
-    }
+//         uploadTask.on('state_changed',
+//             (snapshot) => {
+//                 const progress =
+//                         Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+//                         setProgressPercent(progress);
+//                 console.log('Upload is ' + progress + '% done');
+//                 switch (snapshot.state) {
+//                     case 'paused':
+//                         console.log('Upload is paused');
+//                         break;
+//                     case 'running':
+//                         console.log('Upload is running');
+//                         break;
+//                 }
+//             },
+//             (error) => {
+//                 // A full list of error codes is available at
+//                 // https://firebase.google.com/docs/storage/web/handle-errors
+//                 switch (error.code) {
+//                   case 'storage/unauthorized':
+//                     // User doesn't have permission to access the object
+//                     console.log("error: unauth")
+//                     break;
+//                   case 'storage/canceled':
+//                     // User canceled the upload
+//                     console.log("error: canceled")
+//                     break;
 
-    const handleUpload = ()=>{
-        if (!file) {
-            alert("Please upload a file first!");
-        }
+//                   // ...
+//                   case 'storage/invalid-url':
+//                     console.log("error: invalid-url")
+//                     break;
 
-        const storage = getStorage();
-        
-        const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
-    }
+//                   case 'storage/unknown':
+//                     // Unknown error occurred, inspect error.serverResponse
+//                     break;
+//                 }
+//             },
+//             ()=>{
+//                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+//                     form.form.setValue('resumeURL', downloadURL);
 
-    return (
-        <Button type="button" onClick={handleUpload}>
-            <input id="upload" name="upload" type="file" hidden
-                onChange={handleChange} />
-            Upload Resume
-        </Button>
-    )
-}
+//                     console.log(downloadURL);
+//                 })
+
+//             }
+//         )
+
+//     };
+//     return (
+//         <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>
+//             <input id="upload" name="upload" type="file" ref={fileRef} hidden
+//                 onChange={handleChange} />
+//             Upload Resume
+//         </Button>
+//     )
+// }

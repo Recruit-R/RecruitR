@@ -22,6 +22,7 @@ import { Form } from '@/components/ui/form';
 import { useAuth } from "@/components/auth-provider";
 import { addCandidateData, get_candidate_data } from "../actions";
 import { useRouter } from "next/navigation";
+import { Icons } from "@/components/ui/icons";
 
 
 interface StudentInfoCardProps {
@@ -129,10 +130,10 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                             :
                                             <>
                                                 <CardTitle className="text-4xl">
-                                                    Loading...
+                                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
-                                                    Loading...
+                                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                                 </CardDescription>
                                             </>
                                         }
@@ -179,7 +180,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                 <div className={`${!editMode && 'hidden'} pt-0.01`}>
                                     <ResumeButton form={form} />
                                 </div>
-                                {!canData && "Loading..."}
+                                {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                                 {canData && (canData.resumeURL ? (<div>
                                     <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
                                         <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>

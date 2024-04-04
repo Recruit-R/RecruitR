@@ -1,3 +1,4 @@
+import { Icons } from "@/components/ui/icons"
 
 export function PossiblePlacement({ canData }: { canData: any }) {
     return (
@@ -5,7 +6,6 @@ export function PossiblePlacement({ canData }: { canData: any }) {
             <p className="font-bold text-lg">
                 Possible Placement
             </p>
-            {!canData && <p>Loading...</p>}
             <ul className="list-disc ml-5">
                 {canData && canData.feedback ? Object.keys(canData.feedback).map((da: any) => {
                     return (
