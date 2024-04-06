@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import microsoft icon
+import Link from "next/link";
+import { useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -18,6 +20,8 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
+    const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
+    const auth = useAuth();
     const formSchema = z.object({
         name: z.string(),
         email: z.string().email(),
@@ -83,9 +87,6 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         )
     }
 
-
-    const auth = useAuth();
-
     function onSubmit(values: z.infer<typeof formSchema>) {
         // verify auth is available
         if (auth === null) {
@@ -101,48 +102,84 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     }
 
     return (
-        <div className='grid gap-2' {...props}>
-
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-1">
-                        <div className="grid mb-1">
-                            {signup && (
-                                <AuthFormField id="name" type="text" placeholder="Name" autoComplete="name" label="Name" />
-                            )}
-                            <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" />
-                            <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" />
-                        </div>
-
-                        <Button disabled={auth?.isLoading}>
-                            {auth?.isLoading && (
-                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                            )}
-                            {signup ? 'Sign up' : 'Login'}
-                        </Button>
-                    </div>
-                </form>
-            </Form>
-
-            {auth!.error && (
-                <div className={cn("text-sm font-medium text-destructive")}>
-                    {auth!.error}
-                </div>
-            )}
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                        Or continue with
-                    </span>
-                </div>
+        <>
+            <div className="flex flex-col space-y-2 text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    {recruitLogin ? "Recruiter" : "Student"} Sign {signup ? "Up" : "In"}
+                </h1>
+                {
+                    !recruitLogin && (
+                        <p className="text-sm text-muted-foreground">
+                            Enter an email and password below to {signup ? "create an account" : "login"}.
+                        </p>
+                    )
+                }
             </div>
+            <div className='grid gap-2' {...props}>
 
-            <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
-            <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
-            <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-        </div>
+                {!recruitLogin && (
+                    <>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)}>
+                                <div className="grid gap-1">
+                                    <div className="grid mb-1">
+                                        {signup && (
+                                            <AuthFormField id="name" type="text" placeholder="Name" autoComplete="name" label="Name" />
+                                        )}
+                                        <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" />
+                                        <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" />
+                                    </div>
+
+                                    <Button disabled={auth?.isLoading}>
+                                        {auth?.isLoading && (
+                                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        )}
+                                        {signup ? 'Sign up' : 'Login'}
+                                    </Button>
+                                </div>
+                            </form>
+                        </Form>
+
+                        {auth!.error && (
+                            <div className={cn("text-sm font-medium text-destructive")}>
+                                {auth!.error}
+                            </div>
+                        )}
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-background px-2 text-muted-foreground">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+
+
+                {recruitLogin ? (
+                    <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
+                ) : (
+                    <>
+                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
+                        <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
+                    </>
+                )}
+
+                <div className="flex flex-row justify-center items-center">
+                    <span className="text-sm -mr-2">
+                        Not a {recruitLogin ? "recruiter" : "student"}?
+                    </span>
+                    <Button asChild variant={"link"} onClick={() => setRecruitLogin(!recruitLogin)}>
+                        <Link href="#">Sign {signup ? "up" : "in"} as a {recruitLogin ? "student" : "recruiter"}</Link>
+                    </Button>
+                </div>
+            </div >
+        </>
+
+
     )
 }
