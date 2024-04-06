@@ -1,7 +1,9 @@
 import Roles from "@/app/types/roles";
 import { auth, firestore } from '@/firebase/server';
+import { splitName } from "@/lib/utils";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
+import addData from "../addData";
 import validateUser from "../validateUser";
 
 
@@ -62,28 +64,32 @@ export async function POST(
         const customClaims = { role: role };
 
         // extract/create user data 
-        let name = body.name ? body.name.split(" ") : ['John', 'Doe'];
-        if (name.length == 1) {
-            name = [body.name, ""];
-        } else if (name.length > 2) {
-            name = [name[0], name.slice(1).join(" ")]
-        }
+        let name = splitName(body.name);
 
         const userData = {
             id: user!.uid,
             first_name: name[0],
             last_name: name[1],
             email: body.email,
+            signup_time: new Date().toISOString(),
             role: role
         }
         // verify user does not already exist
         const userDocument = await firestore.doc(`users/${user!.uid}`).get();
         if (userDocument.exists) {
-            return NextResponse.json(userData);
+            const tmpUserData = userDocument.data();
+            // manage partially setup user
+            if (tmpUserData!.role === undefined && tmpUserData!.first_name && tmpUserData!.last_name) {
+                userData.first_name = tmpUserData!.first_name;
+                userData.last_name = tmpUserData!.last_name;
+            } else {
+                // handle user already existing
+                return new NextResponse("User already exists", { status: 409 });
+            }
         }
 
         // push user data to firestore and add custom claims data
-        await firestore.doc(`users/${user!.uid}`).create(userData);
+        addData('users', user!.uid, userData);
         await auth!.setCustomUserClaims(user!.uid, customClaims);
         return NextResponse.json(customClaims, { status: 201 });
     } catch (error) {

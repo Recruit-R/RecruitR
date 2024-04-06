@@ -1,27 +1,24 @@
 "use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 //import {set} from "yaml/dist/schema/yaml-1.1/set";
 import { PossiblePlacement } from "@/app/candidate/profile/components/personal-info-comps/possible-placement";
 import { StudentInfo } from "./personal-info-comps/student-info";
 import { ResumeButton } from "./personal-info-forms/resume-file";
 //import { ShowSkills } from "./beta-comps/show-skills";
-import { StatusBar } from "./personal-info-comps/status-bar";
-import { AboutMeForm } from "./about-me-comps/about-me-form";
-import { PersonalForm } from "./personal-info-forms/personal-info-form";
-import { HeaderForm } from "./personal-info-forms/header-form";
-import { ProfPicEdit } from "./personal-info-forms/prof-pic-form";
-import { useRef } from 'react';
-import * as z from 'zod';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Form } from '@/components/ui/form';
 import { useAuth } from "@/components/auth-provider";
-import { addCandidateData, get_candidate_data } from "../actions";
+import { Form } from '@/components/ui/form';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import * as z from 'zod';
+import { addCandidateData, get_candidate_data } from "../actions";
+import { StatusBar } from "./personal-info-comps/status-bar";
+import { HeaderForm } from "./personal-info-forms/header-form";
+import { PersonalForm } from "./personal-info-forms/personal-info-form";
 
 
 interface StudentInfoCardProps {
@@ -57,7 +54,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
         major: z.string(),
         university: z.string(),
         gpa: z.coerce.number().multipleOf(0.01),
-        resumeURL: z.string(),
+        resumeURL: z.string().optional(),
 
     })
 
@@ -110,6 +107,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                             :
                                             <>NA</>
                                         } */}
+
                                         {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
                                     </AvatarFallback>
@@ -119,7 +117,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                         {canData ?
                                             <>
                                                 <CardTitle className="text-4xl">
-                                                    {canData.firstName} {canData.lastName}
+                                                    {canData.first_name} {canData.last_name}
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
                                                     {canData.major}

@@ -35,9 +35,11 @@ const years = [
   },
 ]
 
-export function ComboboxYear({ form, field }: { form: any, field: any }) {
+export function ComboboxYear({form, field} : {form: any, field: any}) {
+  //console.log(form)
+  const [open, setOpen] = React.useState(false)
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <FormControl id='year'>
           <Button
@@ -61,18 +63,19 @@ export function ComboboxYear({ form, field }: { form: any, field: any }) {
         <Command>
           <CommandEmpty>No year found.</CommandEmpty>
           <CommandGroup>
-            {years.map((year) => (
-              <CommandItem
-                value={year.label}
-                key={year.value}
-                onSelect={() => {
-                  form.form.setValue('year', year.value)
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    year.value === field.value
+              {years.map((year) => (
+                <CommandItem
+                  value={year.label}
+                  key={year.value}
+                  onSelect={() => {
+                    form.form.setValue('year', year.value)
+                    setOpen(false)
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      year.value === field.value
                       ? "opacity-100"
                       : "opacity-0"
                   )}
