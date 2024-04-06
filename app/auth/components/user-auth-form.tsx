@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import microsoft icon
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -36,6 +36,12 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             password: "",
         },
     })
+
+    useEffect(() => {
+        if (auth?.error) {
+            auth.setError(null);
+        }
+    }, [])
 
 
     const OAuthButton = ({ authType, authTitle, Logo }: { authType: () => Promise<void>, authTitle: string, Logo: React.ElementType }) => {
@@ -136,12 +142,20 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                         )}
                                         {signup ? 'Sign up' : 'Login'}
                                     </Button>
+                                    {!signup && (
+                                        <div className="flex flex-col">
+                                            <Button asChild variant={"link"}>
+                                                <Link href="/auth/reset" target="_blank">Forgot password?</Link>
+                                            </Button>
+                                        </div>
+                                    )
+                                    }
                                 </div>
                             </form>
                         </Form>
 
                         {auth!.error && (
-                            <div className={cn("text-sm font-medium text-destructive")}>
+                            <div className={cn("text-sm font-medium text-destructive text-center")}>
                                 {auth!.error}
                             </div>
                         )}
@@ -169,6 +183,12 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     </>
                 )}
 
+                {recruitLogin && auth!.error && (
+                    <div className={cn("text-sm font-medium text-destructive text-center")}>
+                        {auth!.error}
+                    </div>
+                )}
+
                 <div className="flex flex-row justify-center items-center">
                     <span className="text-sm -mr-2">
                         Not a {recruitLogin ? "recruiter" : "student"}?
@@ -178,6 +198,8 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                     </Button>
                 </div>
             </div >
+
+
         </>
 
 

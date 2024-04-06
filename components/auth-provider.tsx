@@ -36,6 +36,7 @@ type AuthContextType = {
     userRole: Roles | null;
     error: React.JSX.Element | null;
     isLoading: boolean;
+    setError: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>;
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -172,10 +173,18 @@ export const AuthProvider = ({ children }: { children: any }) => {
         )
     }
 
-    const AccountExistsFailure = ({ authCode }: { authCode: string }) => {
+    const AccountExistsFailure = () => {
         return (
             <span>
                 An account with this credential already exists. Please login with the same provider you used to create the account.
+            </span>
+        )
+    }
+
+    const PopupClosedFailure = () => {
+        return (
+            <span>
+                The popup was closed before authentication could be completed. Please try again.
             </span>
         )
     }
@@ -195,7 +204,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
         } else if (['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-credential'].includes(authError.code)) {
             setError(<LoginFailure />);
         } else if (authError.code === 'auth/account-exists-with-different-credential') {
-            setError(<AccountExistsFailure authCode={authError.code} />)
+            setError(<AccountExistsFailure />)
+        } else if (authError.code === 'auth/popup-closed-by-user') {
+            setError(<PopupClosedFailure />);
         } else {
             setError(<GeneralAuthFailure authCode={authError.code} />);
         }
@@ -340,6 +351,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 userRole,
                 isLoading,
                 error,
+                setError,
                 getAuthToken,
                 refresh,
                 setIsLoading,
