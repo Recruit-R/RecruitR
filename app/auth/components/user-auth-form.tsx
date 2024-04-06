@@ -23,7 +23,8 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
-        name: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
@@ -31,7 +32,8 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
         },
@@ -101,7 +103,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         }
 
         if (signup) {
-            auth.createAccountEmail({ name: values.name, email: values.email, password: values.password });
+            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password });
         } else {
             auth.loginEmail({ email: values.email, password: values.password });
         }
@@ -130,7 +132,10 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                 <div className="grid gap-1">
                                     <div className="grid mb-1">
                                         {signup && (
-                                            <AuthFormField id="name" type="text" placeholder="Name" autoComplete="name" label="Name" />
+                                            <>
+                                                <AuthFormField id="firstName" type="text" placeholder="First Name" autoComplete="given-name" label="First Name" />
+                                                <AuthFormField id="lastName" type="text" placeholder="Last Name" autoComplete="family-name" label="Last Name" />
+                                            </>
                                         )}
                                         <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" />
                                         <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" />

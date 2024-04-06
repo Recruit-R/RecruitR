@@ -1,7 +1,6 @@
 "use client";
 import { addCandidateData } from "@/app/candidate/profile/actions";
 import Roles from "@/app/types/roles";
-import { splitName } from "@/lib/utils";
 import { AuthError, GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -26,7 +25,8 @@ export function removeAuthToken(): void {
 }
 
 type EmailAccountProps = {
-    name?: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
     password: string;
 };
@@ -44,7 +44,7 @@ type AuthContextType = {
     loginGoogle: () => Promise<void>;
     loginGithub: () => Promise<void>;
     loginEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
-    createAccountEmail: ({ email, password }: EmailAccountProps) => Promise<void>;
+    createAccountEmail: ({ firstName, lastName, email, password }: EmailAccountProps) => Promise<void>;
     logout: () => Promise<void>;
 };
 
@@ -229,7 +229,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             })
     }
 
-    function createAccountEmail({ name, email, password }: EmailAccountProps): Promise<void> {
+    function createAccountEmail({ firstName, lastName, email, password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve) => {
             if (!auth) {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
@@ -237,11 +237,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
             createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
-                    updateProfile(res.user, { displayName: name });
-                    const sepName = splitName(name);
+                    updateProfile(res.user, { displayName: firstName + " " + lastName });
                     addCandidateData(res.user.uid as string, {
-                        first_name: sepName[0],
-                        last_name: sepName[1]
+                        first_name: firstName,
+                        last_name: lastName
                     })
                     resolve();
                 })
