@@ -19,6 +19,36 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
 }
 
+export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form, signup, auth }: { id: any, type: string, placeholder: string, autoComplete: string, label: string, form: any, signup: any, auth: any }) => {
+    return (
+        <FormField
+            control={form.control}
+            name={id}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel className="sr-only" htmlFor={id}>
+                        {label}
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            id={id}
+                            placeholder={placeholder}
+                            type={type}
+                            autoCapitalize="none"
+                            autoComplete={autoComplete}
+                            autoCorrect="off"
+                            disabled={auth?.isLoading}
+                            {...field}
+                        />
+                    </FormControl>
+                    {signup && <FormMessage className="text-center" />}
+
+                </FormItem>
+            )}>
+        </FormField>
+    )
+}
+
 export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
@@ -65,35 +95,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         )
     }
 
-    const AuthFormField = ({ id, type, placeholder, autoComplete, label }: { id: any, type: string, placeholder: string, autoComplete: string, label: string }) => {
-        return (
-            <FormField
-                control={form.control}
-                name={id}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="sr-only" htmlFor={id}>
-                            {label}
-                        </FormLabel>
-                        <FormControl>
-                            <Input
-                                id={id}
-                                placeholder={placeholder}
-                                type={type}
-                                autoCapitalize="none"
-                                autoComplete={autoComplete}
-                                autoCorrect="off"
-                                disabled={auth?.isLoading}
-                                {...field}
-                            />
-                        </FormControl>
-                        {signup && <FormMessage className="text-center" />}
 
-                    </FormItem>
-                )}>
-            </FormField>
-        )
-    }
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         // verify auth is available
@@ -133,12 +135,12 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                                     <div className="grid mb-1">
                                         {signup && (
                                             <>
-                                                <AuthFormField id="firstName" type="text" placeholder="First Name" autoComplete="given-name" label="First Name" />
-                                                <AuthFormField id="lastName" type="text" placeholder="Last Name" autoComplete="family-name" label="Last Name" />
+                                                <AuthFormField id="firstName" type="text" placeholder="First Name" autoComplete="given-name" label="First Name" form={form} signup={signup} auth={auth} />
+                                                <AuthFormField id="lastName" type="text" placeholder="Last Name" autoComplete="family-name" label="Last Name" form={form} signup={signup} auth={auth} />
                                             </>
                                         )}
-                                        <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" />
-                                        <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" />
+                                        <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" form={form} signup={signup} auth={auth} />
+                                        <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" form={form} signup={signup} auth={auth} />
                                     </div>
 
                                     <Button disabled={auth?.isLoading}>

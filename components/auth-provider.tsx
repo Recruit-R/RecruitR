@@ -235,6 +235,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
+            if (firstName === undefined || lastName === undefined || firstName === "" || lastName === "") {
+                setError(<span>Please enter your first and last name.</span>);
+                return;
+            }
             createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
                     updateProfile(res.user, { displayName: firstName + " " + lastName });
