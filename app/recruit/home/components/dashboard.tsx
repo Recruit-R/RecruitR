@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React, {createContext, Suspense, useEffect, useState} from "react";
 import {useAuth} from "@/components/auth-provider.tsx";
+import {SaveStatus} from "@/app/recruit/home/components/feedback-card-components/save-status.tsx";
 export interface StudentDataContextType {
     studentList: StudentList | undefined
     setStudentList: React.Dispatch<React.SetStateAction<StudentList | undefined>>
@@ -125,7 +126,9 @@ export default function Dashboard({studentData}: {studentData: StudentList}) {
             editable,
             currentUserEditId
         }}>
-            <div className="flex flex-row h-full">
+
+            <div className="flex flex-row h-full relative">
+
                 <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
                     <DataTable
                         setCurrentStudent={changeCurrentStudent}
@@ -156,7 +159,9 @@ export default function Dashboard({studentData}: {studentData: StudentList}) {
                         :
                         noStudentViewComponent()
                 }
+                <SaveStatus />
             </div>
+
             {/*</div>*/}
         </StudentDataContext.Provider>
 

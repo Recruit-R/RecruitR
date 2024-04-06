@@ -42,20 +42,11 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
             </Button>
 
             <Card className="min-h-full relative">
-                <div className={"absolute top-0 right-0 p-4"}>
-                    {
-                        !editable()
-                            ? <BsEye className={"w-6 h-6 stroke-{.5} fill-ring"} />
-                            : saved
-                                ? <BsCloudCheck className={"w-6 h-6 stroke-{.5} fill-ring"} />
-                                : <RefreshCcw className={"w-6 h-6 animate-reverse-spin stroke-ring stroke-1"}/>
-                    }
-                </div>
                 <CardHeader className="flex flex-row items-center border-b mb-4 divide-x">
                     <div className="flex flex-1 items-center space-x-4 pr-4 ">
                         <Avatar className="h-20 w-20">
                             <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">{currentStudent?.first_name[0].toUpperCase() ?? "N"}{currentStudent?.last_name[0].toUpperCase() ?? "A"}</AvatarFallback>
+                            <AvatarFallback className="text-3xl">{currentStudent?.first_name?.[0].toUpperCase() ?? "N"}{currentStudent?.last_name?.[0]?.toUpperCase() ?? "A"}</AvatarFallback>
                         </Avatar>
                         <div>
                             <CardTitle className="text-4xl">
@@ -99,15 +90,13 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                     <Separator/>
 
                     <Timeline
-                        events={["Career Fair", "Interview 1", "Interview 2", "Interview 3", "Success"]}
-                        currEvent={"Interview 3"}
+                        // events={["Career Fair", "Interview 1", "Interview 2", "Success"]}
                         editable={false}
                         c={c}
                     />
                     {
                         auth?.userRole === Roles.COORDINATOR
                         && <DeleteStudent/>
-
                     }
                 </CardContent>
             </Card>
