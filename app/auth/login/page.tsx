@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserAuthForm } from "../components/user-auth-form";
 
@@ -25,7 +25,7 @@ export default async function LoginPage() {
                     Sign Up
                 </Link>
                 <div className="lg:p-8 w-full flex align-center">
-                    <div className="m-auto flex md:w-1/4 flex-col justify-center space-y-6">
+                    <div className="m-auto flex w-full px-4 sm:w-3/4 md:w-1/2 lg:w-1/3 flex-col justify-center space-y-6">
                         <UserAuthForm signup={false} />
                     </div>
                 </div>

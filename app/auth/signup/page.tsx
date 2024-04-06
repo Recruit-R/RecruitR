@@ -23,8 +23,8 @@ export default async function SignUpPage() {
                 >
                     Login
                 </Link>
-                <div className="p-8 lg:p-8 w-full flex align-center">
-                    <div className="m-auto flex md:w-1/4 flex-col justify-center space-y-6">
+                <div className="lg:p-8 w-full flex align-center">
+                    <div className="m-auto flex w-full px-4 sm:w-3/4 md:w-1/2 lg:w-1/3 flex-col justify-center space-y-6">
                         <UserAuthForm signup={true} />
                         <p className="px-8 text-center text-sm text-muted-foreground">
                             By signing up, you agree to our{" "}
