@@ -30,9 +30,6 @@ export function EventCreationDialog() {
                     </DialogDescription>
                 </DialogHeader>
                 <EventCreateForm setOpen={setOpen} />
-                {/*<DialogFooter>*/}
-                {/*    <Button type="submit">Save changes</Button>*/}
-                {/*</DialogFooter>*/}
             </DialogContent>
         </Dialog>
     )

@@ -142,3 +142,7 @@
 .firebase-emulator-warning {
   display: none;
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background: none;
+}
