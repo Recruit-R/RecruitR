@@ -16,9 +16,10 @@ const firebaseConfig = {
 const currentApps = getApps();
 
 let auth: Auth | undefined = undefined;
+let app: any = undefined;
 
 if (currentApps.length <= 0) {
-    const app = initializeApp(firebaseConfig);
+    app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     if (
         process.env.NEXT_PUBLIC_APP_ENV === "emulator" &&
@@ -30,7 +31,8 @@ if (currentApps.length <= 0) {
         );
     }
 } else {
-    auth = getAuth(currentApps[0]);
+    app = currentApps[0];
+    auth = getAuth(app);
     if (
         process.env.NEXT_PUBLIC_APP_ENV === "emulator" &&
         process.env.NEXT_PUBLIC_EMULATOR_AUTH_PATH
@@ -42,4 +44,4 @@ if (currentApps.length <= 0) {
     }
 }
 
-export { auth };
+export { auth, app };

@@ -1,18 +1,23 @@
 'use client'
-import {feedbackReset, getStudentList} from "@/app/recruit/home/actions.ts";
+import { feedbackReset } from "@/app/recruit/home/actions.ts";
 import { DataTable } from "@/app/recruit/home/components/data-table/data-table.tsx";
-import { FeedbackCard } from "@/app/recruit/home/components/feedback-card";
 import { StudentColumns } from "@/app/recruit/home/components/data-table/student-columns.tsx";
-import { Student, StudentList } from "@/app/recruit/home/data/student-schema";
+import { FeedbackCard } from "@/app/recruit/home/components/feedback-card";
+import { Student, StudentList, fullStudentSchema } from "@/app/recruit/home/data/student-schema";
+import Roles from "@/app/types/roles";
+import { useAuth } from "@/components/auth-provider.tsx";
 import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent
 } from "@/components/ui/card";
+import { app } from "@/firebase/client";
 import { cn } from "@/lib/utils";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import React, {createContext, Suspense, useEffect, useState} from "react";
-import {useAuth} from "@/components/auth-provider.tsx";
+import React, { createContext, useEffect, useState } from "react";
+import { z } from "zod";
+
 export interface StudentDataContextType {
     studentList: StudentList | undefined
     setStudentList: React.Dispatch<React.SetStateAction<StudentList | undefined>>
@@ -25,9 +30,10 @@ export interface StudentDataContextType {
     editable: () => boolean,
     currentUserEditId: string
 }
+
 export const StudentDataContext = createContext<StudentDataContextType | null>(null);
 
-export default function Dashboard({studentData}: {studentData: StudentList}) {
+export default function Dashboard({ studentData }: { studentData: StudentList }) {
     const auth = useAuth()
     const [currentUserEditId, setCurrentUserEditId] = useState("")
     const [feedbackFocus, setFeedbackFocus] = useState<boolean>(false)
@@ -39,6 +45,9 @@ export default function Dashboard({studentData}: {studentData: StudentList}) {
     const [currRecrFeedback, setCurrRecrFeedback] = useState("")
     const [tablePage, setTablePage] = useState(1);
     let lastRating: number | undefined = 0;
+    const db = getFirestore(app);
+
+
     const editable = () => (currRecrFeedback === currentUserEditId) && (currentUserEditId != "") && (currentUserEditId !== null) // CHANGE TO AUTH USER ONCE IMPLEMENTED
 
     // When user loads/changes, set the current user editing id, and
@@ -56,10 +65,36 @@ export default function Dashboard({studentData}: {studentData: StudentList}) {
 
         if ((previousStudent?.avgRating !== currentStudent?.avgRating) && currentStudent?.avgRating !== 0) {
             currentStudent
-            && setStudentList(prevState => ({ ...prevState, [currentStudent!.id]: { ...currentStudent!, "feedback": currentStudent!.feedback, "avgRating": currentStudent!.avgRating } }))
+                && setStudentList(prevState => ({ ...prevState, [currentStudent!.id]: { ...currentStudent!, "feedback": currentStudent!.feedback, "avgRating": currentStudent!.avgRating } }))
         }
         setPreviousStudent(currentStudent);
     }, [currentStudent])
+
+    function convertStudents(array: any) {
+        var dict: { [key: string]: any } = {}
+        array.forEach((e: any) => {
+            let id = e.id as string
+            dict[id] = e
+        })
+        return dict;
+    }
+
+
+    useEffect(() => {
+
+        const unsubscribe = onSnapshot(collection(db, "users"), (snapshot: any) => {
+            const newUsers = snapshot.docs.map((doc: any) => ({
+                id: doc.id,
+                ...doc.data()
+            })).filter((user: any) => user.role === Roles.CANDIDATE);
+            console.log(newUsers);
+            setStudentList(z.record(fullStudentSchema).parse(convertStudents(newUsers)));
+        });
+
+
+        // Clean up listener on component unmount
+        return () => unsubscribe();
+    }, []);
 
     const c = (classnames: string, conditionalNames: string, condition: boolean = true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
@@ -107,7 +142,7 @@ export default function Dashboard({studentData}: {studentData: StudentList}) {
 
         setCurrRecrFeedback(currentUserEditId)
         setCurrentStudent((prevStudent) => {
-            prevStudent && setStudentList(prevState => ({...prevState, [prevStudent.id]: prevStudent}))
+            prevStudent && setStudentList(prevState => ({ ...prevState, [prevStudent.id]: prevStudent }))
             return student
         })
     }

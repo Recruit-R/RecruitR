@@ -9,6 +9,7 @@ async function StudentListLoader() {
     const students = await getStudentList();
     return <Dashboard studentData={students} />
 }
+
 async function StudentListWithSuspense({
     students,
 }: {
