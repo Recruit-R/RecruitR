@@ -137,24 +137,23 @@ export default function Page() {
                 <AddRecruiterBar />
                 <b>Recruiter List</b>
                 <div className="h-full">
-                    <div className="py-2 pl-3 w-3/4 group hover:rounded border border-gray-200 bg-gray-white rounded-lg transition-all">
+                    <div className="py-2 pl-3 w-3/4 group border rounded-lg transition-all">
                         {recruiterEmails.length > 0 &&
                             <ul className="h-full">
                                 {
                                     recruiterEmails.map((recruiter, i) => {
                                         return (
-                                            <Card key={i} className="flex items-center justify-between hover:bg-secondary mb-2 mt-2 mr-3" >
-                                                <li className="h-10 flex flex-row gap-2  justify-between w-full " key={recruiter + i}>
-                                                    <div className="py-2 pl-3 group hover:rounded-lg transition-all">
-                                                        <p>{recruiter}</p>
+                                            <div key={i} className="flex items-center justify-between hover:bg-secondary rounded-lg p-3" >
+                                                <li className="h-10 flex flex-row gap-2 justify-between items-center w-full " key={recruiter + i}>
+                                                    <div className="group transition-all">
+                                                        <p className="font-bold">Recruiter Name</p>
+                                                        <p className="text-muted-foreground">{recruiter}</p>
                                                     </div>
-                                                    <div>
-                                                        <Button onClick={() => deleteRecruiter(recruiter)} style={{ backgroundColor: 'transparent ' }}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
-                                                        </Button>
-                                                    </div>
+                                                    <Button onClick={() => deleteRecruiter(recruiter)} variant="ghost" className="hover:bg-destructive">
+                                                        <FontAwesomeIcon icon={faTrash} className="h-4 w-4" />
+                                                    </Button>
                                                 </li>
-                                            </Card>
+                                            </div>
                                         )
                                     })
                                 }

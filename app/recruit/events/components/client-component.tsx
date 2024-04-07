@@ -58,10 +58,18 @@ export default function ClientComponent({e} : {e: any}) {
             </div>
             <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2">
                 <div className="">
-                    <EventsListCard title="Past Events" events={pastEvents}/>
+                    <EventsListCard
+                        title="Past Events"
+                        events={pastEvents}
+                        empty_message="No Previous Events"/>
                 </div>
                 <div className="">
-                <EventsListCard title="Future Events" events={futureEvents}/>
+                <EventsListCard
+                    title="Future Events"
+                    events={futureEvents}
+                    empty_message="No Upcoming Events"
+                />
+
                 </div>
             </div>
         </div>
