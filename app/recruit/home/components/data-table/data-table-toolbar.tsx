@@ -28,7 +28,11 @@ export function DataTableToolbar<TData>({
           placeholder="Filter students..."
           value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("last_name")?.setFilterValue(event.target.value)
+          {
+              table.getColumn("last_name")?.setFilterValue(event.target.value)
+              table.resetPageIndex()
+          }
+
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
