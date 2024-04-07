@@ -182,10 +182,12 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
 
 
                 {recruitLogin ? (
-                    <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
+                    <>
+                        <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
+                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
+                    </>
                 ) : (
                     <>
-                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
                         <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
                     </>
                 )}
