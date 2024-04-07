@@ -34,8 +34,8 @@ export function Timeline({ editable, c }: TimelineProps) {
     const statuses = year_statuses_mapping[student_year] || ["Career Fair", "Interview 1", "Interview 2", "Accepted"]
 
     const getFeedback = () => currentStudent?.feedback?.[currRecrFeedback]?.curr_status ?? "Career Fair"
-    const [currStatus, setCurrStatus] = useState(getFeedback)
-    const [progress, setProgress] = useState(statuses.indexOf(currStatus))
+    const [currStatus, setCurrStatus] = useState(getFeedback())
+    const [progress, setProgress] = useState(statuses.indexOf(getFeedback()))
     const [progressBar, setProgressBar] = useState<number>(0)
 
     useEffect(() => {
@@ -44,6 +44,17 @@ export function Timeline({ editable, c }: TimelineProps) {
         console.log(progress)
         console.log(progressBar)
     }, [studentList, currRecrFeedback]);
+
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "curr_status": currStatus },
+        localData: { "curr_status": currStatus },
+        dependency: currStatus
+    })
+
+    useEffect(() => {
+        setProgress(statuses.indexOf(currStatus))
+    }, [currStatus]);
 
     const user = useAuth();
     function handleCheckedChange(idx: number) {
@@ -54,12 +65,7 @@ export function Timeline({ editable, c }: TimelineProps) {
         setProgressBar(100 / (statuses.length - 1) * progress)
     }, [progress])
 
-    useThrottledRequest({
-        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
-        dbData: { "curr_status": currStatus },
-        localData: { "curr_status": currStatus },
-        dependency: currStatus
-    })
+
     function addToolTip(content: string, component: React.JSX.Element) {
         return (<TooltipProvider>
             <Tooltip>

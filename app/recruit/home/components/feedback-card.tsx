@@ -87,7 +87,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         </div>
                     </div>
 
-                    <Separator/>
+                    {/*<Separator/>*/}
 
                     <Timeline
                         // events={["Career Fair", "Interview 1", "Interview 2", "Success"]}
