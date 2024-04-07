@@ -34,6 +34,7 @@ const studentObject = {
   interview1: z.union([z.string(), z.undefined()]),
   gradMonth: z.union([z.string(), z.undefined()]),
   avgRating: z.union([z.number(), z.nan()]).optional(),
+  signup_time: z.union([z.string(), z.undefined()]).optional(),
 }
 
 export const studentSchema = z.object(studentObject)
