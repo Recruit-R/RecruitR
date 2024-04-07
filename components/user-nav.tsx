@@ -53,6 +53,12 @@ export function UserNav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                    <Link href={"/recruit/home"}>
+                        <DropdownMenuItem>
+                            Home
+                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>
                     <Link href={"/recruit/profile"}>
                         <DropdownMenuItem>
                             Profile
