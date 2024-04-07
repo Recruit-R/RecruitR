@@ -40,7 +40,7 @@ export function RatingRecruiterFeedback() {
                                 {
                                     Object.keys(currentStudent?.feedback!).map((recruiterName) => {
                                         return recruiterName !== currentUserEditId ? (
-                                            <ToggleGroupItem value={recruiterName} className="bg-background" aria-label="Toggle bold">
+                                            <ToggleGroupItem key={recruiterName} value={recruiterName} className="bg-background" aria-label="Toggle bold">
                                                 {currentStudent?.feedback?.[recruiterName].rating ?? "N/A"} <StarFilledIcon
                                                     className="h-4 w-4 text-ring fill-current" />
                                                 <span className="pl-2">{recruiterName}</span>
