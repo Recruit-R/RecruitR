@@ -7,28 +7,64 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useAuth } from "@/components/auth-provider.tsx";
 import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
 import Roles from "@/app/types/roles";
+import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
 
 interface TimelineProps {
-    events: Array<String>
-    currEvent: string
     editable: boolean
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
-export function Timeline({ events, currEvent, editable, c }: TimelineProps) {
-    const [progress, setProgress] = useState(events.indexOf(currEvent))
+
+export function Timeline({ editable, c }: TimelineProps) {
+    const { currentStudent,
+        studentList,
+        currRecrFeedback
+    } = useContext(StudentDataContext) as StudentDataContextType
+    const year_statuses_mapping: Record<string, string[]> = {
+        "Rising Sophomore": ["Career Fair", "Interview 1", "Accepted"],
+        "Rising Junior": ["Career Fair", "Interview 1", "Interview 2", "Accepted"],
+        "Rising Senior": ["Career Fair", "Interview 1", "Interview 2", "Accepted"]
+
+    }
+    const student_year = currentStudent?.year ?? ""
+    const statuses = year_statuses_mapping[student_year] || ["Career Fair", "Interview 1", "Interview 2", "Accepted"]
+
+    const getFeedback = () => currentStudent?.feedback?.[currRecrFeedback]?.curr_status ?? "Career Fair"
+    const [currStatus, setCurrStatus] = useState(getFeedback())
+    const [progress, setProgress] = useState(statuses.indexOf(getFeedback()))
     const [progressBar, setProgressBar] = useState<number>(0)
+
+    useEffect(() => {
+        setCurrStatus(getFeedback)
+        console.log(currStatus)
+        console.log(progress)
+        console.log(progressBar)
+    }, [studentList, currRecrFeedback]);
+
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "curr_status": currStatus },
+        localData: { "curr_status": currStatus },
+        dependency: currStatus
+    })
+
+    useEffect(() => {
+        setProgress(statuses.indexOf(currStatus))
+    }, [currStatus]);
+
     const user = useAuth();
     function handleCheckedChange(idx: number) {
-        currEvent = events[idx] as string
-        setProgress(events.indexOf(currEvent))
+        setCurrStatus(statuses[idx])
+        setProgress(idx)
     }
     useEffect(() => {
-        setProgressBar(100 / (events.length - 1) * progress)
+        setProgressBar(100 / (statuses.length - 1) * progress)
     }, [progress])
+
 
     function addToolTip(content: string, component: React.JSX.Element) {
         return (<TooltipProvider>
@@ -51,13 +87,13 @@ export function Timeline({ events, currEvent, editable, c }: TimelineProps) {
                 <div className={"absolute flex justify-between w-full"}>
 
                     {
-                        events.map((e, idx) => {
+                        statuses.map((e, idx) => {
                             return (
                                 addToolTip(e as string,
                                     <div className={"relative flex flex-col "} key={idx}>
                                         <div className={`absolute -translate-y-6 
                                     ${idx !== progress && c("hidden", "lg:block max-lg:hidden")}
-                                    ${idx === 0 ? "left-0" : idx == events.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}
+                                    ${idx === 0 ? "left-0" : idx == statuses.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}
                                     `}>
                                             <label htmlFor={e as string} className={"whitespace-nowrap"}>
                                                 {e}

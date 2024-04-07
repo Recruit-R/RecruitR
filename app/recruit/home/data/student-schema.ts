@@ -7,7 +7,8 @@ export const feedbackSchema = z.record(z.object({
   possible_placement: z.string().optional(),
   known_tech: z.string().array().optional(),
   text_feedback: z.string().optional(),
-  rating: z.number().optional()
+  rating: z.number().optional(),
+  curr_status: z.string().optional()
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
 
