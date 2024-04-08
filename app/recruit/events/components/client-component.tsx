@@ -4,7 +4,7 @@
 
 import { EventCreationDialog } from "@/app/recruit/events/components/event-creation-dialog";
 import { EventsListCard } from "@/app/recruit/events/components/events-list-card";
-import { TimePicker } from "@/components/ui/time-picker";
+import { parseISO } from "date-fns";
 import { createContext, useEffect, useState } from "react";
 import { getEventData } from "../actions";
 
@@ -16,30 +16,37 @@ export interface EventDataContextType {
 //define context to provide event data and refresh function to child components
 export const EventDataContext = createContext<EventDataContextType | null>(null);
 
-export default function ClientComponent({ e }: { e: any }) {
-    const [events, setEvents] = useState(e);
+export default function ClientComponent({ eventList }: { eventList: any }) {
+    const [events, setEvents] = useState(eventList);
     const [pastEvents, setSortedPastEvents] = useState<any>([]);
     const [futureEvents, setSortedFutureEvents] = useState<any>([]);
 
     function refresh() {
-        getEventData().then((e) => { setEvents(e) })
+        getEventData().then((events) => {
+            setEvents(events);
+        })
     }
     useEffect(() => {
         const currentDate = new Date();
-        const pastEvents = events
+        const parsedEvents = events.map((recEvent: any) => {
+            return { ...recEvent, date: parseISO(recEvent.date) }
+        });
+        console.log('events', parsedEvents);
+        const pastEvents = parsedEvents
             // sort and filter past events by UTC time
-            .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time).toUTCString() < currentDate.toUTCString())
-            .sort((a: { Time: Date }, b: { Time: Date }) => new Date(b.Time).getTime() - new Date(a.Time).getTime());
+            .filter((event: any) => event.date < currentDate)
+            .sort((a: any, b: any) => b.date.getTime() - a.date.getTime());
 
         // sort and filter future events by UTC time
-        const futureEvents = events
-            .filter((RecruiterEvent: { Time: Date }) => new Date(RecruiterEvent.Time) >= currentDate)
-            .sort((a: { Time: Date }, b: { Time: Date }) => new Date(a.Time).getTime() - new Date(b.Time).getTime());
+        const futureEvents = parsedEvents
+            .filter((event: any) => event.date >= currentDate)
+            .sort((a: any, b: any) => a.date.getTime() - b.date.getTime());
+
+        console.log('past/future events', pastEvents, futureEvents);
 
         // Update state with sorted events
         setSortedPastEvents(pastEvents);
         setSortedFutureEvents(futureEvents);
-        console.log(events);
 
         // Re-run if events change 
     }, [events]);

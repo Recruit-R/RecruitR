@@ -61,7 +61,7 @@ export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.Set
     })
 
     function onSubmit(data: Event) {
-        addData("events", Date.now().toString(), data).then(() => {
+        addData("events", Date.now().toString(), { ...data, date: data.date.toISOString() }).then(() => {
             refresh();
         })
         setOpen(false);
