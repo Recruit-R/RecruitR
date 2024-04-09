@@ -131,6 +131,7 @@ export function DataTable<TData, TValue>({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
+                    className={`${(row.original as Student)?.id === (currentStudent?.id ?? "") && "bg-muted/50"}`}
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
