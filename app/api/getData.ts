@@ -11,7 +11,7 @@ interface DocumentFilter {
 }
 
 
-export default async function getData({ collection_name, document_id, schemaName, filter }:
+export default async function getData({ collection_name, document_id, filter }:
     {
         collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
     }) {
@@ -20,22 +20,10 @@ export default async function getData({ collection_name, document_id, schemaName
         let docRef = doc(db, collection_name, document_id!);
         return (await getDoc(docRef)).data();
     } else {
-        let response = await collection(db, collection_name)
+        let response = collection(db, collection_name)
         let result = await getDocs(response);
-        // console.log(result.docs)
         let data_list: any = {};
-        if (schemaName !== "eventSchema") {
-            data_list = filterData({ data: result, filter: filter! });
-        } else {
-            data_list = []
-            result.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                if (Object.keys(doc.data()).length !== 0) {
-                    let event = doc.data();
-                    data_list.push(event);
-                }
-            });
-        }
+        data_list = filterData({ data: result, filter: filter! });
 
         return data_list
     }
@@ -49,7 +37,6 @@ export function filterData({ data, filter }:
     let filtered_data: any = [];
     for (let i = 0; i < data.docs.length; i++) {
         let doc = data.docs[i];
-        // TODO: make this based on filter.operator
         if (filter !== undefined && !(filter.operator(doc.data()[filter.field], filter.value))) {
             continue;
         }
