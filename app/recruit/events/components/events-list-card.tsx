@@ -44,7 +44,7 @@ export function EventsListCard({ title, events, setEvents, empty_message }: Even
                             events.map((event: Event, i: number) => {
                                 const date = event.date!.toDateString() + " " + event.date!.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                                 return (
-                                    <div>
+                                    <div key={event.id}>
                                         <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between">
                                             <div>
                                                 <div className="text-md font-bold">{event.title}</div>
