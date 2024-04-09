@@ -24,7 +24,6 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     function refresh() {
         getEventData().then((events) => {
             setEvents(events);
-            console.log(events);
         })
     }
     useEffect(() => {

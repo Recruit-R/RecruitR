@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { EventDataContext, EventDataContextType } from "./client-component"
@@ -29,8 +29,8 @@ import { TimePicker } from "@/components/ui/time-picker"
 import { format } from 'date-fns'
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-        message: "Event name must be at least 2 characters.",
+    title: z.string().min(2, {
+        message: "Event title must be at least 2 characters.",
     }),
     date: z.date(),
     location: z.string().min(2, {
@@ -39,23 +39,24 @@ const formSchema = z.object({
 })
 
 type Event = {
-    name: string,
+    title: string,
     date: Date,
     location: string
+    id?: string
 }
 
-export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+export function EventCreateForm({ setOpen, event }: { setOpen: React.Dispatch<React.SetStateAction<boolean>>, event?: Event }) {
     const { refresh } = useContext(EventDataContext) as EventDataContextType
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(
             formSchema.transform((v) => ({
-                title: v.name,
+                title: v.title,
                 date: v.date,
                 location: v.location
             }))
         ),
         defaultValues: {
-            name: "",
+            title: "",
             location: "",
         },
     })
@@ -67,17 +68,25 @@ export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.Set
         setOpen(false);
     }
 
+    useEffect(() => {
+        if (event) {
+            form.setValue('title', event.title)
+            form.setValue('date', event.date)
+            form.setValue('location', event.location)
+        }
+    }, [event])
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="title"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Name of Event</FormLabel>
                             <FormControl>
-                                <Input placeholder="Name of Event" {...field} />
+                                <Input placeholder={"Title of Event"} {...field} value={event ? event.title : undefined} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -100,11 +109,15 @@ export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.Set
                                                 !field.value && "text-muted-foreground"
                                             )}
                                         >
+                                            {format(event ? event.date : field.value, "PPP") ?? "Pick a date"}
+                                            {/* {event ? 
+                                            format(event.date, "PPP") : 
                                             {field.value ? (
                                                 format(field.value, "PPP")
                                             ) : (
                                                 <span>Pick a date</span>
-                                            )}
+                                            )}} */}
+
                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                         </Button>
                                     </FormControl>
@@ -125,11 +138,12 @@ export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.Set
                 <FormField
                     control={form.control}
                     name="date"
-                    render={({ field }) => (
+                    render={({ field }: { field: any }) => (
                         <FormItem>
                             <FormLabel>Time<br /></FormLabel>
+                            {event?.date.toDateString() ?? 'hey'}
                             <FormControl>
-                                <TimePicker date={field.value ?? new Date()} setDate={field.onChange} />
+                                <TimePicker date={event?.date ?? field.value ?? new Date()} setDate={field.onChange} />
                             </FormControl>
                         </FormItem>
                     )}
@@ -141,7 +155,7 @@ export function EventCreateForm({ setOpen }: { setOpen: React.Dispatch<React.Set
                         <FormItem>
                             <FormLabel>Location</FormLabel>
                             <FormControl>
-                                <Input placeholder="Location" {...field} />
+                                <Input placeholder="Location" {...field} value={event ? event.location : undefined} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

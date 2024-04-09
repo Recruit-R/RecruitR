@@ -16,7 +16,6 @@ export function TimePicker({ date, setDate }: DateTimePickerProps) {
 
         const mergedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), Number(time[0]), Number(time[1]));
 
-        console.log('setting merged date to', date, time, time, mergedDate);
         if (mergedDate.toString() === 'Invalid Date') {
             return;
         }

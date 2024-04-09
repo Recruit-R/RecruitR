@@ -1,17 +1,14 @@
-import { Button } from "@/components/ui/button"
+import { EventCreateForm } from "@/app/recruit/events/components/event-create-form";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+    DialogTrigger
+} from "@/components/ui/dialog";
 import { PlusIcon } from "lucide-react";
-import { EventCreateForm } from "@/app/recruit/events/components/event-create-form";
 import { useState } from "react";
 
 export function EventCreationDialog() {
@@ -24,9 +21,9 @@ export function EventCreationDialog() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Create Event</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you&apos;re done.
+                        Create a new event for students to attend
                     </DialogDescription>
                 </DialogHeader>
                 <EventCreateForm setOpen={setOpen} />
