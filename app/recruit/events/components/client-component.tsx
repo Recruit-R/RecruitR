@@ -24,6 +24,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     function refresh() {
         getEventData().then((events) => {
             setEvents(events);
+            console.log(events);
         })
     }
     useEffect(() => {
@@ -31,7 +32,6 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
         const parsedEvents = events.map((recEvent: any) => {
             return { ...recEvent, date: parseISO(recEvent.date) }
         });
-        console.log('events', parsedEvents);
         const pastEvents = parsedEvents
             // sort and filter past events by UTC time
             .filter((event: any) => event.date < currentDate)
@@ -41,8 +41,6 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
         const futureEvents = parsedEvents
             .filter((event: any) => event.date >= currentDate)
             .sort((a: any, b: any) => a.date.getTime() - b.date.getTime());
-
-        console.log('past/future events', pastEvents, futureEvents);
 
         // Update state with sorted events
         setSortedPastEvents(pastEvents);
@@ -59,21 +57,23 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                 events,
                 refresh
             }} >
-            <div className="flex flex-col gap-4 p-4 ">
+            <div className="flex flex-col gap-4 p-4 h-4/5">
                 <div className="">
                     <EventCreationDialog />
                 </div>
-                <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2">
+                <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2 h-full">
                     <div className="">
                         <EventsListCard
                             title="Past Events"
                             events={pastEvents}
+                            setEvents={setEvents}
                             empty_message="No Previous Events" />
                     </div>
                     <div className="">
                         <EventsListCard
                             title="Future Events"
                             events={futureEvents}
+                            setEvents={setEvents}
                             empty_message="No Upcoming Events"
                         />
 

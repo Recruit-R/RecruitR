@@ -11,7 +11,7 @@ interface DocumentFilter {
 }
 
 
-export default async function getData({ collection_name, document_id, schemaName, filter }:
+export default async function getData({ collection_name, document_id, filter }:
     {
         collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
     }) {

@@ -3,11 +3,11 @@
 import ClientComponent from "@/app/recruit/events/components/client-component";
 import { eventSchema } from "@/app/recruit/events/data/events-schema.ts";
 import { z } from "zod";
-import getData from "../../api/getData";
+import { getEventData } from "./actions";
 
 export default async function Page() {
 
-    const events = await getData({ collection_name: 'events' })
+    const events = await getEventData();
 
     const zodEvents = z.array(eventSchema).parse(events);
 

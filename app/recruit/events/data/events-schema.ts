@@ -5,7 +5,8 @@ import { z } from "zod";
 export const eventSchema = z.object({
     title: z.string(),
     date: z.union([z.string(), z.undefined()]),
-    location: z.string()
+    location: z.string(),
+    id: z.string()
 })
 function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.
