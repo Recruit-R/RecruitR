@@ -1,7 +1,6 @@
 import { Icons } from "@/components/ui/icons";
 
-export function StudentInfo({canData}: {canData: any}) {
-    //console.log('can data info', canData);
+export function StudentInfo({ canData }: { canData: any }) {
     return (
         <div className="grid flex-1 items-center h-full grid-cols-1 xl:grid-cols-2">
     

@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox.tsx"
 
 
 import useScreenWidth from "@/hooks/use-screen-width.ts"
+import { parseISO } from "date-fns"
 import { years } from "../../data/student-data.tsx"
 import { DataTableColumnHeader } from "./data-table-column-header.tsx"
 
@@ -18,10 +19,10 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       header: ({ table }) => (
         <Checkbox
           checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            table.getIsAllRowsSelected() ||
+            (table.getIsSomeRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
           aria-label="Select all"
           className="translate-y-[2px]"
         />
@@ -118,6 +119,38 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
       },
+    },
+    {
+      accessorKey: "signup_time",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Join Time" />
+      ),
+      cell: ({ row }) => (
+        <div className="w-[100px]">{
+          parseISO(row.getValue("signup_time"))
+            .toLocaleString('en-US',
+              { month: '2-digit', day: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true }
+            )}
+        </div>
+      ),
+      enableSorting: true,
+      enableHiding: false,
+      sortingFn: (rowA, rowB) => {
+        const timeA = parseISO(rowA.getValue("avgRating"));
+        const timeB = parseISO(rowB.getValue("avgRating"));
+        if (timeA < timeB) {
+          return -1;
+        }
+        if (timeA > timeB) {
+          return 1;
+        }
+        return 0;
+      },
+      sortUndefined: -1,
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
+
     }
   ] as ColumnDef<any>[])
   return feedbackFocus || (widthSize && widthSize < breakWidth) ? columns.slice(1, 3) : columns

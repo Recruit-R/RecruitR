@@ -1,6 +1,6 @@
 "use client"
 
-import { Cross2Icon } from "@radix-ui/react-icons"
+import {Cross2Icon, DownloadIcon} from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button.tsx"
@@ -9,6 +9,8 @@ import { DataTableViewOptions } from "./data-table-view-options.tsx";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter.tsx"
 import { years } from "@/app/recruit/home/data/student-data.tsx";
+import {downloadxls} from "@/lib/utils.ts";
+import {Student} from "@/app/recruit/home/data/student-schema.ts";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
@@ -28,7 +30,11 @@ export function DataTableToolbar<TData>({
           placeholder="Filter students..."
           value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("last_name")?.setFilterValue(event.target.value)
+          {
+              table.getColumn("last_name")?.setFilterValue(event.target.value)
+              table.resetPageIndex()
+          }
+
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
@@ -57,6 +63,27 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+        <div className={"px-1"}>
+            <Button
+                variant={"outline"}
+                className={"p-2 h-8"}
+                // disabled={table.getSelectedRowModel().rows.length === 0}
+                onClick={e => {
+                    let data;
+                    if (table.getSelectedRowModel().rows.length === 0) {
+                        data = table.getExpandedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+
+                    }
+                    else {
+                        data = table.getSelectedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+
+                    }
+                    downloadxls(e, data)
+            }}
+            >
+                <DownloadIcon className={"h-4 w-4"}/><span className={c("ml-2 hidden", "md:block", false)}>Download</span>
+            </Button>
+        </div>
       <div className={c("hidden", "md:block", false)}>
         <DataTableViewOptions table={table} />
       </div>
