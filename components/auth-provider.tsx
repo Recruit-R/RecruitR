@@ -1,4 +1,5 @@
 "use client";
+import addData from "@/app/api/addData";
 import { addCandidateData } from "@/app/candidate/profile/actions";
 import Roles from "@/app/types/roles";
 import { AuthError, GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
@@ -36,6 +37,7 @@ type AuthContextType = {
     userRole: Roles | null;
     error: React.JSX.Element | null;
     isLoading: boolean;
+    addEvent: (eventId: string) => void;
     setError: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>;
     getAuthToken: () => string | undefined;
     refresh: (currentUser: User) => Promise<boolean>;
@@ -55,6 +57,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<React.JSX.Element | null>(null);
+    const [userEvents, setUserEvents] = useState<string[]>([]);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -138,7 +141,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
     useEffect(() => {
         // on auth change, redirect to correct page
         if (userRole === null) return;
-        if (pathname === '/auth/login' || pathname === '/auth/signup') {
+        console.log('user role', userRole, pathname)
+        if (pathname === '/auth/login' || pathname.startsWith('/auth/signup')) {
             if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
                 router.push('/recruit/home');
             } else {
@@ -151,6 +155,17 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
         }
     }, [userRole, router]);
+
+    useEffect(() => {
+        if (currentUser) {
+            addData('users', currentUser.uid, { events: userEvents })
+        }
+
+    }, [userEvents, currentUser])
+
+    function addEvent(eventId: string) {
+        setUserEvents([...userEvents, eventId]);
+    }
 
     const LoginFailure = () => {
         return (
@@ -357,6 +372,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 userRole,
                 isLoading,
                 error,
+                addEvent,
                 setError,
                 getAuthToken,
                 refresh,

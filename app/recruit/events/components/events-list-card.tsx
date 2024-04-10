@@ -5,8 +5,10 @@ import {
     Card,
     CardContent
 } from "@/components/ui/card";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { MdOutlineQrCode2 } from "react-icons/md";
 import { EventDataContext, EventDataContextType } from "./client-component";
 import { EventManagementForm } from "./event-management-form";
 import { PopupDialog } from "./popup-dialog";
@@ -60,9 +62,12 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
                                                 <div className="text-sm text-muted-foreground">{event.location}</div>
                                                 <div className="text-sm text-muted-foreground">{date}</div>
                                             </div>
-                                            <div className="flex flex-row items-center my-auto mr-4 w-12 h-8 gap-4">
+                                            <div className="flex flex-row items-center my-auto mr-8 w-20 h-8 gap-4">
+                                                <Link href={`events-qr/${event.id}`}>
+                                                    <MdOutlineQrCode2 className="hover:cursor-pointer h-6 w-6" />
+                                                </Link>
                                                 <PopupDialog
-                                                    popupButton={<div><FaEdit className="hover:cursor-pointer" /></div>}
+                                                    popupButton={<div><FaEdit className="hover:cursor-pointer h-5 w-5" /></div>}
                                                     title="Edit Event" description="Edit the event details below."
                                                     dialogContent={
                                                         <EventManagementForm
@@ -75,7 +80,7 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
                                                     setOpen={setEditOpen}
                                                 />
                                                 <PopupDialog
-                                                    popupButton={<div><FaTrash className="hover:cursor-pointer hover:fill-destructive" /></div>}
+                                                    popupButton={<div><FaTrash className="hover:cursor-pointer hover:fill-destructive h-5 w-4" /></div>}
                                                     title="Delete Event"
                                                     description="Are you sure you want to delete this event?"
                                                     dialogContent={<DeleteConfirmationForm event={event} />}
