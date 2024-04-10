@@ -1,36 +1,42 @@
 import deleteData from "@/app/api/deleteData";
+import { Event } from "@/app/types/event";
 import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { EventDataContext, EventDataContextType } from "./client-component";
 import { EventManagementForm } from "./event-management-form";
 import { PopupDialog } from "./popup-dialog";
 
-type Event = {
-    title: string,
-    date: Date,
-    location: string
-    id: string
-}
 
 interface EventsListCardProps {
     title: string,
-    events: Array<Event>,
-    setEvents: React.Dispatch<React.SetStateAction<any>>,
-    empty_message: string
+    empty_message: string,
+    partialEvents: Event[]
 }
 
-export function EventsListCard({ title, events, setEvents, empty_message }: EventsListCardProps) {
+export function EventsListCard({ partialEvents, title, empty_message }: EventsListCardProps) {
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
     const [editOpen, setEditOpen] = useState<boolean>(false);
+    const { events, setEvents } = useContext(EventDataContext) as EventDataContextType
 
     const DeleteConfirmationForm = ({ event }: { event: Event }) => {
         return (
-            <div className="flex items-center">
-                <Button variant="destructive" onClick={() => deleteData('events', event.id)}>
+            <div className="flex items-center justify-center">
+                <Button variant="destructive" onClick={() => {
+                    deleteData('events', event?.id ?? '')
+                        .then((e) => {
+                            console.log('deleted event', e, event)
+                            setEvents(events.filter((e: Event) => e.id !== event.id))
+                        })
+                        .then(() => {
+                            setDeleteOpen(false)
+                        })
+                }}
+                >
                     Delete Event
                 </Button>
             </div>
@@ -43,12 +49,12 @@ export function EventsListCard({ title, events, setEvents, empty_message }: Even
                 <div className="py-2"></div>
                 <CardContent className="divide-y">
                     {
-                        events.length >= 1 ?
-                            events.map((event: Event, i: number) => {
-                                const date = event.date!.toDateString() + " " + event.date!.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                        partialEvents.length ?
+                            partialEvents.map((event: Event, i: number) => {
+                                const date = event.date.toDateString() + " " + event.date!.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                                 return (
                                     <div key={`event_${i}`}>
-                                        <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between">
+                                        <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between items-center">
                                             <div>
                                                 <div className="text-md font-bold">{event.title}</div>
                                                 <div className="text-sm text-muted-foreground">{event.location}</div>
@@ -58,17 +64,23 @@ export function EventsListCard({ title, events, setEvents, empty_message }: Even
                                                 <PopupDialog
                                                     popupButton={<div><FaEdit className="hover:cursor-pointer" /></div>}
                                                     title="Edit Event" description="Edit the event details below."
-                                                    dialogContent={<EventManagementForm event={event} setOpen={setDeleteOpen} />}
-                                                    open={deleteOpen}
-                                                    setOpen={setDeleteOpen}
+                                                    dialogContent={
+                                                        <EventManagementForm
+                                                            isCreating={false}
+                                                            event={event}
+                                                            setOpen={setEditOpen}
+                                                        />
+                                                    }
+                                                    open={editOpen}
+                                                    setOpen={setEditOpen}
                                                 />
                                                 <PopupDialog
                                                     popupButton={<div><FaTrash className="hover:cursor-pointer hover:fill-destructive" /></div>}
                                                     title="Delete Event"
                                                     description="Are you sure you want to delete this event?"
                                                     dialogContent={<DeleteConfirmationForm event={event} />}
-                                                    open={editOpen}
-                                                    setOpen={setEditOpen}
+                                                    open={deleteOpen}
+                                                    setOpen={setDeleteOpen}
                                                 />
                                             </div>
                                         </div>

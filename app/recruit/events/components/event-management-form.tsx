@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { EventDataContext, EventDataContextType } from "./client-component"
 
+import { Event } from "@/app/types/event"
 import { TimePicker } from "@/components/ui/time-picker"
 import { format } from 'date-fns'
 
@@ -38,15 +39,8 @@ const formSchema = z.object({
     })
 })
 
-type Event = {
-    title: string,
-    date: Date,
-    location: string
-    id?: string
-}
-
-export function EventManagementForm({ event, setOpen }: { event?: Event, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
-    const { refresh } = useContext(EventDataContext) as EventDataContextType
+export function EventManagementForm({ event, isCreating, setOpen }: { event?: Event, isCreating: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+    const { events, setEvents } = useContext(EventDataContext) as EventDataContextType
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(
             formSchema.transform((v) => ({
@@ -61,10 +55,15 @@ export function EventManagementForm({ event, setOpen }: { event?: Event, setOpen
         },
     })
 
-    function onSubmit(data: Event) {
-        addData("events", Date.now().toString(), { ...data, date: data.date.toISOString() }).then(() => {
-            refresh();
-        })
+    function onSubmit(alteredEvent: Event) {
+        addData("events", alteredEvent?.id ? alteredEvent?.id : Date.now().toString(), { ...alteredEvent, date: alteredEvent.date.toISOString() })
+            .then(() => {
+                if (isCreating) {
+                    setEvents([...events, alteredEvent])
+                } else {
+                    setEvents(events.map((e: Event) => e.id === event?.id ? alteredEvent : e));
+                }
+            })
         setOpen(false);
     }
 
