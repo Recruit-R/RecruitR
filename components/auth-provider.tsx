@@ -146,7 +146,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
         } else {
             if (pathname === '/auth/refresh') {
-                router.back();
+                console.log('not actually refreshing from useeffect', userRole)
+                // router.back();
             }
         }
     }, [userRole, router]);
@@ -219,6 +220,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
             .then(async (token) => {
                 setAuthToken(token)
                 if (pathname === '/auth/refresh') {
+                    console.log('refreshing from refresh function', userRole)
+
                     router.back();
                 }
                 return true;

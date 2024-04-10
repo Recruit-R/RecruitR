@@ -2,11 +2,14 @@
 
 //client component that orders all components in events page
 
-import { EventCreationDialog } from "@/app/recruit/events/components/event-creation-dialog";
 import { EventsListCard } from "@/app/recruit/events/components/events-list-card";
 import { parseISO } from "date-fns";
 import { createContext, useEffect, useState } from "react";
 import { getEventData } from "../actions";
+import { PopupDialog } from "./popup-dialog";
+import { EventManagementForm } from "./event-management-form";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
 
 export interface EventDataContextType {
     events: any,
@@ -20,6 +23,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     const [events, setEvents] = useState(eventList);
     const [pastEvents, setSortedPastEvents] = useState<any>([]);
     const [futureEvents, setSortedFutureEvents] = useState<any>([]);
+    const [open, setOpen] = useState<boolean>(false);
 
     function refresh() {
         getEventData().then((events) => {
@@ -58,7 +62,21 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
             }} >
             <div className="flex flex-col gap-4 p-4 h-4/5">
                 <div className="">
-                    <EventCreationDialog />
+                    <PopupDialog
+                        popupButton={
+                            <Button variant="outline">
+                                <PlusIcon />
+                                Create Event
+                            </Button>
+                        }
+                        title="Create Event"
+                        description="Create a new event by filling out the details below."
+                        dialogContent={
+                            <EventManagementForm setOpen={setOpen} />
+                        }
+                        open={open}
+                        setOpen={setOpen}
+                    />
                 </div>
                 <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2 h-full">
                     <div className="">
