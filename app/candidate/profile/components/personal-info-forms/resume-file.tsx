@@ -15,19 +15,19 @@ export function ResumeButton(form: any) {
     const storage = getStorage(app);
     const fileRef = React.useRef<HTMLInputElement | null>(null);
     const newMetaData = {
-        contentType: "application/pdf"
+        contentType: "application/pdf",
     }
     const { toast } = useToast()
 
     const handleChange = (event: any) => {
         setUpp(true)
-        console.log('event', event);
+        //console.log('event', event);
 
         const resName = event.target.value.split("\\");
 
         const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
-        console.log('storage', storage);
-        console.log(resumeRef);
+        //console.log('storage', storage);
+        //console.log(resumeRef);
         uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
             const downLoadURL = await getDownloadURL(snapshot.ref);
