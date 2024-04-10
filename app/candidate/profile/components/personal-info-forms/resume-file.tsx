@@ -20,15 +20,19 @@ export function ResumeButton(form: any) {
     const { toast } = useToast()
 
     const handleChange = (event: any) => {
+        console.log()
         setUpp(true)
         //console.log('event', event);
+        var extension =  event.target.files[0].type
+        console.log(event.target.files[0].type)
+        if(extension == "application/pdf"){
 
-        const resName = event.target.value.split("\\");
-
-        const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
+            const resName = event.target.value.split("\\");
+        //check if file type is pdf here?
+            const resumeRef = ref(storage, "resumes/" + form.canDataId + resName.slice(resName.length - 1));
         //console.log('storage', storage);
         //console.log(resumeRef);
-        uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
+            uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
             const downLoadURL = await getDownloadURL(snapshot.ref);
             form.form.setValue('resumeURL', downLoadURL);
@@ -36,9 +40,16 @@ export function ResumeButton(form: any) {
                 title: "Resume Uploaded!",
                 description: "  Remember to save!",
             })
+            setUpp(false)   
+            })
+        }
+        else {
+            toast({ variant: "destructive",
+                title: "Resume file type must be .pdf!",
+            })
             setUpp(false)
-        })
-
+        }
+        
         //console.log(event.target.value);
     };
     return (
