@@ -22,7 +22,7 @@ export function EventCard({ eventIds }: { eventIds: string[] }) {
                     Recent Events
                 </p>
             </CardHeader>
-            <CardContent className="flex flex-col flex-wrap">
+            <CardContent className="flex flex-col flex-wrap gap-2">
 
                 {events.map((event, index) => {
                     return (

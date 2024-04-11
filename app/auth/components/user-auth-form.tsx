@@ -112,7 +112,6 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
         } else {
             auth.loginEmail({ email: values.email, password: values.password })
         }
-        console.log('this is the event id in the auth form', eventId);
         if (eventId) auth.addEvent(eventId);
     }
 

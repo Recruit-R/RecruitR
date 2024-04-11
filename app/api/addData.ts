@@ -3,7 +3,6 @@ import app from "../../firebase.config";
 
 const db = getFirestore(app)
 export default async function addData(collection: string, id: string, data: any) {
-    console.log('adding data', collection, id, data);
     let result = null;
     let error = null;
 
