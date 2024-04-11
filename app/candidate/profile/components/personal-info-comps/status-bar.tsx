@@ -1,3 +1,4 @@
+import { Icons } from "@/components/ui/icons";
 import React, {useEffect} from "react";
 
 export function StatusBar({canData}: {canData:any}){
@@ -8,7 +9,6 @@ export function StatusBar({canData}: {canData:any}){
             </p>
             
             <p>
-                {!canData && "Loading..."}
                 {canData && (canData.interview2 ? 'Interview 2' : 
                 (canData.interview1 ? 'Interview 1' : 'Processing'))}
             </p>

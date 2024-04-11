@@ -1,81 +1,66 @@
 import { Button } from "@/components/ui/button";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { useRef } from 'react';
-import { getStorage, ref, uploadBytesResumable} from "firebase/storage";
-import { uploadBytes, uploadString } from "firebase/storage";
-import { getDownloadURL } from "firebase/storage";
+import app from "@/firebase.config";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import React, { useState } from "react";
 
-export function ResumeButton(form : any) {
-    const storage = getStorage();
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+import { Progress } from "@/components/ui/progress"
+import { Icons } from "@/components/ui/icons";
+import { metadata } from "@/app/layout";
+
+export function ResumeButton(form: any) {
+    const [upping, setUpp] = useState(false)
+
+    const storage = getStorage(app);
     const fileRef = React.useRef<HTMLInputElement | null>(null);
-    const metadata = {
-        contentType: "application/pdf"
+    const newMetaData = {
+        contentType: "application/pdf",
     }
-    const [progressPercent, setProgressPercent] = useState(0);
+    const { toast } = useToast()
+
     const handleChange = (event: any) => {
-        event.preventDefault()
-        const file = event.target[0]?.files[0]
-        if(!file){
-            return;
+        console.log()
+        setUpp(true)
+        //console.log('event', event);
+        var extension =  event.target.files[0].type
+        console.log(event.target.files[0].type)
+        if(extension == "application/pdf"){
+
+            const resName = event.target.value.split("\\");
+        //check if file type is pdf here?
+            const resumeRef = ref(storage, "resumes/" + form.canDataId + resName.slice(resName.length - 1));
+        //console.log('storage', storage);
+        //console.log(resumeRef);
+            uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
+
+            const downLoadURL = await getDownloadURL(snapshot.ref);
+            form.form.setValue('resumeURL', downLoadURL);
+            toast({
+                title: "Resume Uploaded!",
+                description: "  Remember to save!",
+            })
+            setUpp(false)   
+            })
         }
-        const resName = event.target.value.split("\\");
-        const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
-        const uploadTask = uploadBytesResumable(resumeRef, resName.slice(resName.length - 1), metadata);
-
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                const progress =
-                        Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                        setProgressPercent(progress);
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                    case 'paused':
-                        console.log('Upload is paused');
-                        break;
-                    case 'running':
-                        console.log('Upload is running');
-                        break;
-                }
-            },
-            (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
-                  case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
-                    console.log("error: unauth")
-                    break;
-                  case 'storage/canceled':
-                    // User canceled the upload
-                    console.log("error: canceled")
-                    break;
-            
-                  // ...
-                  case 'storage/invalid-url':
-                    console.log("error: invalid-url")
-                    break;
-            
-                  case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
-                    break;
-                }
-            },
-            ()=>{
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    form.form.setValue('resumeURL', downloadURL);
-
-                    console.log(downloadURL);
-                })
-                
-            }
-        )
-
+        else {
+            toast({ variant: "destructive",
+                title: "Resume file type must be .pdf!",
+            })
+            setUpp(false)
+        }
+        
+        //console.log(event.target.value);
     };
     return (
-        <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>
-            <input id="upload" name="upload" type="file" ref={fileRef} hidden
-                onChange={handleChange} />
-            Upload Resume
-        </Button>
+        <>
+            
+            <Button disabled = {upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
+                {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                <input id="upload" name="upload" type="file" ref={fileRef} hidden
+                    onChange={handleChange} />
+                Upload Resume
+            </Button>
+        </>
     )
 }

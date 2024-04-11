@@ -19,6 +19,7 @@ import { addCandidateData, get_candidate_data } from "../actions";
 import { StatusBar } from "./personal-info-comps/status-bar";
 import { HeaderForm } from "./personal-info-forms/header-form";
 import { PersonalForm } from "./personal-info-forms/personal-info-form";
+import { Icons } from "@/components/ui/icons";
 
 
 interface StudentInfoCardProps {
@@ -32,8 +33,10 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
 
     const auth = useAuth()
     const [canData, setCanData] = useState<any>()
+    const [upping, setUpp] = useState(true)
     async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
+        setUpp(false)
         return usersVals
     }
     async function addCanData(uid: string, values: object) {
@@ -126,10 +129,10 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                             :
                                             <>
                                                 <CardTitle className="text-4xl">
-                                                    Loading...
+                                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
-                                                    Loading...
+                                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                                 </CardDescription>
                                             </>
                                         }
@@ -137,9 +140,10 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                     </div>
                                 }
                             </div>
+                            
                             <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
                                 <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
-                                <Button type="button" onClick={() => setEditMode(prevState => !prevState)}
+                                <Button disabled={upping} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                     variant={"outline"}
                                     className="w-32"
                                 >
@@ -173,10 +177,12 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                         Resume
                                     </p>
                                 </div>
-                                <div className={`${!editMode && 'hidden'} pt-0.01`}>
-                                    <ResumeButton form={form} />
-                                </div>
-                                {!canData && "Loading..."}
+                                {editMode &&
+                                <div className={`pt-0.01`}>
+                                    <ResumeButton form={form} canDataId = {canData.id}/>
+                                </div>}
+
+                                {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                                 {canData && (canData.resumeURL ? (<div>
                                     <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
                                         <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
