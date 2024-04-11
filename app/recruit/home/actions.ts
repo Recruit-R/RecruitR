@@ -1,11 +1,11 @@
 'use server'
 
 import addData from "@/app/api/addData";
+import { deleteUser } from "@/app/api/deleteUser.ts";
 import getData from "@/app/api/getData.ts";
 import { fullStudentSchema } from "@/app/recruit/home/data/student-schema.ts";
 import Roles from "@/app/types/roles.ts";
 import { z } from "zod";
-import {deleteUser} from "@/app/api/deleteUser.ts";
 
 export async function feedbackReset(student_id: string) {
     return addData("users", student_id, { "feedback": {} })
@@ -54,6 +54,6 @@ export async function getStudentList() {
 
 export async function deleteStudent(id: string) {
     const result = await deleteUser(id)
-    return result.dbUserDeletion.result
+    return result
 
 }

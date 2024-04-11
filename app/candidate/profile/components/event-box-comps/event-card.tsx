@@ -26,7 +26,7 @@ export function EventCard({ eventIds }: { eventIds: string[] }) {
 
                 {events.map((event, index) => {
                     return (
-                        <EventBox event={event} />
+                        <EventBox key={`event_${index}`} event={event} />
                     )
                 })}
             </CardContent>
