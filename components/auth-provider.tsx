@@ -38,6 +38,7 @@ type AuthContextType = {
     userRole: Roles | null;
     error: React.JSX.Element | null;
     isLoading: boolean;
+    events: string[],
     addEvent: (eventId: string) => void;
     setError: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>;
     getAuthToken: () => string | undefined;
@@ -169,7 +170,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }, [userRole, router]);
 
     useEffect(() => {
-        console.log('updated events', currentUser, userEventsRef);
         if (currentUser !== null && userEventsRef.current.length > 0) {
             getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
                 let newList = userEventsRef.current;
@@ -185,7 +185,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
 
     function addEvent(eventId: string) {
-        console.log('is this seriously fucking undefined', eventId);
         userEventsRef.current = [...userEventsRef.current, eventId]
     }
 
@@ -394,6 +393,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 userRole,
                 isLoading,
                 error,
+                events: userEventsRef.current,
                 addEvent,
                 setError,
                 getAuthToken,
