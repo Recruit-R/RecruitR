@@ -1,12 +1,13 @@
 "use client";
 import addData from "@/app/api/addData";
+import getData from "@/app/api/getData";
 import { addCandidateData } from "@/app/candidate/profile/actions";
 import Roles from "@/app/types/roles";
 import { AuthError, GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { auth } from "../firebase/client";
 
 
@@ -57,7 +58,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [userRole, setUserRole] = useState<Roles | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<React.JSX.Element | null>(null);
-    const [userEvents, setUserEvents] = useState<string[]>([]);
+    // const [userEventsRef, setUserEvents] = useState<string[]>([]);
+    const userEventsRef = useRef<string[]>([]);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -115,6 +117,17 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     });
                 }
 
+                if (userResponse.status === 409) {
+                    userResponse = await fetch(`/api/users?` + new URLSearchParams({
+                        uid: user.uid,
+                    }), {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                }
+
                 // check user role and update states
                 if (userResponse.ok) {
                     const userJson = await userResponse.json().then((json) => {
@@ -141,8 +154,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     useEffect(() => {
         // on auth change, redirect to correct page
         if (userRole === null) return;
-        console.log('user role', userRole, pathname)
-        if (pathname === '/auth/login' || pathname.startsWith('/auth/signup')) {
+        if (pathname.startsWith('/auth/login') || pathname.startsWith('/auth/signup')) {
             if (userRole === Roles.COORDINATOR || userRole === Roles.RECRUITER) {
                 router.push('/recruit/home');
             } else {
@@ -157,14 +169,24 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }, [userRole, router]);
 
     useEffect(() => {
-        if (currentUser) {
-            addData('users', currentUser.uid, { events: userEvents })
-        }
+        console.log('updated events', currentUser, userEventsRef);
+        if (currentUser !== null && userEventsRef.current.length > 0) {
+            getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
+                let newList = userEventsRef.current;
+                if (data && data.events !== undefined) {
+                    const userEvents = data.events as string[];
+                    newList = [...userEventsRef.current, ...userEvents];
+                }
+                addData('users', currentUser?.uid as string, { events: Array.from(new Set(newList)) });
 
-    }, [userEvents, currentUser])
+            });
+        }
+    }, [userEventsRef.current, currentUser])
+
 
     function addEvent(eventId: string) {
-        setUserEvents([...userEvents, eventId]);
+        console.log('is this seriously fucking undefined', eventId);
+        userEventsRef.current = [...userEventsRef.current, eventId]
     }
 
     const LoginFailure = () => {

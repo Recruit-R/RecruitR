@@ -42,7 +42,9 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
 
     useEffect(() => {
         if (auth!.currentUser)
-            getUsersData().then(e => setCanData(e))
+            getUsersData().then(e => {
+                setCanData(e)
+            })
     }, [auth!.currentUser])
 
 

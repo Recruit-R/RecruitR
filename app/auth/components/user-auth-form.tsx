@@ -109,16 +109,11 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
         if (signup) {
             auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
-                .then(() => {
-                    console.log("Event ID", eventId)
-                    if (eventId) {
-                        console.log("Adding event to", eventId)
-                        auth?.addEvent(eventId)
-                    }
-                });
         } else {
-            auth.loginEmail({ email: values.email, password: values.password });
+            auth.loginEmail({ email: values.email, password: values.password })
         }
+        console.log('this is the event id in the auth form', eventId);
+        if (eventId) auth.addEvent(eventId);
     }
 
     return (

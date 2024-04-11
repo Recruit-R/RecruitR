@@ -12,12 +12,11 @@ export const metadata: Metadata = {
 
 export default async function SignUpPage({ params }: { params: { eventId: string } }) {
     const eventId = params?.eventId?.[0];
-    console.log('params', params);
     return (
         <>
             <div className="relative flex items-center justify-center align-center h-screen">
                 <Link
-                    href="/auth/login"
+                    href={`/auth/login` + (eventId ? `/${eventId}` : "")}
                     className={cn(
                         buttonVariants({ variant: "ghost" }),
                         "absolute right-4 top-4 md:right-8 md:top-8"
