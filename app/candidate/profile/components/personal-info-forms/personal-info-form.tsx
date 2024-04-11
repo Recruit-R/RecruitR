@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { ComboboxYear } from "../combo-box-years"
 
 export function PersonalForm(form: any, {canData}: {canData: any}) {
-    console.log(canData)
+
     return (
 
     <>
@@ -28,7 +28,7 @@ export function PersonalForm(form: any, {canData}: {canData: any}) {
                 <FormLabel>Major</FormLabel>
                 <FormControl>
                     <Input id="major"
-                    placeholder={canData ? canData.major : ""}
+                    placeholder={canData && canData.major}
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>

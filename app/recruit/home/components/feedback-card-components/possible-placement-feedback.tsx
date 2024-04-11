@@ -9,7 +9,7 @@ import {ElementTitle} from "@/app/recruit/home/components/feedback-card-componen
 import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 
 export function PossiblePlacementFeedback() {
-    const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management"]
+    const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management", "Digital"]
     const { currentStudent,
         setCurrentStudent, studentList,
         setSaved,

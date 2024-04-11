@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx"
 import * as React from "react";
+import {useContext, useEffect} from "react";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>,
@@ -27,6 +29,8 @@ export function DataTablePagination<TData>({
   c,
   setPage
 }: DataTablePaginationProps<TData>) {
+  const { currentStudent, studentList } = useContext(StudentDataContext) as StudentDataContextType
+
   return (
     <div className="flex items-center justify-between px-2">
       <div className={c("hidden flex-1 text-sm text-muted-foreground", "md:block", false)}>

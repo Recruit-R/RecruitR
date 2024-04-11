@@ -15,3 +15,5 @@ export async function getCandidateData(student_id: string) {
     return studentSchema.parse(student);
 
 }
+
+//export async function get_event_data()
