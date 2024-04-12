@@ -4,7 +4,7 @@ export const checkEnvironment = () => {
             ? "https://" + process.env.VERCEL_URL
             : process.env.API_URL;
 
-    const parserURL = process.env.NODE_ENV === "production"
+    const parserURL = process.env.DEV_PARSER === "true"
         ? process.env.PARSER_URL
         : process.env.DEV_PARSER_API;
 
