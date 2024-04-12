@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import app from "@/firebase.config";
-import { getStorage } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 
+import { checkEnvironment } from "@/checkEnvironment";
 import { Icons } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
 
-export function ResumeButton(form: any) {
+export function ResumeButton({ form, canData }: { form: any, canData: any }) {
     const [upping, setUpp] = useState(false)
 
     const storage = getStorage(app);
@@ -17,32 +18,26 @@ export function ResumeButton(form: any) {
     const { toast } = useToast()
 
     const handleChange = async (event: any) => {
-        // console.log()
-        // setUpp(true)
-        // //console.log('event', event);
+        setUpp(true)
         var extension = event.target.files[0].type
-        // console.log(event.target.files[0].type)
         if (extension == "application/pdf") {
-
-
             const resName = event.target.value.split("\\");
             const resume = event.target.files[0];
             const parsedData = await parseResume(resume);
-            console.log(parsedData);
-            // //check if file type is pdf here?
-            //     const resumeRef = ref(storage, "resumes/" + form.canDataId + resName.slice(resName.length - 1));
-            // //console.log('storage', storage);
-            // //console.log(resumeRef);
-            //     uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
-            //     const downLoadURL = await getDownloadURL(snapshot.ref);
-            //     form.form.setValue('resumeURL', downLoadURL);
-            //     toast({
-            //         title: "Resume Uploaded!",
-            //         description: "  Remember to save!",
-            //     })
-            //     setUpp(false)   
-            //     })
+            //check if file type is pdf here?
+            const resumeRef = ref(storage, "resumes/" + canData.id + resName.slice(resName.length - 1));
+            uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
+
+                const downLoadURL = await getDownloadURL(snapshot.ref);
+                updateForm(parsedData);
+                form.setValue('resumeURL', downLoadURL);
+                toast({
+                    title: "Parsed and uploaded resume successfully!",
+                    description: "Remember to save!",
+                })
+                setUpp(false)
+            })
         } else {
             toast({
                 variant: "destructive",
@@ -50,9 +45,14 @@ export function ResumeButton(form: any) {
             })
             setUpp(false)
         }
-
-        //console.log(event.target.value);
     };
+
+    function updateForm(parsedData: any) {
+        if (parsedData.degree)
+            form.setValue('major', parsedData.degree[0]);
+        if (parsedData.college_name)
+            form.setValue('university', parsedData.college_name);
+    }
 
     function blobToBase64(blob: Blob): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -75,13 +75,13 @@ export function ResumeButton(form: any) {
             // Prepare the request body
             const requestBody = JSON.stringify({ data: base64Data });
 
-            if (process.env.PARSER_API === undefined) {
+            const parserURL = checkEnvironment().PARSER_URL
+            if (parserURL === undefined) {
                 throw new Error('no parser api url');
             }
             console.log('trying to parse resume')
-
             // Make the fetch request to the Flask API
-            const response = await fetch(process.env.PARSER_API, {
+            const response = await fetch(parserURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

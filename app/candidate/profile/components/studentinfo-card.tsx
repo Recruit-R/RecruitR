@@ -11,6 +11,7 @@ import { ResumeButton } from "./personal-info-forms/resume-file";
 //import { ShowSkills } from "./beta-comps/show-skills";
 import { useAuth } from "@/components/auth-provider";
 import { Form } from '@/components/ui/form';
+import { Icons } from "@/components/ui/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -19,7 +20,6 @@ import { addCandidateData, get_candidate_data } from "../actions";
 import { StatusBar } from "./personal-info-comps/status-bar";
 import { HeaderForm } from "./personal-info-forms/header-form";
 import { PersonalForm } from "./personal-info-forms/personal-info-form";
-import { Icons } from "@/components/ui/icons";
 
 
 interface StudentInfoCardProps {
@@ -32,7 +32,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
 
     const auth = useAuth()
-    const [canData, setCanData] = useState<any>()
+    const [canData, setCanData] = useState<any>({})
     const [upping, setUpp] = useState(true)
     async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
@@ -64,19 +64,18 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            first_name: canData && canData.first_name,
-            last_name: canData ? canData.last_name : "",
-            //about_me: "",
-            year: canData ? canData.major : "",
-            major: canData ? canData.major : "",
-            university: canData && canData.university,
-            gpa: canData ? canData.gpa : 0.00,
-            resumeURL: canData ? canData.resumeURL : "",
+            first_name: canData?.first_name ?? "",
+            last_name: canData?.last_name ?? "",
+            year: canData?.major ?? "",
+            major: canData?.major ?? "",
+            university: canData?.university ?? "",
+            gpa: canData?.gpa ?? 0.00,
+            resumeURL: canData?.resumeURL ?? "",
         },
     })
 
     useEffect(() => {
-        form.reset(canData)
+        form.reset({ ...form.formState.defaultValues, ...canData })
     }, [canData])
 
 
@@ -140,7 +139,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                     </div>
                                 }
                             </div>
-                            
+
                             <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
                                 <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                                 <Button disabled={upping} type="button" onClick={() => setEditMode(prevState => !prevState)}
@@ -178,14 +177,14 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                     </p>
                                 </div>
                                 {editMode &&
-                                <div className={`pt-0.01`}>
-                                    <ResumeButton form={form} canDataId = {canData.id}/>
-                                </div>}
+                                    <div className={`pt-0.01`}>
+                                        <ResumeButton form={form} canData={canData} />
+                                    </div>}
 
                                 {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                                 {canData && (canData.resumeURL ? (<div>
                                     <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
-                                        <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
+                                        <Link href={`${canData.resumeURL}`} target="_blank">Download My Resume</Link>
                                     </Button>
                                 </div>) : <span className={`${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
 
