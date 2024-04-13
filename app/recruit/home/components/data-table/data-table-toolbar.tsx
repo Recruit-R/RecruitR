@@ -81,7 +81,12 @@ export function DataTableToolbar<TData>({
                     downloadxls(e, data)
             }}
             >
-                <DownloadIcon className={"h-4 w-4"}/><span className={c("ml-2 hidden", "md:block", false)}>Download</span>
+                <DownloadIcon className={"h-4 w-4"}/>
+                <span className={c("ml-2 hidden", "md:block", false)}>
+                    Download
+                </span>
+
+
             </Button>
         </div>
       <div className={c("hidden", "md:block", false)}>
