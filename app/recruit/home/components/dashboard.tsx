@@ -196,7 +196,10 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                         :
                         noStudentViewComponent()
                 }
-                <SaveStatus />
+                {
+                    currentStudent && <SaveStatus />
+                }
+                {/*<SaveStatus />*/}
             </div>
 
             {/*</div>*/}

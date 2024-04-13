@@ -40,7 +40,10 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
     return (
         <>
-            <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
+            <Button className="md:hidden" variant="link" onClick={() => {
+                setStudentView(prevState => !prevState)
+                setCurrentStudent(null)
+            }}>
                 <ChevronLeft className="mr-2 h-4 w-4"/> Back to Search List
             </Button>
 
