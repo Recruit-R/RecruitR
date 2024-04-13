@@ -132,7 +132,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 // check user role and update states
                 if (userResponse.ok) {
                     const userJson = await userResponse.json().then((json) => {
-                        setIsLoading(false);
                         return json;
                     });
                     await user.getIdToken(true).then((token) => {
@@ -144,9 +143,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 } else {
                     console.error("Could not get user info, returned error code:", userResponse);
                     removeAuthToken();
-                    setIsLoading(false);
+                    parseAuthError({ code: 'auth/internal-error', message: 'Could not get user info' } as AuthError);
                 }
-
             }
         });
     }, []);
@@ -236,6 +234,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function parseAuthError(authError: AuthError) {
+        setIsLoading(false);
         if (authError.code === 'auth/email-already-in-use') {
             setError(<SignupFailure />);
         } else if (['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-credential'].includes(authError.code)) {
@@ -289,7 +288,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         })
     }
@@ -306,7 +304,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         })
     }
@@ -321,11 +318,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new GoogleAuthProvider())
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }
@@ -340,11 +335,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new OAuthProvider('microsoft.com'))
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }
@@ -359,12 +352,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new OAuthProvider('github.com'))
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     console.error("signing in with github failed", error);
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }

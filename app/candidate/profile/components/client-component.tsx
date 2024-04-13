@@ -17,8 +17,11 @@ export default function ClientComponent() {
             const data = await getCandidateData(auth!.currentUser!.uid)
             setCanData(data)
         }
-        if (auth!.currentUser)
+        if (auth!.currentUser) {
+            auth?.setIsLoading(false);
             fetchData()
+        }
+
 
     }, [auth!.currentUser])
 
