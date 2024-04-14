@@ -11,6 +11,8 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter.tsx"
 import { years } from "@/app/recruit/home/data/student-data.tsx";
 import {downloadxls} from "@/lib/utils.ts";
 import {Student} from "@/app/recruit/home/data/student-schema.ts";
+import {useContext} from "react";
+import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
@@ -21,8 +23,19 @@ export function DataTableToolbar<TData>({
   table,
   c
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
+  const { studentList } = useContext(StudentDataContext) as StudentDataContextType
+  const studentListData = Object.values(studentList ?? {}).flatMap(e => e.university ? [e.university] : [])
+  const uniqueUniversities = studentListData.filter((item, index) => studentListData.indexOf(item) === index)
 
+  const universitiesCommandObject = uniqueUniversities.map(e =>
+              {
+                  return {
+                      label: e,
+                      value: e
+                  }
+              }
+  )
+  const isFiltered = table.getState().columnFilters.length > 0
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -45,6 +58,13 @@ export function DataTableToolbar<TData>({
             options={years}
           />
         )}
+          {table.getColumn("university") && (
+              <DataTableFacetedFilter
+                  column={table.getColumn("university")}
+                  title="University"
+                  options={universitiesCommandObject}
+              />
+          )}
         {/*{table.getColumn("priority") && (*/}
         {/*  <DataTableFacetedFilter*/}
         {/*    column={table.getColumn("priority")}*/}

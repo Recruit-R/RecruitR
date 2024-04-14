@@ -92,7 +92,7 @@ export function ViewOtherRecruiterFeedback() {
                                         setOpen(false)
                                     }}
                                 >
-                                    <div className="flex items-center overflow-hidden">
+                                    <div className="flex items-center overflow-hidden w-full justify-between">
                                     <div className="flex items-center overflow-hidden">
                                     <Check
                                         className={cn(
@@ -104,8 +104,8 @@ export function ViewOtherRecruiterFeedback() {
                                         {recruiter.label}
                                     </span>
                                     </div>
-                                    <span className="text-nowrap font-semibold flex items-center justify-center">
-                                        {currentStudent?.feedback?.[recruiter.value].rating ?? "N/A"} <StarFilledIcon className="h-4 w-4 ml-0.5 text-ring fill-current" />
+                                    <span className="flex text-nowrap font-semibold flex items-center justify-center">
+                                        {currentStudent?.feedback?.[recruiter.value].rating ?? "-"} <StarFilledIcon className="h-4 w-4 ml-0.5 text-ring fill-current" />
                                     </span>
                                     </div>
 

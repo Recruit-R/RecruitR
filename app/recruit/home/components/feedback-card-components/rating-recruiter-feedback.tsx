@@ -25,12 +25,17 @@ export function RatingRecruiterFeedback() {
                 <div className={"text-nowrap"}>
                     <span className="text-2xl font-medium leading-none tracking-tight">Average Rating:</span> &nbsp;
                     <span className="text-2xl text-muted-foreground font-light">
-                        {(Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)}
+                        {
+                            currentStudent?.avgRating ?
+                                (Math.round((currentStudent?.avgRating ?? 0) * 100) / 100).toFixed(2)
+                                :
+                                "None"
+                        }
                     </span>
                 </div>
                 <div className="flex">
                     {
-                        currentStudent?.feedback &&
+                        Object.keys(currentStudent?.feedback ?? {}).filter(e => e !== currentUserEditId).length > 0 &&
                         <ViewOtherRecruiterFeedback />
                         // Object.keys(currentStudent?.feedback!).some((name) => name !== currentUserEditId) && (
                         //     <ToggleGroup variant={"outline"} type="single"

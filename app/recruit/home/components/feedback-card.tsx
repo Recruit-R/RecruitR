@@ -105,6 +105,9 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         auth?.userRole === Roles.COORDINATOR
                         && <DeleteStudent/>
                     }
+                    <Button variant={"outline"} onClick={e => console.log(currentStudent)}>
+                        Print student Info
+                    </Button>
                 </CardContent>
             </Card>
         </>
