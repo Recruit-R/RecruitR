@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true}
         className={`${cn(
-          "bg-background font-sans antialiased h-screen-dynamic md:overflow-y-hidden",
+          "bg-background font-sans antialiased h-screen-dynamic no-scrollbar md:overflow-y-hidden ",
           inter.variable
         )} h-screen-dynamic`}>
         <AuthProvider>

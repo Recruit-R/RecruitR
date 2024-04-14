@@ -37,81 +37,87 @@ export function DataTableToolbar<TData>({
   )
   const isFiltered = table.getState().columnFilters.length > 0
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter students..."
-          value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-          {
-              table.getColumn("last_name")?.setFilterValue(event.target.value)
-              table.resetPageIndex()
-          }
+      <div className={"flex flex-col space-y-2"}>
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-1 items-center space-x-2">
+            <Input
+              placeholder="Filter students..."
+              value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
+              onChange={(event) =>
+              {
+                  table.getColumn("last_name")?.setFilterValue(event.target.value)
+                  table.resetPageIndex()
+              }
 
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
-        {table.getColumn("year") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("year")}
-            title="Year"
-            options={years}
-          />
-        )}
-          {table.getColumn("university") && (
-              <DataTableFacetedFilter
-                  column={table.getColumn("university")}
-                  title="University"
-                  options={universitiesCommandObject}
-              />
-          )}
-        {/*{table.getColumn("priority") && (*/}
-        {/*  <DataTableFacetedFilter*/}
-        {/*    column={table.getColumn("priority")}*/}
-        {/*    title="Priority"*/}
-        {/*    options={priorities}*/}
-        {/*  />*/}
-        {/*)}*/}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-      </div>
-        <div className={"px-1"}>
-            <Button
-                variant={"outline"}
-                className={"p-2 h-8"}
-                // disabled={table.getSelectedRowModel().rows.length === 0}
-                onClick={e => {
-                    let data;
-                    if (table.getSelectedRowModel().rows.length === 0) {
-                        data = table.getExpandedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+              }
+              className="h-8 w-[150px] lg:w-[250px] w-full lg:w-full mr-4"
+            />
 
-                    }
-                    else {
-                        data = table.getSelectedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+            {/*{table.getColumn("priority") && (*/}
+            {/*  <DataTableFacetedFilter*/}
+            {/*    column={table.getColumn("priority")}*/}
+            {/*    title="Priority"*/}
+            {/*    options={priorities}*/}
+            {/*  />*/}
+            {/*)}*/}
 
-                    }
-                    downloadxls(e, data)
-            }}
-            >
-                <DownloadIcon className={"h-4 w-4"}/>
-                <span className={c("ml-2 hidden", "md:block", false)}>
-                    Download
-                </span>
+          </div>
+            <div className={"px-1"}>
+                <Button
+                    variant={"outline"}
+                    className={"p-2 h-8"}
+                    // disabled={table.getSelectedRowModel().rows.length === 0}
+                    onClick={e => {
+                        let data;
+                        if (table.getSelectedRowModel().rows.length === 0) {
+                            data = table.getExpandedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+
+                        }
+                        else {
+                            data = table.getSelectedRowModel().rows.map(row => JSON.parse(JSON.stringify(row.original as Student)))
+
+                        }
+                        downloadxls(e, data)
+                }}
+                >
+                    <DownloadIcon className={"h-4 w-4"}/>
+                    <span className={c("ml-2 hidden", "md:block", false)}>
+                        Download
+                    </span>
 
 
-            </Button>
+                </Button>
+            </div>
+          <div className={c("hidden", "md:block", false)}>
+            <DataTableViewOptions table={table} />
+          </div>
         </div>
-      <div className={c("hidden", "md:block", false)}>
-        <DataTableViewOptions table={table} />
-      </div>
+          <div className="flex flex-wrap gap-2">
+              {table.getColumn("year") && (
+                  <DataTableFacetedFilter
+                      column={table.getColumn("year")}
+                      title="Year"
+                      options={years}
+                  />
+              )}
+              {table.getColumn("university") && (
+                  <DataTableFacetedFilter
+                      column={table.getColumn("university")}
+                      title="University"
+                      options={universitiesCommandObject}
+                  />
+              )}
+              {isFiltered && (
+                  <Button
+                      variant="ghost"
+                      onClick={() => table.resetColumnFilters()}
+                      className="h-8 px-2 lg:px-3"
+                  >
+                      Reset
+                      <Cross2Icon className="ml-2 h-4 w-4" />
+                  </Button>
+              )}
+          </div>
     </div>
   )
 }
