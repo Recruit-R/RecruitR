@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export function EventCard({ eventIds }: { eventIds: string[] }) {
     const [events, setEvents] = useState<Event[]>([])
 
+
     useEffect(() => {
         async function fetchEvents() {
             const parsedEvents = await Promise.all(eventIds.map(async (id) => {
@@ -18,7 +19,8 @@ export function EventCard({ eventIds }: { eventIds: string[] }) {
             setEvents(parsedEvents.filter((event) => event !== null) as Event[])
         }
         fetchEvents()
-    }, [eventIds])
+
+    }, [])
 
     return (
         <Card className="min-h-full ">
