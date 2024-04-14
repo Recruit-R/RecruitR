@@ -40,7 +40,10 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
     return (
         <>
-            <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
+            <Button className="md:hidden" variant="link" onClick={() => {
+                setStudentView(prevState => !prevState)
+                setCurrentStudent(null)
+            }}>
                 <ChevronLeft className="mr-2 h-4 w-4"/> Back to Search List
             </Button>
 
@@ -102,6 +105,9 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         auth?.userRole === Roles.COORDINATOR
                         && <DeleteStudent/>
                     }
+                    <Button variant={"outline"} onClick={e => console.log(currentStudent)}>
+                        Print student Info
+                    </Button>
                 </CardContent>
             </Card>
         </>

@@ -7,7 +7,7 @@ export const feedbackSchema = z.record(z.object({
   possible_placement: z.string().optional(),
   known_tech: z.string().array().optional(),
   text_feedback: z.string().optional(),
-  rating: z.number().optional(),
+  rating: z.number().optional().nullable(),
   curr_status: z.string().optional()
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
@@ -33,7 +33,7 @@ const studentObject = {
   interview2: z.union([z.string(), z.undefined()]),
   interview1: z.union([z.string(), z.undefined()]),
   gradMonth: z.union([z.string(), z.undefined()]),
-  avgRating: z.union([z.number(), z.nan()]).optional(),
+  avgRating: z.union([z.number(), z.nan()]).optional().nullable(),
   signup_time: z.union([z.string(), z.undefined()]).optional(),
   events: z.union([z.array(z.string()), z.undefined()]).optional(),
 }
