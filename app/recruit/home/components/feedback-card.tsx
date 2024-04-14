@@ -40,11 +40,14 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
     return (
         <>
-            <Button className="md:hidden" variant="link" onClick={() => setStudentView(prevState => !prevState)}>
+            <Button className="md:hidden" variant="link" onClick={() => {
+                setStudentView(prevState => !prevState)
+                setCurrentStudent(null)
+            }}>
                 <ChevronLeft className="mr-2 h-4 w-4"/> Back to Search List
             </Button>
 
-            <Card className="min-h-full relative">
+            <Card className="min-h-full relative no-scrollbar">
                 <CardHeader className="flex flex-row items-center border-b mb-4 divide-x">
                     <div className="flex flex-1 items-center space-x-4 pr-4 ">
                         <Avatar className="h-20 w-20">
@@ -102,6 +105,9 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         auth?.userRole === Roles.COORDINATOR
                         && <DeleteStudent/>
                     }
+                    <Button className="p-3" variant={"ghost"} onClick={e => console.log(currentStudent)}>
+                        Print student Info
+                    </Button>
                 </CardContent>
             </Card>
         </>

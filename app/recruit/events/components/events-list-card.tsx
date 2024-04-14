@@ -91,8 +91,8 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
         <div className="h-full">
             <div className="text-lg font-bold pb-1">{title}</div>
             <Card className="h-full">
-                <div className="py-2"></div>
-                <CardContent className="divide-y">
+                <div className="md:py-2"></div>
+                <CardContent className="divide-y p-2 md:p-6">
                     {
                         partialEvents.length ?
                             partialEvents.map((event: Event, i: number) => {
