@@ -37,8 +37,8 @@ export function EventsListCard({ title, events, setEvents, empty_message }: Even
         <div className="h-full">
             <div className="text-lg font-bold pb-1">{title}</div>
             <Card className="h-full">
-                <div className="py-2"></div>
-                <CardContent className="divide-y">
+                <div className="md:py-2"></div>
+                <CardContent className="divide-y p-2 md:p-6">
                     {
                         events.length >= 1 ?
                             events.map((event: Event, i: number) => {
