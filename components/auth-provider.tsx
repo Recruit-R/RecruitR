@@ -17,12 +17,16 @@ export function getAuthToken(): string | undefined {
 }
 
 export function setAuthToken(token: string): string | undefined {
+    if (Cookies.get('firebaseIdToken')) {
+        Cookies.remove('firebaseIdToken');
+    }
     const maxAge = 604800;
     // const secure = process.env.NEXT_PUBLIC_APP_ENV !== "emulator";
     return Cookies.set("firebaseIdToken", token, { secure: false, expires: maxAge });
 }
 
 export function removeAuthToken(): void {
+    console.log('removing auth token');
     return Cookies.remove("firebaseIdToken");
 }
 
@@ -84,8 +88,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
             if (user) {
                 const token = await user.getIdToken(true).then((token) => {
-                    // set auth token
-                    setAuthToken(token);
                     return token;
                 });
                 setCurrentUser(user);
@@ -161,8 +163,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
         } else {
             if (pathname === '/auth/refresh') {
-                console.log('not actually refreshing from useeffect', userRole)
-                // router.back();
+                router.push('/auth/login');
             }
         }
     }, [userRole, router]);
@@ -366,9 +367,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
+            removeAuthToken();
             auth.signOut()
                 .then(() => {
-                    removeAuthToken();
                     resolve();
                 })
                 .catch((error) => {
