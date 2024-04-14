@@ -6,24 +6,24 @@ import { useEffect, useState } from "react";
 import { getCandidateData } from "../actions";
 import { EventCard } from "./event-box-comps/event-card";
 
-export default function ClientComponent() {
+export default function ClientComponent({ canData }: { canData: any }) {
     const [editMode, setEditMode] = useState<boolean>(false)
-    const auth = useAuth()
-    const [canData, setCanData] = useState<any>()
+    // const auth = useAuth()
+    // const [canData, setCanData] = useState<any>()
 
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await getCandidateData(auth!.currentUser!.uid)
-            setCanData(data)
-        }
-        if (auth!.currentUser) {
-            auth?.setIsLoading(false);
-            fetchData()
-        }
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const data = await getCandidateData(auth!.currentUser!.uid)
+    //         setCanData(data)
+    //     }
+    //     if (auth!.currentUser) {
+    //         auth?.setIsLoading(false);
+    //         fetchData()
+    //     }
 
 
-    }, [auth!.currentUser])
+    // }, [auth!.currentUser])
 
     return (
         // <div className="">
@@ -32,10 +32,9 @@ export default function ClientComponent() {
             <div className="md:w-3/4 bg-background overflow-y-auto overscroll-auto md:overflow-y-scroll md:overscroll-contain md:p-1 md:no-scrollbar pb-4">
                 {/* <div>         */}
                 <StudentInfoCard
-                    canData={canData}
+                    loadedCanData={canData}
                     editMode={editMode}
                     setEditMode={setEditMode}
-                    setCanData={setCanData}
                 />
             </div>
             <div className={"h-full w-full md:w-1/4 overflow-y-auto overscroll-auto bg-background md:overflow-y-scroll md:overscroll-contain md:p-1"}>
