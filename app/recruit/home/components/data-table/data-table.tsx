@@ -59,7 +59,9 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {id: "signup_time", desc: true}
+  ])
   // const [pagination, setPagination] = useState({
   //   pageIndex: 3, // initial page index
   //   pageSize: 10, // default page size
@@ -74,6 +76,11 @@ export function DataTable<TData, TValue>({
       columnFilters,
       // pagination,
     },
+    // initialState: {
+    //   sorting: {
+    //
+    //   }
+    // }
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -103,10 +110,10 @@ export function DataTable<TData, TValue>({
   // }, [currentStudent]);
 
   return (
-    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2">
+    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2 no-scrollbar">
       <DataTableToolbar table={table} c={c} />
 
-      <div className="grow overflow-auto ">
+      <div className="grow overflow-auto no-scrollbar">
         <div className="rounded-md border">
           <Table>
             <TableHeader>

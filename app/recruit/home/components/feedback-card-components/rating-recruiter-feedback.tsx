@@ -21,7 +21,7 @@ export function RatingRecruiterFeedback() {
 
     return (
         <div className="flex flex-row">
-            <div className="flex flex-row items-center gap-6 w-full">
+            <div className="flex flex-col items-start md:flex-row md:items-center gap-2 md:gap-6 w-full">
                 <div className={"text-nowrap"}>
                     <span className="text-2xl font-medium leading-none tracking-tight">Average Rating:</span> &nbsp;
                     <span className="text-2xl text-muted-foreground font-light">
