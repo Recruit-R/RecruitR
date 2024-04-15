@@ -6,15 +6,12 @@ import {StudentInfo} from "@/app/recruit/home/components/data-table/student-info
 import {ChevronLeft, RefreshCcw} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import React, {useContext, useEffect} from "react";
-import {PossiblePlacementFeedback} from "@/app/recruit/home/components/feedback-card-components/possible-placement-feedback.tsx";
 import {Student} from "@/app/recruit/home/data/student-schema";
 import {KnownTechFeedback} from "@/app/recruit/home/components/feedback-card-components/known-tech-feedback.tsx";
 import {InitialFeedback} from "@/app/recruit/home/components/feedback-card-components/initial-feedback.tsx";
 import {TextFeedback} from "@/app/recruit/home/components/feedback-card-components/text-feedback.tsx";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
-import {BsCloudCheck, BsEye} from "react-icons/bs";
 import {Timeline} from "@/app/recruit/home/components/feedback-card-components/timeline.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
 import {
     RatingRecruiterFeedback
 } from "@/app/recruit/home/components/feedback-card-components/rating-recruiter-feedback.tsx";
@@ -22,6 +19,9 @@ import {useAuth} from "@/components/auth-provider.tsx";
 import Roles from "@/app/types/roles.ts";
 import {DeleteStudent} from "@/app/recruit/home/components/feedback-card-components/delete-student.tsx";
 import {downloadxls} from "@/lib/utils.ts";
+import {
+    PossiblePlacementMultiselect
+} from "@/app/recruit/home/components/feedback-card-components/possible-placement-multiselect.tsx";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
@@ -84,7 +84,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
-                            <PossiblePlacementFeedback/>
+                            <PossiblePlacementMultiselect/>
                             <KnownTechFeedback/>
                         </div>
 
