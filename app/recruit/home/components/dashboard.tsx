@@ -110,7 +110,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
         }
     }
 
-    function feedbackComponent() {
+    function FeedbackView() {
         return (
             <div
                 className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
@@ -124,7 +124,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
             </div>
         )
     }
-    function noStudentViewComponent() {
+    function NoStudentView() {
         return (
             <div
                 className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
@@ -193,9 +193,9 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                 {
                     currentStudent
                         ?
-                        feedbackComponent()
+                        <FeedbackView />
                         :
-                        noStudentViewComponent()
+                        <NoStudentView />
                 }
                 {
                     currentStudent && <SaveStatus />

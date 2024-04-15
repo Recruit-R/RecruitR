@@ -1,9 +1,9 @@
 import { getStudentList } from "@/app/recruit/home/actions.ts";
 import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
 import { StudentList } from "@/app/recruit/home/data/student-schema";
-import { Button } from "@/components/ui/button";
 import { headers } from "next/headers";
 import { Suspense } from "react";
+import DashboardSkeleton from "./components/dashboard-skeleton";
 
 
 async function StudentListLoader() {
@@ -21,7 +21,7 @@ async function StudentListWithSuspense({
     }
 
     return (
-        <Suspense fallback={<div> event sillier test <Button>hello</Button></div>}>
+        <Suspense fallback={<DashboardSkeleton />}>
             <StudentListLoader />
         </Suspense>
     )
