@@ -48,28 +48,49 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
             </Button>
 
             <Card className="min-h-full relative no-scrollbar">
-                <CardHeader className="flex flex-row items-center border-b mb-4 divide-x">
-                    <div className="flex flex-1 items-center space-x-4 pr-4 ">
-                        <Avatar className="h-20 w-20">
-                            <AvatarImage src="/avatars/01.png" alt="Avatar"/>
-                            <AvatarFallback className="text-3xl">{currentStudent?.first_name?.[0].toUpperCase() ?? "N"}{currentStudent?.last_name?.[0]?.toUpperCase() ?? "A"}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <CardTitle className="text-4xl">
-                                {(currentStudent?.first_name && currentStudent?.last_name) ?
-                                    <>{currentStudent!.first_name} {currentStudent!.last_name}</>
-                                    :"No Name"}
-                                {/*{currentStudent?.first_name} {currentStudent?.last_name}*/}
-                            </CardTitle>
-                            <CardDescription className="text-md">
-                                {currentStudent ? currentStudent!.email : "No email"}
+                <CardHeader className={c("flex flex-col gap-2 border-b gap-4 mb-4 divide-x", "flex flex-col xl:flex-row items-start xl:items-center border-b gap-4 mb-4 divide-x")}>
+                    <div className="flex flex-1 items-center space-x-4">
+                        <div className="flex flex-1 items-center space-x-4 pr-4">
 
-                            </CardDescription>
+                            <Avatar className="h-20 w-20">
+                                <AvatarImage src="/avatars/01.png" alt="Avatar"/>
+                                <AvatarFallback
+                                    className="text-3xl">{currentStudent?.first_name?.[0].toUpperCase() ?? "N"}{currentStudent?.last_name?.[0]?.toUpperCase() ?? "A"}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <CardTitle className="text-4xl">
+                                    {(currentStudent?.first_name && currentStudent?.last_name) ?
+                                        <>{currentStudent!.first_name} {currentStudent!.last_name}</>
+                                        : "No Name"}
+                                    {/*{currentStudent?.first_name} {currentStudent?.last_name}*/}
+                                </CardTitle>
+                                <CardDescription className="text-md">
+                                    {currentStudent ? currentStudent!.email : "No email"}
+
+                                </CardDescription>
+                            </div>
                         </div>
-                    </div>
-                    <div className={c("hidden flex-1 ", "xl:flex flex-1 pl-2 ")}>
-                        <StudentInfo func={c} student={currentStudent} headerView={true}/>
 
+
+                    </div>
+                    <div className={c("flex w-full flex-row gap-2", "xl:hidden")}>
+                        <Button variant={"default"} className={"w-full"} onClick={e => {
+                            downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
+                        }}>Download Resume</Button>
+                        <Button variant={"secondary"} className={"w-full"} onClick={e => {
+                            downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
+                        }}>Download Student Info</Button>
+                    </div>
+                    <div className={c("hidden flex-1 ", "xl:flex items-center flex-1 pl-2 ")}>
+                        <StudentInfo func={c} student={currentStudent} headerView={true}/>
+                        <div className={"flex flex-col gap-2"}>
+                            <Button variant={"default"} onClick={e => {
+                                downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
+                            }}>Download Resume</Button>
+                            <Button variant={"secondary"} onClick={e => {
+                                downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
+                            }}>Download Student Info</Button>
+                        </div>
                     </div>
 
                 </CardHeader>
@@ -81,7 +102,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             <InitialFeedback/>
                             <div className={c("flex flex-col", "xl:hidden")}>
                                 <div className={"flex flex-row items-center justify-between pb-2"}>
-                                    <span className="text-2xl font-medium pb-1">Student Info</span>
+                                <span className="text-2xl font-medium pb-1">Student Info</span>
                                 </div>
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
@@ -92,10 +113,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
                         <div className="flex flex-col gap-6">
                             <TextFeedback/>
-                            <div className={"flex flex-col gap-2"}>
-                                <Button variant={"default"} onClick={e => {downloadxls(e, [currentStudent] ?? [{data: "No Data"}])}}>Download Resume</Button>
-                                <Button variant={"secondary"} onClick={e => {downloadxls(e, [currentStudent] ?? [{data: "No Data"}])}}>Download Student Info</Button>
-                            </div>
+
                         </div>
                     </div>
 
