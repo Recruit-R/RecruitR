@@ -22,6 +22,9 @@ import {useAuth} from "@/components/auth-provider.tsx";
 import Roles from "@/app/types/roles.ts";
 import {DeleteStudent} from "@/app/recruit/home/components/feedback-card-components/delete-student.tsx";
 import {downloadxls} from "@/lib/utils.ts";
+import {
+    PossiblePlacementMultiselect
+} from "@/app/recruit/home/components/feedback-card-components/possible-placement-multiselect.tsx";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
@@ -84,7 +87,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 <StudentInfo func={c} student={currentStudent} headerView={false}/>
                             </div>
 
-                            <PossiblePlacementFeedback/>
+                            <PossiblePlacementMultiselect/>
                             <KnownTechFeedback/>
                         </div>
 
