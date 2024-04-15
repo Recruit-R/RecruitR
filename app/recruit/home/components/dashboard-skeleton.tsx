@@ -21,7 +21,7 @@ export async function LoadingTable() {
 
                 {Array.from(Array(20).keys()).map((i) => {
                     return (
-                        <div className="grid grid-cols-5 border-b px-10 py-6">
+                        <div key={`skeleton div_${i}`} className="grid grid-cols-5 border-b px-10 py-6">
                             <Skeleton className="h-4 max-md:w-14 md:w-36 rounded-sm" />
                             <Skeleton className="h-4 max-md:w-14 md:w-36 rounded-sm" />
                             <Skeleton className="h-4 max-md:w-14 md:w-36 rounded-sm" />
