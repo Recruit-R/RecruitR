@@ -5,8 +5,8 @@ export const checkEnvironment = () => {
             : process.env.API_URL;
 
     const parserURL = process.env.DEV_PARSER === "true"
-        ? process.env.PARSER_URL
-        : process.env.DEV_PARSER_API;
+        ? process.env.DEV_PARSER_API
+        : process.env.PARSER_API;
 
     return {
         BASE_URL: baseURL,
