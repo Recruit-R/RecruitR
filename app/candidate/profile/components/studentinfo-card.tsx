@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 //import {set} from "yaml/dist/schema/yaml-1.1/set";
 import { PossiblePlacement } from "@/app/candidate/profile/components/personal-info-comps/possible-placement";
 import { StudentInfo } from "./personal-info-comps/student-info";
@@ -13,10 +13,9 @@ import { useAuth } from "@/components/auth-provider";
 import { Form } from '@/components/ui/form';
 import { Icons } from "@/components/ui/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
-import { addCandidateData, get_candidate_data } from "../actions";
+import { addCandidateData, getCandidateData } from "../actions";
 import { StatusBar } from "./personal-info-comps/status-bar";
 import { HeaderForm } from "./personal-info-forms/header-form";
 import { PersonalForm } from "./personal-info-forms/personal-info-form";
@@ -24,15 +23,16 @@ import { PersonalForm } from "./personal-info-forms/personal-info-form";
 
 interface StudentInfoCardProps {
     editMode: boolean,
-    setEditMode: React.Dispatch<React.SetStateAction<boolean>>
-
+    setEditMode: React.Dispatch<React.SetStateAction<boolean>>,
+    canData: any,
+    setCanData: React.Dispatch<React.SetStateAction<any>>,
 }
 
-export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps) {
+export function StudentInfoCard({ editMode, setEditMode, canData, setCanData }: StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
 
     const auth = useAuth()
-    const [canData, setCanData] = useState<any>({})
+    const [canData, setCanData] = useState<any>()
     const [upping, setUpp] = useState(true)
     async function getUsersData() {
         const usersVals = await get_candidate_data(auth!.currentUser!.uid)
@@ -79,13 +79,11 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
     }, [canData])
 
 
-    const router = useRouter()
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
 
         if (auth!.currentUser) {
-            addCanData(auth!.currentUser!.uid, values)
-            setCanData(getUsersData())
+            await addCandidateData(auth!.currentUser!.uid, values)
+            setCanData(await getCandidateData(auth!.currentUser!.uid))
         }
 
         //router.refresh()
@@ -142,7 +140,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
 
                             <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
                                 <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
-                                <Button disabled={upping} type="button" onClick={() => setEditMode(prevState => !prevState)}
+                                <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                     variant={"outline"}
                                     className="w-32"
                                 >
@@ -178,7 +176,7 @@ export function StudentInfoCard({ editMode, setEditMode }: StudentInfoCardProps)
                                 </div>
                                 {editMode &&
                                     <div className={`pt-0.01`}>
-                                        <ResumeButton form={form} canData={canData} />
+                                        <ResumeButton form={form} canDataId={canData.id} />
                                     </div>}
 
                                 {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}

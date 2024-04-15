@@ -1,90 +1,103 @@
 import deleteData from "@/app/api/deleteData";
+import { Event } from "@/app/types/event";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent
 } from "@/components/ui/card";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import Link from "next/link";
+import React, { useContext, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { EventCreateForm } from "./event-create-form";
+import { MdOutlineQrCode2 } from "react-icons/md";
+import { EventDataContext, EventDataContextType } from "./client-component";
+import { EventManagementForm } from "./event-management-form";
+import { PopupDialog } from "./popup-dialog";
 
-type Event = {
-    title: string,
-    date: Date,
-    location: string
-    id: string
-}
 
 interface EventsListCardProps {
     title: string,
-    events: Array<Event>,
-    setEvents: React.Dispatch<React.SetStateAction<any>>,
-    empty_message: string
+    empty_message: string,
+    partialEvents: Event[]
 }
 
-export function EventsListCard({ title, events, setEvents, empty_message }: EventsListCardProps) {
-    const [open, setOpen] = useState(false)
-    const { toast } = useToast();
+
+
+export function EventsListCard({ partialEvents, title, empty_message }: EventsListCardProps) {
+
+    const { events, setEvents } = useContext(EventDataContext) as EventDataContextType
+
+    const DeleteConfirmationForm = ({ event, setDeleteOpen }: { event: Event, setDeleteOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+        return (
+            <div className="flex items-center justify-center">
+                <Button variant="destructive" onClick={() => {
+                    deleteData('events', event?.id ?? '')
+                        .then((e) => {
+                            console.log('deleted event', e, event)
+                            setEvents(events.filter((e: Event) => e.id !== event.id))
+                        })
+                        .then(() => {
+                            setDeleteOpen(false)
+                        })
+                }}
+                >
+                    Delete Event
+                </Button>
+            </div>
+        )
+    }
+
+    const EventCard = ({ event }: { event: Event }) => {
+        const date = event.date.toDateString() + " " + event.date!.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+        const [editOpen, setEditOpen] = useState<boolean>(false);
+        return (
+            <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between items-center">
+                <div>
+                    <div className="text-md font-bold">{event.title}</div>
+                    <div className="text-sm text-muted-foreground">{event.location}</div>
+                    <div className="text-sm text-muted-foreground">{date}</div>
+                </div>
+                <div className="flex flex-row items-center my-auto mr-8 h-8 gap-4 mr-4">
+                    <Link href={`events-qr/${event.id}`}>
+                        <MdOutlineQrCode2 className="hover:cursor-pointer h-6 w-6" />
+                    </Link>
+                    <PopupDialog
+                        popupButton={<div><FaEdit className="hover:cursor-pointer h-5 w-5" /></div>}
+                        title="Edit Event" description="Edit the event details below."
+                        dialogContent={
+                            <EventManagementForm
+                                isCreating={false}
+                                event={event}
+                                setOpen={setEditOpen}
+                            />
+                        }
+                        open={editOpen}
+                        setOpen={setEditOpen}
+                    />
+                    <PopupDialog
+                        popupButton={<div><FaTrash className="hover:cursor-pointer hover:fill-destructive h-5 w-4" /></div>}
+                        title={`Delete Event (${event.title})`}
+                        description="Are you sure you want to delete this event?"
+                        dialogContent={<DeleteConfirmationForm event={event} setDeleteOpen={setDeleteOpen} />}
+                        open={deleteOpen}
+                        setOpen={setDeleteOpen}
+                    />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="h-full">
             <div className="text-lg font-bold pb-1">{title}</div>
             <Card className="h-full">
-                <div className="py-2"></div>
-                <CardContent className="divide-y">
+                <div className="md:py-2"></div>
+                <CardContent className="divide-y p-2 md:p-6">
                     {
-                        events.length >= 1 ?
-                            events.map((event: Event, i: number) => {
-                                const date = event.date!.toDateString() + " " + event.date!.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                        partialEvents.length ?
+                            partialEvents.map((event: Event, i: number) => {
                                 return (
-                                    <div key={event.id}>
-                                        <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between">
-                                            <div>
-                                                <div className="text-md font-bold">{event.title}</div>
-                                                <div className="text-sm text-muted-foreground">{event.location}</div>
-                                                <div className="text-sm text-muted-foreground">{date}</div>
-                                            </div>
-                                            <div className="flex flex-row items-center my-auto mr-4 w-12 h-8 gap-4">
-                                                <Dialog open={open} onOpenChange={setOpen}>
-                                                    <DialogTrigger asChild>
-                                                        <FaEdit className="hover:cursor-pointer" onClick={() => console.log(event)} />
-                                                    </DialogTrigger>
-                                                    <DialogContent className="sm:max-w-[425px]">
-                                                        <DialogHeader>
-                                                            <DialogTitle>Edit Event</DialogTitle>
-                                                            <DialogDescription>
-                                                                Edit this event by changing the details below.
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <EventCreateForm setOpen={setOpen} event={event} />
-                                                    </DialogContent>
-                                                </Dialog>
-                                                <FaTrash className="hover:cursor-pointer" onClick={() => deleteData('events', event.id).then((response) => {
-                                                    if (response.status === 200) {
-                                                        setEvents((prev: any) => prev.filter((e: Event) => e.id !== event.id))
-                                                        toast({
-                                                            title: "Event Deleted",
-                                                            description: "The event has been successfully deleted."
-                                                        })
-                                                    } else {
-                                                        toast({
-                                                            title: "Error",
-                                                            description: "There was an error deleting the event."
-                                                        })
-
-                                                    }
-                                                })} />
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                    <EventCard key={`event_${i}`} event={event} />
                                 )
                             })
                             : <span>{empty_message}</span>
