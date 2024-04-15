@@ -1,19 +1,24 @@
 'use client'
 
+import addData from "@/app/api/addData";
 //This is the page that displays the coordinator or recruiter profile information
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import getData from "@/app/api/getData";
+import Roles from "@/app/types/roles";
+import { useAuth } from "@/components/auth-provider";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { BsPerson } from "react-icons/bs";
 import { CiMail } from "react-icons/ci";
-import React from "react";
-import { useAuth } from "@/components/auth-provider";
-import { RiCheckboxCircleLine } from "react-icons/ri";
 import { MdOutlineCancel } from "react-icons/md";
-import Roles from "@/app/types/roles";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 
 
 export default function Page() {
+    const [field, setField] = useState<string>("");
 
     const auth = useAuth();
 
@@ -65,6 +70,26 @@ export default function Page() {
         );
     }
 
+    async function deleteFieldFromAllStudents() {
+        const students = await getData({
+            collection_name: 'users', filter: {
+                field: 'role',
+                operator: (a: string, b: string) => a === b,
+                value: Roles.CANDIDATE
+            }
+        })
+        for (let student of students) {
+            const feedback = student.feedback;
+            const newFeedback: { [k: string]: any } = {};
+            for (let key in feedback) {
+                const recruiterfeedback = feedback[key];
+                recruiterfeedback[field] = null;
+                newFeedback[key] = recruiterfeedback;
+            }
+            addData("users", student.id, { feedback: newFeedback })
+        }
+    }
+
     return (
         <div className="h-full p-3">
             <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden border-2">
@@ -91,8 +116,14 @@ export default function Page() {
                                 className={"text-md font-light"}>{auth?.currentUser?.email}</span></AlertTitle>
                         </Alert>
                     </div>
+                    <Input placeholder="field to delete" onChange={(e) => setField(e.target.value)} />
+
+                    <Button onClick={() => deleteFieldFromAllStudents()}>
+                        delete {field} from all students
+                    </Button>
                 </CardContent>
             </Card>
+
         </div>
     )
 }

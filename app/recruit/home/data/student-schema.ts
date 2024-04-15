@@ -4,7 +4,7 @@ import { z } from "zod"
 // IRL, you will have a schema for your data models.
 export const feedbackSchema = z.record(z.object({
   initial_feedback: z.number().optional(),
-  possible_placement: z.string().optional(),
+  possible_placement: z.union([z.array(z.string()).optional(), z.undefined(), z.string(), z.null()]), // array of strings
   known_tech: z.string().array().optional(),
   text_feedback: z.string().optional(),
   rating: z.number().optional().nullable(),

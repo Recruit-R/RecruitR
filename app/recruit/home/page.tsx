@@ -4,6 +4,11 @@ import { StudentList } from "@/app/recruit/home/data/student-schema";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 
+import app from '@/firebase.config';
+import { collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore";
+
+const db = getFirestore(app)
+
 
 async function StudentListLoader() {
     const students = await getStudentList();
@@ -26,6 +31,29 @@ async function StudentListWithSuspense({
     )
 }
 export default async function Page() {
+    const fuck = collection(db, 'users');
+    const users = await getDocs(fuck);
+    for (let user of users.docs) {
+
+
+        const d = user.data();
+        const newF = {
+            ...d.feedback
+        }
+        for (let key of Object.keys(d)) {
+            if (key.includes('@')) {
+                delete d[key];
+            }
+        }
+        delete newF['possible_placement'];
+        delete d['newF'];
+        const newD = {
+            ...d,
+            feedback: newF
+        }
+        setDoc(doc(db, 'users', user.id), newD)
+
+    }
 
     let students: StudentList | undefined;
     if (headers().get("accept")?.includes("text/html")) {
