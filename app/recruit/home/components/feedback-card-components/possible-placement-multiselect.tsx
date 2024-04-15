@@ -48,10 +48,10 @@ export function PossiblePlacementMultiselect() {
     return (
         <div className="space-y-1 max-md:pb-4">
             <ElementTitle title={"Possible Placement"} />
-            <div className="flex flex-row flex-col gap-2">
+            <div className="flex flex-row flex-col gap-1">
                 {
                     possiblePlacementValues.map((placement) => (
-                        <div className="flex items-center w-full space-x-2 bg-muted pl-2 rounded-full" key={placement}>
+                        <div className="flex items-center w-full space-x-2 bg-muted py-1 pl-2 rounded-sm" key={placement}>
                             <Checkbox
                                 id={placement}
                                 checked={possiblePlacements.includes(placement)}

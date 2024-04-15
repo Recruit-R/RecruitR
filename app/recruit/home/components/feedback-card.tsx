@@ -69,7 +69,9 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                     </div>
                     <div className={c("hidden flex-1 ", "xl:flex flex-1 pl-2 ")}>
                         <StudentInfo func={c} student={currentStudent} headerView={true}/>
+
                     </div>
+
                 </CardHeader>
 
                 <CardContent className={"flex flex-col divide-y space-y-4"}>
@@ -89,8 +91,11 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                         </div>
 
                         <div className="flex flex-col gap-6">
-                            <Button onClick={e => {downloadxls(e, [currentStudent] ?? [{data: "No Data"}])}}>Download Student Info</Button>
                             <TextFeedback/>
+                            <div className={"flex flex-col gap-2"}>
+                                <Button variant={"default"} onClick={e => {downloadxls(e, [currentStudent] ?? [{data: "No Data"}])}}>Download Resume</Button>
+                                <Button variant={"secondary"} onClick={e => {downloadxls(e, [currentStudent] ?? [{data: "No Data"}])}}>Download Student Info</Button>
+                            </div>
                         </div>
                     </div>
 
