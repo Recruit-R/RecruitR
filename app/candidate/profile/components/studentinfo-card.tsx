@@ -157,7 +157,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             </div>
                             {editMode &&
                                 <div className={`pt-0.01`}>
-                                    <ResumeButton form={form} canDataId={canData.id} />
+                                    <ResumeButton form={form} canData={canData} />
                                 </div>}
 
                             {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}

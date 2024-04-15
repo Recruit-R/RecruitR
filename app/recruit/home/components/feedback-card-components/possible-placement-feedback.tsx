@@ -5,8 +5,8 @@ import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/c
 import { useThrottle } from "@/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
-import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
-import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
+import { ElementTitle } from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import { useThrottledRequest } from "@/hooks/useThrottledRequest.ts";
 
 export function PossiblePlacementFeedback() {
     const placements: Array<String> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management", "Digital"]
@@ -33,7 +33,7 @@ export function PossiblePlacementFeedback() {
     return (
         <div className="space-y-1">
             <ElementTitle title={"Possible Placement"} />
-            <RadioGroup
+            {/* <RadioGroup
                 defaultValue="option-one"
                 value={placementFeedback}
                 onValueChange={setPlacementFeedback}
@@ -48,7 +48,7 @@ export function PossiblePlacementFeedback() {
                         </div>
                     ))
                 }
-            </RadioGroup>
+            </RadioGroup> */}
         </div>
     )
 }

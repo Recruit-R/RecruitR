@@ -20,7 +20,7 @@ export default function ClientComponent({ canData }: { canData: any }) {
                 />
             </div>
             <div className={"h-full w-full md:w-1/4 overflow-y-auto overscroll-auto bg-background md:overflow-y-scroll md:overscroll-contain md:p-1"}>
-                <EventCard />
+                <EventCard eventIds={canData?.events ?? []} />
 
             </div>
 
