@@ -1,65 +1,34 @@
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icons } from "@/components/ui/icons";
 
 export function StudentInfo({ canData }: { canData: any }) {
+    function fieldOrNA(field: any) {
+        return field ? field : "N/A";
+    }
+    const fields: {[key: string]: any} = {
+        "Year": fieldOrNA(canData?.year),
+        "Major": fieldOrNA(canData?.major),
+        "University": fieldOrNA(canData?.university),
+        "GPA": fieldOrNA(canData?.gpa)
+    }
     return (
-        <div className="grid flex-1 items-center h-full grid-cols-1 xl:grid-cols-2">
-    
-        <p>
-            <span className="font-bold">
-                Year:
-            </span>&nbsp;
-            <span>
-            {canData? 
-                <>{canData.year}</> :
-                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
+        <div className="grid flex-1 items-center h-full grid-cols-1 pl-4">
+            <div className="grid grid-cols-2 gap-3">
+            {
+                Object.keys(fields).map((key) => (
+                    <Card key={key}>
+                        <CardHeader className="p-3 pl-4 pr-4">
+                            <CardTitle className="text-xl font-medium space-y-0">
+                                {key}
+                            </CardTitle>
+                            <CardDescription className="text-md">
+                                {canData? fields[key] : <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                ))
             }
-
-            </span>
-        </p>
-        <p>
-            <span className="font-bold">
-                Major:
-            </span>&nbsp;
-            <span>
-            {canData? 
-                <>{canData.major}</> :
-                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
-            }
-            </span>
-        </p>
-        <p>
-            <span className="font-bold">
-                University:
-            </span>&nbsp;
-            <span>
-            {canData? 
-                <>{canData.university}</> :
-                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
-            }
-            </span>
-        </p>
-        <p>
-            <span className="font-bold">
-                GPA:
-            </span>&nbsp;
-            <span>
-            {canData? 
-                <>{canData.gpa}</> :
-                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
-            }
-            </span>
-        </p>
-        <p>
-            <span className="font-bold">
-                Email:
-            </span>&nbsp;
-            <span>
-            {canData? 
-                <>{canData.email}</> :
-                <span><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /></span>
-            }
-            </span>
-        </p>
+            </div>
         </div>
     )
 }
