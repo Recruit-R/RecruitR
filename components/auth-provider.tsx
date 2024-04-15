@@ -26,7 +26,6 @@ export function setAuthToken(token: string): string | undefined {
 }
 
 export function removeAuthToken(): void {
-    console.log('removing auth token');
     return Cookies.remove("firebaseIdToken");
 }
 
@@ -90,7 +89,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 const token = await user.getIdToken(true).then((token) => {
                     return token;
                 });
-                setCurrentUser(user);
 
                 // Check user role
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
@@ -140,6 +138,18 @@ export const AuthProvider = ({ children }: { children: any }) => {
                         // set auth token
                         setAuthToken(token);
                     });
+                    if (userEventsRef.current.length > 0) {
+                        getData({ collection_name: 'users', document_id: user.uid as string }).then((data) => {
+                            let newList = userEventsRef.current;
+                            if (data && data.events !== undefined) {
+                                const userEvents = data.events as string[];
+                                newList = [...userEventsRef.current, ...userEvents];
+                            }
+                            addData('users', user.uid as string, { events: Array.from(new Set(newList)) });
+
+                        });
+                    }
+                    setCurrentUser(user);
                     setUserRole(userJson.role as Roles);
 
                 } else {
@@ -168,19 +178,19 @@ export const AuthProvider = ({ children }: { children: any }) => {
         }
     }, [userRole, router]);
 
-    useEffect(() => {
-        if (currentUser !== null && userEventsRef.current.length > 0) {
-            getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
-                let newList = userEventsRef.current;
-                if (data && data.events !== undefined) {
-                    const userEvents = data.events as string[];
-                    newList = [...userEventsRef.current, ...userEvents];
-                }
-                addData('users', currentUser?.uid as string, { events: Array.from(new Set(newList)) });
+    // useEffect(() => {
+    //     if (currentUser !== null && userEventsRef.current.length > 0) {
+    //         getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
+    //             let newList = userEventsRef.current;
+    //             if (data && data.events !== undefined) {
+    //                 const userEvents = data.events as string[];
+    //                 newList = [...userEventsRef.current, ...userEvents];
+    //             }
+    //             addData('users', currentUser?.uid as string, { events: Array.from(new Set(newList)) });
 
-            });
-        }
-    }, [userEventsRef.current, currentUser])
+    //         });
+    //     }
+    // }, [userEventsRef.current, currentUser])
 
 
     function addEvent(eventId: string) {

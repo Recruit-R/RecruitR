@@ -1,29 +1,11 @@
 'use client'
 
 import { StudentInfoCard } from "@/app/candidate/profile/components/studentinfo-card";
-import { useAuth } from "@/components/auth-provider";
-import { useEffect, useState } from "react";
-import { getCandidateData } from "../actions";
+import { useState } from "react";
 import { EventCard } from "./event-box-comps/event-card";
 
 export default function ClientComponent({ canData }: { canData: any }) {
     const [editMode, setEditMode] = useState<boolean>(false)
-    // const auth = useAuth()
-    // const [canData, setCanData] = useState<any>()
-
-
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const data = await getCandidateData(auth!.currentUser!.uid)
-    //         setCanData(data)
-    //     }
-    //     if (auth!.currentUser) {
-    //         auth?.setIsLoading(false);
-    //         fetchData()
-    //     }
-
-
-    // }, [auth!.currentUser])
 
     return (
         // <div className="">
