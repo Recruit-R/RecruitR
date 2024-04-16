@@ -13,6 +13,7 @@ export function InitialFeedback() {
         currRecrFeedback,
         setSaved,
         setStudentList,
+        changedStudent,
         editable,
         currentUserEditId
     } = useContext(StudentDataContext) as StudentDataContextType
@@ -29,7 +30,7 @@ export function InitialFeedback() {
     }
     useEffect(() => {
         setRating(getFeedback())
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
     // repeated hook as useThrottledRequest, but has to handle average rating as well,
     //  as to why it is repeated
@@ -69,7 +70,7 @@ export function InitialFeedback() {
 
             <ElementTitle title={"Initial Feedback"} />
 
-            <div className={"flex flex-row items-center justify-between"}>
+            <div className={"flex flex-row flex-wrap items-center justify-between"}>
                 <div className={"flex flex-row items-center"}>
                         {
                             [...Array(5)].map((_, i) => {
