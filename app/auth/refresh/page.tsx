@@ -1,6 +1,6 @@
 'use client'
+import Loading from '@/app/loading';
 import { useAuth } from '@/components/auth-provider';
-import { Icons } from '@/components/ui/icons';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -26,10 +26,7 @@ const Refresh = () => {
     }, [auth, auth?.currentUser])
 
     return (
-        <div className='h-full flex justify-center items-center gap-4'>
-            <span className="text-3xl my-auto">Refreshing...</span>
-            <Icons.spinner className="h-54 w-54 animate-spin" />
-        </div>
+        <Loading loading_name='Refreshing...' />
     )
 }
 

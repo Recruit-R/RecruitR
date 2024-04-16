@@ -2,6 +2,7 @@
 import addData from "@/app/api/addData";
 import getData from "@/app/api/getData";
 import { addCandidateData } from "@/app/candidate/profile/actions";
+import Loading from "@/app/loading";
 import Roles from "@/app/types/roles";
 import { AuthError, GoogleAuthProvider, OAuthProvider, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import Cookies from "js-cookie";
@@ -408,7 +409,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 logout,
             }}
         >
-            {children}
+            {auth?.currentUser ? children : <Loading />}
         </AuthContext.Provider>
     );
 };
