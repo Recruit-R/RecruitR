@@ -7,7 +7,8 @@ import { checkEnvironment } from "@/checkEnvironment";
 import { Icons } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { CheckCircle } from "lucide-react";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { Card } from "@/components/ui/card";
 
 //
 
@@ -128,16 +129,22 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
     }
     return (
         <>
-
+        <div className = "flex flex-row gap-3 items-center">
             <Button disabled={upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
                 {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                 <input id="upload" name="upload" type="file" ref={fileRef} hidden
                     onChange={handleChange} />
                 Upload Resume
             </Button>
-            <Checkbox id = "parseOrNot" checked = {parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)}>
-                Use autofill from resume?
-            </Checkbox>
+            <div className="flex items-center space-x-2 bg-muted p-1 px-2 rounded-sm">
+                <label
+                className="text-sm py-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                    Use Resume Autofill?
+                </label>
+                <Checkbox id = "parseOrNot" checked = {parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)}/>
+            </div>
+        </div>
         </>
     )
 }
