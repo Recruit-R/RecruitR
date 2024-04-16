@@ -20,7 +20,6 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
             const generateQRCode = async () => {
 
                 const canvas = canvasRef.current;
-
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
@@ -41,10 +40,8 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
     return (
         <div className="flex justify-center h-full">
             <div className="flex flex-col justify-center h-full">
-                <span className="text-xl">QR Code for {event?.title}</span>
-                <div className="mx-auto mt-4">
-                    <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
-                </div>
+                <span className="text-xl text-center">QR Code for {event?.title}</span>
+                <canvas id="qrcode" ref={canvasRef} className='!h-[50vh] !w-[50vh]'></canvas>
             </div>
         </div>
     );
