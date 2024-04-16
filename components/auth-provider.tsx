@@ -151,7 +151,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     }
                     setCurrentUser(user);
                     setUserRole(userJson.role as Roles);
-
                 } else {
                     console.error("Could not get user info, returned error code:", userResponse);
                     removeAuthToken();
