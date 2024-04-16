@@ -95,7 +95,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
                                     </AvatarFallback>
                                 </Avatar>
-                                {editMode ? <HeaderForm form={form}></HeaderForm> :
+                                {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
                                     <div>
                                         {canData ?
                                             <>
@@ -150,7 +150,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                 <ElementTitle title = {"Resume"}/>
                                     {editMode &&
                                     <div className={`pt-0.01`}>
-                                        <ResumeButton form={form} canData={canData} />
+                                        <ResumeButton form={form} canData={canData} setIsParsing={setIsParsing}/>
                                     </div>}
 
                                     {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
