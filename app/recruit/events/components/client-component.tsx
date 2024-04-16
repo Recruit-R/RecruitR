@@ -80,6 +80,14 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                     />
                 </div>
                 <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2 h-full">
+                <div className="">
+                        <EventsListCard
+                            title="Future Events"
+                            empty_message="No Upcoming Events"
+                            partialEvents={futureEvents}
+                        />
+
+                    </div>
                     <div className="">
                         <EventsListCard
                             title="Past Events"
@@ -88,14 +96,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         />
 
                     </div>
-                    <div className="">
-                        <EventsListCard
-                            title="Future Events"
-                            empty_message="No Upcoming Events"
-                            partialEvents={futureEvents}
-                        />
-
-                    </div>
+                    
                 </div>
             </div>
         </EventDataContext.Provider>

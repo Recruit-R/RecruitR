@@ -36,7 +36,8 @@ const formSchema = z.object({
     date: z.date(),
     location: z.string().min(2, {
         message: "location name must be at least 2 characters.",
-    })
+    }),
+    id: z.string().optional()
 })
 
 export function EventManagementForm({ event, isCreating, setOpen }: { event?: Event, isCreating: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -46,12 +47,14 @@ export function EventManagementForm({ event, isCreating, setOpen }: { event?: Ev
             formSchema.transform((v) => ({
                 title: v.title,
                 date: v.date,
-                location: v.location
+                location: v.location,
+                id: event?.id
             }))
         ),
         defaultValues: {
             title: "",
             location: "",
+            id: event?.id,
         },
     })
 
