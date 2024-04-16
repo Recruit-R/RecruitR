@@ -101,7 +101,7 @@ export function StudentInfoCard({ editMode, setEditMode, canData, setCanData }: 
                                     <div>
                                         {canData ?
                                             <>
-                                                <CardTitle className="text-4xl">
+                                                <CardTitle className="sm:text-4l md:text-4xl">
                                                     {canData.first_name} {canData.last_name}
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
@@ -110,7 +110,7 @@ export function StudentInfoCard({ editMode, setEditMode, canData, setCanData }: 
                                             </>
                                             :
                                             <>
-                                                <CardTitle className="text-4xl">
+                                                <CardTitle className="sm:text-4l md:text-4xl">
                                                     <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
                                                 </CardTitle>
                                                 
