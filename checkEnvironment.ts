@@ -1,5 +1,5 @@
 export const checkEnvironment = () => {
-    console.log('process.env', process.env.NODE_ENV);
+    console.log('process.env', process.env);
     const baseURL =
         process.env.NODE_ENV === "production"
             ? "https://" + process.env.VERCEL_URL
