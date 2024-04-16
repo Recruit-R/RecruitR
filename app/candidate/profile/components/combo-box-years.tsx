@@ -67,7 +67,7 @@ export function ComboboxYear({ form, field }: { form: any, field: any }) {
                 value={year.label}
                 key={year.value}
                 onSelect={() => {
-                  form.form.setValue('year', year.value)
+                  form.setValue('year', year.value)
                   setOpen(false)
                 }}
               >
