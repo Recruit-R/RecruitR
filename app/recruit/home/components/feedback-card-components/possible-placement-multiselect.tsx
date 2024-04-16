@@ -24,13 +24,14 @@ export function PossiblePlacementMultiselect() {
         setSaved,
         currRecrFeedback,
         currentUserEditId,
+        changedStudent,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const [possiblePlacements, setPossiblePlacements] = useState(currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? []);
 
     useEffect(() => {
         setPossiblePlacements(currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? []);
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
     useThrottledRequest({
         studentContext: (useContext(StudentDataContext) as StudentDataContextType),

@@ -9,7 +9,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { CheckCircle } from "lucide-react";
 import { Checkbox } from "@radix-ui/react-checkbox";
 
-export function ResumeButton({ form, canData }: { form: any, canData: any }) {
+//
+
+export function ResumeButton({ form, canData, setIsParsing}: { form: any, canData: any, setIsParsing: React.Dispatch<React.SetStateAction<boolean>>}) {
     const [upping, setUpp] = useState(false)
 
     const [parseCheck, setParseCheck] = useState(false)
@@ -83,6 +85,7 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             return
         }
         try {
+            setIsParsing(true);
             // Convert the file to a base64 string
             const base64String = await blobToBase64(file);
 
@@ -114,8 +117,11 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             // Parse the response JSON
             const responseData = await response.json();
 
+            setIsParsing(false);
+
             return responseData;
         } catch (error) {
+            setIsParsing(false);
             console.error('Error parsing the resume:', error);
             throw error;
         }
