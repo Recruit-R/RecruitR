@@ -85,7 +85,7 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
         <DataTableColumnHeader column={column} title="Avg. Rating" />
       ),
       cell: ({ row }) => <div className="w-[40px]">
-        {isNaN(row.getValue("avgRating")) ? "-" :
+        {isNaN(parseFloat(row.getValue("avgRating"))) ? "-" :
             (Math.round(parseFloat(row.getValue("avgRating")) * 100) / 100).toFixed(2)}
 
       </div>,
@@ -137,8 +137,8 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
         }
 
         return (
-          <div className="flex w-[100px] items-center">
-            <span>{year.label}</span>
+            <div className="flex w-[100px] items-center">
+              <span>{year.label}</span>
           </div>
         )
       },
