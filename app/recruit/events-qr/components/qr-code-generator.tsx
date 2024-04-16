@@ -1,5 +1,5 @@
 'use client'
-
+//test merge
 import getData from "@/app/api/getData";
 import { Event } from "@/app/types/event";
 import { checkEnvironment } from "@/checkEnvironment";
@@ -80,6 +80,7 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                             Print QR Code
                         </Button>
                     </div>
+                    
             </div>
         </div>
     );
