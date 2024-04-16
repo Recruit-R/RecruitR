@@ -24,13 +24,14 @@ export function KnownTechFeedback() {
         setSaved,
         currRecrFeedback,
         currentUserEditId,
+        changedStudent,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
 
     useEffect(() => {
         setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
     useThrottledRequest({
         studentContext: (useContext(StudentDataContext) as StudentDataContextType),
