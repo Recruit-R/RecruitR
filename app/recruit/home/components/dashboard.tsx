@@ -31,7 +31,10 @@ export interface StudentDataContextType {
     currRecrFeedback: string
     setCurrRecrFeedback: React.Dispatch<React.SetStateAction<string>>
     editable: () => boolean,
-    currentUserEditId: string
+    currentUserEditId: string,
+    changedStudent: boolean,
+    setChangedStudent: React.Dispatch<React.SetStateAction<boolean>>
+
 }
 
 export const StudentDataContext = createContext<StudentDataContextType | null>(null);
@@ -46,6 +49,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     const [saved, setSaved] = useState(true)
     const [previousStudent, setPreviousStudent] = useState<Student | null>(null);
     const [currRecrFeedback, setCurrRecrFeedback] = useState("")
+    const [changedStudent, setChangedStudent] = useState(false)
     const [tablePage, setTablePage] = useState(1);
     let lastRating: number | undefined = 0;
     const db = getFirestore(app);
@@ -113,7 +117,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function feedbackComponent() {
         return (
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-2/3 lg:w-2/5")}>
                 <FeedbackCard
                     feedbackFocus={feedbackFocus}
                     setStudentView={setStudentView}
@@ -127,7 +131,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function noStudentViewComponent() {
         return (
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-1/2 lg:w-2/5")}>
                 <Card className="min-h-full flex items-center justify-center">
                     <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
                         <p className="font-bold">
@@ -162,12 +166,14 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
             currRecrFeedback,
             setCurrRecrFeedback,
             editable,
-            currentUserEditId
+            currentUserEditId,
+            changedStudent,
+            setChangedStudent
         }}>
 
             <div className="flex flex-row h-full relative no-scrollbar">
 
-                <div className={cn("no-scrollbar h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
+                <div className={cn("no-scrollbar h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-1/2 lg:w-2/5 xl:w-1/4" : "md:w-1/3 lg:w-3/5")}>
                     <DataTable
                         setCurrentStudent={changeCurrentStudent}
                         setStudentView={setStudentView}
