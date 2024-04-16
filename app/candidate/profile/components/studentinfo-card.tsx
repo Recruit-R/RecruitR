@@ -131,7 +131,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                         </div>
 
                         </CardHeader>
-                        <CardContent className={"flex flex-col flex-wrap xl:grid xl:grid-cols-2 xl:gap-x-4"}>
+                        <CardContent className={"flex flex-col flex-wrap xl:gap-x-4"}>
                             {/*    Initial feedback */}
                             <div className="flex flex-col gap-5 space-y-1">
                                 <ElementTitle title = {"Personal Info"}/>
