@@ -48,7 +48,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
             </Button>
 
             <Card className="min-h-full relative no-scrollbar">
-                <CardHeader className={c("flex flex-col gap-2 border-b gap-4 mb-4 divide-x", "flex flex-col xl:flex-row items-start xl:items-center border-b gap-4 mb-4 divide-x")}>
+                <CardHeader className={c("flex flex-col gap-2 border-b gap-4 mb-4 ", "flex flex-col xl:flex-row items-start xl:items-center border-b gap-4 mb-4 divide-x")}>
                     <div className="flex flex-1 items-center space-x-4">
                         <div className="flex flex-1 items-center space-x-4 pr-4">
 
@@ -71,7 +71,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             </div>
                         </div>
                     </div>
-                    <div className={c("flex flex-row flex-wrap gap-2", "xl:hidden")}>
+                    <div className={c("flex flex-row gap-2", "flex flex-row w-full xl:hidden")}>
 
                         <Link target={"_blank"} href={currentStudent?.resumeURL ?? ""} className={cn(
                             buttonVariants({ variant: 'default' }),
@@ -133,20 +133,14 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
                         </div>
                     </div>
-
-                    {/*<Separator/>*/}
-
                     <Timeline
-                        // events={["Career Fair", "Interview 1", "Interview 2", "Success"]}
                         c={c}
                     />
                     {
                         auth?.userRole === Roles.COORDINATOR
                         && <DeleteStudent/>
                     }
-                    <Button className="p-3" variant={"ghost"} onClick={e => console.log(currentStudent)}>
-                        Print student Info
-                    </Button>
+
                 </CardContent>
             </Card>
         </>
