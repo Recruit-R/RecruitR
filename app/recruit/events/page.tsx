@@ -33,6 +33,6 @@ export default async function Page() {
 
 
     return (
-        <EventListWithSuspense />
+        <EventListWithSuspense events={events} />
     )
 }
