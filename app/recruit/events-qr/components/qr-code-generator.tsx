@@ -1,5 +1,5 @@
 'use client'
-
+//test merge
 import getData from "@/app/api/getData";
 import { Event } from "@/app/types/event";
 import { checkEnvironment } from "@/checkEnvironment";
@@ -69,10 +69,20 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
     };
 
     return (
-        <div className="flex justify-center h-full">
-            <div className="flex flex-col justify-center h-full">
-                <span className="text-xl text-center">QR Code for {event?.title}</span>
-                <canvas id="qrcode" ref={canvasRef} className='!h-[50vh] !w-[50vh]'></canvas>
+
+        <div className="flex justify-center items-center h-full">
+            <div className="flex flex-col justify-center items-center h-full">
+                <span className="text-xl font-bold">QR Code for {event?.title}</span>
+                <div className="mx-auto mt-4">
+                    <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
+                </div>
+                    <div className="mt-4">
+                        <Button variant="outline" onClick={handlePrintButtonClick}>
+                            Print QR Code
+                        </Button>
+                    </div>
+                    
+
             </div>
         </div>
     );
