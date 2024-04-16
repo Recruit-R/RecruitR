@@ -6,9 +6,13 @@ import React, { useState } from "react";
 import { checkEnvironment } from "@/checkEnvironment";
 import { Icons } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
+import { CheckCircle } from "lucide-react";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 export function ResumeButton({ form, canData }: { form: any, canData: any }) {
     const [upping, setUpp] = useState(false)
+
+    const [parseCheck, setParseCheck] = useState(false)
 
     const storage = getStorage(app);
     const fileRef = React.useRef<HTMLInputElement | null>(null);
@@ -30,12 +34,22 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
                 const downLoadURL = await getDownloadURL(snapshot.ref);
-                updateForm(parsedData);
+                if(parseCheck){
+                    updateForm(parsedData);
+                }
                 form.setValue('resumeURL', downLoadURL);
+                (parseCheck ?
                 toast({
                     title: "Parsed and uploaded resume successfully!",
                     description: "Remember to save!",
                 })
+                :
+                toast({
+                    title: "Uploaded resume successfully!",
+                    description: "Remember to save!",
+                })
+                )
+
                 setUpp(false)
             })
         } else {
@@ -65,6 +79,9 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
 
     // Function to parse the PDF using the Flask API
     async function parseResume(file: File): Promise<any> {
+        if(!parseCheck){
+            return
+        }
         try {
             // Convert the file to a base64 string
             const base64String = await blobToBase64(file);
@@ -112,6 +129,9 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
                     onChange={handleChange} />
                 Upload Resume
             </Button>
+            <Checkbox id = "parseOrNot" checked = {parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)}>
+                Use autofill from resume?
+            </Checkbox>
         </>
     )
 }
