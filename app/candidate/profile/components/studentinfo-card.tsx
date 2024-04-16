@@ -126,8 +126,6 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             >
                                 {editMode ? "Cancel" : "Edit Profile"}
                             </Button>
-
-
                         </div>
 
                         </CardHeader>
