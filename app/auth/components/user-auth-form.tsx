@@ -106,20 +106,20 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
             console.error("Auth not available");
             return;
         }
-
+        console.log('event id', eventId);
+        if (eventId) auth.addEvent(eventId);
         if (signup) {
             auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
         } else {
             auth.loginEmail({ email: values.email, password: values.password })
         }
-        if (eventId) auth.addEvent(eventId);
     }
 
     return (
         <>
             <div className="flex flex-col space-y-2 text-center">
                 <h1 className="text-2xl font-semibold tracking-tight">
-                    {recruitLogin ? "Recruiter" : "Student"} Sign {signup ? "Up" : "In"}
+                    {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
                 </h1>
                 {
                     !recruitLogin && (
@@ -207,7 +207,7 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
                         Not a {recruitLogin ? "recruiter" : "student"}?
                     </span>
                     <Button asChild variant={"link"} onClick={() => setRecruitLogin(!recruitLogin)}>
-                        <Link href="#">Sign {signup ? "up" : "in"} as a {recruitLogin ? "student" : "recruiter"}</Link>
+                        <Link href="#">{signup ? "Sign Up" : "Login"} as a {recruitLogin ? "student" : "recruiter"}</Link>
                     </Button>
                 </div>
             </div >
