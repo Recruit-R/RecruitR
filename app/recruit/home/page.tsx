@@ -3,6 +3,7 @@ import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
 import { StudentList } from "@/app/recruit/home/data/student-schema";
 import { headers } from "next/headers";
 import { Suspense } from "react";
+import DashboardSkeleton from "./components/dashboard-skeleton";
 
 
 async function StudentListLoader() {
@@ -20,7 +21,7 @@ async function StudentListWithSuspense({
     }
 
     return (
-        <Suspense fallback={"Testing Loader"}>
+        <Suspense fallback={<DashboardSkeleton />}>
             <StudentListLoader />
         </Suspense>
     )
