@@ -15,9 +15,9 @@ import { app } from "@/firebase/client";
 import { cn } from "@/lib/utils";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import React, {createContext, Suspense, useEffect, useState} from "react";
+import React, { createContext, useEffect, useState } from "react";
 // import {useAuth} from "@/components/auth-provider.tsx";
-import {SaveStatus} from "@/app/recruit/home/components/feedback-card-components/save-status.tsx";
+import { SaveStatus } from "@/app/recruit/home/components/feedback-card-components/save-status.tsx";
 // import React, { createContext, useEffect, useState } from "react";
 import { z } from "zod";
 
@@ -61,6 +61,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                 setCurrentUserEditId(email)
                 setCurrRecrFeedback(email)
             }
+            auth.setIsLoading(false)
         }
     }, [auth])
 
@@ -112,7 +113,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function feedbackComponent() {
         return (
             <div
-                className={cn("bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
                 <FeedbackCard
                     feedbackFocus={feedbackFocus}
                     setStudentView={setStudentView}
@@ -126,7 +127,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function noStudentViewComponent() {
         return (
             <div
-                className={cn("bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-3/5 xl:w-3/4" : "md:w-2/5")}>
                 <Card className="min-h-full flex items-center justify-center">
                     <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
                         <p className="font-bold">
@@ -164,9 +165,9 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
             currentUserEditId
         }}>
 
-            <div className="flex flex-row h-full relative">
+            <div className="flex flex-row h-full relative no-scrollbar">
 
-                <div className={cn("h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
+                <div className={cn("no-scrollbar h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/5 xl:w-1/4" : "md:w-3/5")}>
                     <DataTable
                         setCurrentStudent={changeCurrentStudent}
                         setStudentView={setStudentView}
@@ -196,7 +197,10 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                         :
                         noStudentViewComponent()
                 }
-                <SaveStatus />
+                {
+                    currentStudent && <SaveStatus />
+                }
+                {/*<SaveStatus />*/}
             </div>
 
             {/*</div>*/}

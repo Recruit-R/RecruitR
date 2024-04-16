@@ -17,6 +17,7 @@ import { BsGithub, BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
+    eventId?: string;
 }
 
 export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form, signup, auth }: { id: any, type: string, placeholder: string, autoComplete: string, label: string, form: any, signup: any, auth: any }) => {
@@ -49,7 +50,7 @@ export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form
     )
 }
 
-export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthFormProps) {
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
@@ -82,7 +83,9 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 variant="outline"
                 type="button"
                 disabled={auth?.isLoading}
-                onClick={() => authType()}
+                onClick={() => authType()
+                    .then(() => { if (eventId) auth?.addEvent(eventId) })
+                }
                 className='w-full'
             >
                 {auth?.isLoading ? (
@@ -103,11 +106,12 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
             console.error("Auth not available");
             return;
         }
-
+        console.log('event id', eventId);
+        if (eventId) auth.addEvent(eventId);
         if (signup) {
-            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password });
+            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
         } else {
-            auth.loginEmail({ email: values.email, password: values.password });
+            auth.loginEmail({ email: values.email, password: values.password })
         }
     }
 
@@ -115,7 +119,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         <>
             <div className="flex flex-col space-y-2 text-center">
                 <h1 className="text-2xl font-semibold tracking-tight">
-                    {recruitLogin ? "Recruiter" : "Student"} Sign {signup ? "Up" : "In"}
+                    {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
                 </h1>
                 {
                     !recruitLogin && (
@@ -203,7 +207,7 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                         Not a {recruitLogin ? "recruiter" : "student"}?
                     </span>
                     <Button asChild variant={"link"} onClick={() => setRecruitLogin(!recruitLogin)}>
-                        <Link href="#">Sign {signup ? "up" : "in"} as a {recruitLogin ? "student" : "recruiter"}</Link>
+                        <Link href="#">{signup ? "Sign Up" : "Login"} as a {recruitLogin ? "student" : "recruiter"}</Link>
                     </Button>
                 </div>
             </div >

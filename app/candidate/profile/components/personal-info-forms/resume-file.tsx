@@ -1,81 +1,117 @@
 import { Button } from "@/components/ui/button";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { useRef } from 'react';
-import { getStorage, ref, uploadBytesResumable} from "firebase/storage";
-import { uploadBytes, uploadString } from "firebase/storage";
-import { getDownloadURL } from "firebase/storage";
+import app from "@/firebase.config";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import React, { useState } from "react";
 
-export function ResumeButton(form : any) {
-    const storage = getStorage();
+import { checkEnvironment } from "@/checkEnvironment";
+import { Icons } from "@/components/ui/icons";
+import { useToast } from "@/components/ui/use-toast";
+
+export function ResumeButton({ form, canData }: { form: any, canData: any }) {
+    const [upping, setUpp] = useState(false)
+
+    const storage = getStorage(app);
     const fileRef = React.useRef<HTMLInputElement | null>(null);
-    const metadata = {
-        contentType: "application/pdf"
+    const newMetaData = {
+        contentType: "application/pdf",
     }
-    const [progressPercent, setProgressPercent] = useState(0);
-    const handleChange = (event: any) => {
-        event.preventDefault()
-        const file = event.target[0]?.files[0]
-        if(!file){
-            return;
-        }
-        const resName = event.target.value.split("\\");
-        const resumeRef = ref(storage, "resumes/" + resName.slice(resName.length - 1));
-        const uploadTask = uploadBytesResumable(resumeRef, resName.slice(resName.length - 1), metadata);
+    const { toast } = useToast()
 
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                const progress =
-                        Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                        setProgressPercent(progress);
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                    case 'paused':
-                        console.log('Upload is paused');
-                        break;
-                    case 'running':
-                        console.log('Upload is running');
-                        break;
-                }
-            },
-            (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
-                  case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
-                    console.log("error: unauth")
-                    break;
-                  case 'storage/canceled':
-                    // User canceled the upload
-                    console.log("error: canceled")
-                    break;
-            
-                  // ...
-                  case 'storage/invalid-url':
-                    console.log("error: invalid-url")
-                    break;
-            
-                  case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
-                    break;
-                }
-            },
-            ()=>{
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    form.form.setValue('resumeURL', downloadURL);
+    const handleChange = async (event: any) => {
+        setUpp(true)
+        var extension = event.target.files[0].type
+        if (extension == "application/pdf") {
+            const resName = event.target.value.split("\\");
+            const resume = event.target.files[0];
+            const parsedData = await parseResume(resume);
 
-                    console.log(downloadURL);
+            //check if file type is pdf here?
+            const resumeRef = ref(storage, "resumes/" + canData.id + resName.slice(resName.length - 1));
+            uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
+
+                const downLoadURL = await getDownloadURL(snapshot.ref);
+                updateForm(parsedData);
+                form.setValue('resumeURL', downLoadURL);
+                toast({
+                    title: "Parsed and uploaded resume successfully!",
+                    description: "Remember to save!",
                 })
-                
-            }
-        )
-
+                setUpp(false)
+            })
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Resume file type must be .pdf!",
+            })
+            setUpp(false)
+        }
     };
+
+    function updateForm(parsedData: any) {
+        if (parsedData.degree)
+            form.setValue('major', parsedData.degree[0]);
+        if (parsedData.college_name)
+            form.setValue('university', parsedData.college_name);
+    }
+
+    function blobToBase64(blob: Blob): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    // Function to parse the PDF using the Flask API
+    async function parseResume(file: File): Promise<any> {
+        try {
+            // Convert the file to a base64 string
+            const base64String = await blobToBase64(file);
+
+            // Remove the data URL prefix (e.g., "data:application/pdf;base64,")
+            const base64Data = base64String.split(',')[1];
+
+            // Prepare the request body
+            const requestBody = JSON.stringify({ data: base64Data });
+
+            const parserURL = checkEnvironment().PARSER_URL
+            if (parserURL === undefined) {
+                throw new Error('no parser api url');
+            }
+            console.log('trying to parse resume')
+            // Make the fetch request to the Flask API
+            const response = await fetch(parserURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: requestBody,
+            });
+
+            // Check if the request was successful
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // Parse the response JSON
+            const responseData = await response.json();
+
+            return responseData;
+        } catch (error) {
+            console.error('Error parsing the resume:', error);
+            throw error;
+        }
+    }
     return (
-        <Button type="button" onClick={() => fileRef.current && fileRef.current.click()}>
-            <input id="upload" name="upload" type="file" ref={fileRef} hidden
-                onChange={handleChange} />
-            Upload Resume
-        </Button>
+        <>
+
+            <Button disabled={upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
+                {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                <input id="upload" name="upload" type="file" ref={fileRef} hidden
+                    onChange={handleChange} />
+                Upload Resume
+            </Button>
+        </>
     )
 }

@@ -4,11 +4,10 @@ import { z } from "zod"
 // IRL, you will have a schema for your data models.
 export const feedbackSchema = z.record(z.object({
   initial_feedback: z.number().optional(),
-  possible_placement: z.string().optional(),
+  possible_placement: z.union([z.array(z.string()), z.null(), z.undefined()]),
   known_tech: z.string().array().optional(),
   text_feedback: z.string().optional(),
-  rating: z.number().optional(),
-  curr_status: z.string().optional()
+  rating: z.number().optional().nullable(),
 }))
 export type Feedback = z.infer<typeof feedbackSchema>
 
@@ -33,8 +32,10 @@ const studentObject = {
   interview2: z.union([z.string(), z.undefined()]),
   interview1: z.union([z.string(), z.undefined()]),
   gradMonth: z.union([z.string(), z.undefined()]),
-  avgRating: z.union([z.number(), z.nan()]).optional(),
+  avgRating: z.union([z.number(), z.nan()]).optional().nullable(),
   signup_time: z.union([z.string(), z.undefined()]).optional(),
+  events: z.union([z.array(z.string()), z.undefined()]).optional(),
+  curr_status: z.string().optional().nullable()
 }
 
 export const studentSchema = z.object(studentObject)

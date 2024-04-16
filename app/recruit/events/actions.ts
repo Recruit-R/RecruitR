@@ -1,7 +1,7 @@
 'use server'
 import { Timestamp } from "firebase/firestore";
 
-import {z} from "zod";
+import { z } from "zod";
 import addData from "@/app/api/addData";
 import getData from "@/app/api/getData";
 import { eventSchema } from "./data/events-schema";
@@ -19,7 +19,7 @@ export async function create(value: string) {
     return addData("events", Date.now().toString(), obj)
 }
 export async function getEventData() {
-    return getData({collection_name:"events", schemaName:"eventSchema"})
+    return getData({ collection_name: "events" })
 }
 function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.

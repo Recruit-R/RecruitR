@@ -19,10 +19,10 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       header: ({ table }) => (
         <Checkbox
           checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            table.getIsAllRowsSelected() ||
+            (table.getIsSomeRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
           aria-label="Select all"
           className="translate-y-[2px]"
         />
@@ -52,27 +52,31 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Name" />
       ),
-      cell: ({ row }) => <div className="w-1/2 md:w-[40px]">{row.getValue("last_name")}</div>,
+      cell: ({ row }) => <div className="w-1/2 md:w-[100px] truncate">{row.getValue("last_name")}</div>,
       enableSorting: true,
       enableHiding: false,
+
     },
     {
       accessorKey: "university",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="University" />
       ),
-      cell: ({ row }) => <div className="w-[80px]">{row.getValue("university")}</div>,
+      cell: ({ row }) => <div className="w-[150px] truncate">{row.getValue("university")}</div>,
       enableSorting: true,
-      enableHiding: false,
+      enableHiding: true,
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      }
     },
     {
       accessorKey: "gpa",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="GPA" />
       ),
-      cell: ({ row }) => <div className="w-[80px]">{row.getValue("gpa")}</div>,
+      cell: ({ row }) => <div className="w-[40px]">{!row.getValue("gpa") ? "-" : row.getValue("gpa")}</div>,
       enableSorting: true,
-      enableHiding: false,
+      enableHiding: true,
       sortUndefined: -1
     },
     {
@@ -80,13 +84,35 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Avg. Rating" />
       ),
-      cell: ({ row }) => <div className="w-[80px]">{(Math.round(parseFloat(row.getValue("avgRating")) * 100) / 100).toFixed(2)}</div>,
+      cell: ({ row }) => <div className="w-[40px]">
+        {isNaN(row.getValue("avgRating")) ? "-" :
+            (Math.round(parseFloat(row.getValue("avgRating")) * 100) / 100).toFixed(2)}
+
+      </div>,
       enableSorting: true,
-      enableHiding: false,
+      enableHiding: true,
       sortingFn: (rowA, rowB) => {
-        const ratingA = parseFloat(rowA.getValue("avgRating"));
-        const ratingB = parseFloat(rowB.getValue("avgRating"));
-        if (ratingA < ratingB) {
+        const ratingA = rowA.getValue("avgRating")
+            ? isNaN(parseFloat(rowA.getValue("avgRating")))
+                ? null
+                : parseFloat(rowA.getValue("avgRating"))
+            : null;
+        const ratingB = rowB.getValue("avgRating")
+            ? isNaN(parseFloat(rowB.getValue("avgRating")))
+                ? null
+                : parseFloat(rowB.getValue("avgRating"))
+            : null;
+
+        if (!ratingA && !ratingB) {
+          return 0
+        }
+        if (!ratingA) {
+          return -1
+        }
+        if (!ratingB){
+          return 1
+        }
+        if ((ratingA < ratingB) ) {
           return -1;
         }
         if (ratingA > ratingB) {
@@ -94,7 +120,7 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
         }
         return 0;
       },
-      sortUndefined: -1
+      sortUndefined: false
     },
     {
       accessorKey: "year",
@@ -134,10 +160,10 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
         </div>
       ),
       enableSorting: true,
-      enableHiding: false,
+      enableHiding: true,
       sortingFn: (rowA, rowB) => {
-        const timeA = parseISO(rowA.getValue("avgRating"));
-        const timeB = parseISO(rowB.getValue("avgRating"));
+        const timeA = parseISO(rowA.getValue("signup_time"));
+        const timeB = parseISO(rowB.getValue("signup_time"));
         if (timeA < timeB) {
           return -1;
         }

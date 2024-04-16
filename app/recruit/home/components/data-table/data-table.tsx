@@ -52,18 +52,21 @@ export function DataTable<TData, TValue>({
   c,
   setPage
 }: DataTableProps<TData, TValue>) {
-  const { currentStudent, setStudentList, studentList } = useContext(StudentDataContext) as StudentDataContextType
+  const { currentStudent, setStudentList, studentList, setCurrRecrFeedback, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  // const [pagination, setPagination] = useState({
-  //   pageIndex: 3, // initial page index
-  //   pageSize: 10, // default page size
-  // });
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {id: "signup_time", desc: true}
+  ])
+  // useEffect(() => {
+  //   console.log("in here")
+  //   table.resetPageIndex()
+  // }, [columnFilters]);
+
   const table = useReactTable({
     data,
     columns,
@@ -74,6 +77,11 @@ export function DataTable<TData, TValue>({
       columnFilters,
       // pagination,
     },
+    // initialState: {
+    //   sorting: {
+    //
+    //   }
+    // }
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -88,25 +96,12 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     autoResetPageIndex: false
   })
-  // useEffect(() => {
-  //   console.log("changed student list from data table")
-  //   table.setPageIndex(2)
-  //   // setPagination({pageIndex: 3, pageSize: pagination.pageSize})
-  // }, [currentStudent]);
-  // useEffect(() => {
-  //     if (currentStudent) {
-  //         const selectedRow = table.getRowModel().rows.find(row => (row.original as Student)?.id === currentStudent.id);
-  //         if (selectedRow) {
-  //             selectedRow.toggleSelected(true);
-  //         }
-  //     }
-  // }, [currentStudent]);
 
   return (
-    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2">
+    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2 no-scrollbar">
       <DataTableToolbar table={table} c={c} />
 
-      <div className="grow overflow-auto ">
+      <div className="grow overflow-auto no-scrollbar">
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -131,6 +126,7 @@ export function DataTable<TData, TValue>({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
+                    className={`${(row.original as Student)?.id === (currentStudent?.id ?? "") && "bg-muted/50"}`}
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
@@ -138,6 +134,7 @@ export function DataTable<TData, TValue>({
 
                       if (student && student.id !== (currentStudent?.id ?? "")) {
                         setCurrentStudent(row.original as Student);
+                        setCurrRecrFeedback(currentUserEditId);
                       }
                       setStudentView(true);
                       // table.toggleAllRowsSelected(false)

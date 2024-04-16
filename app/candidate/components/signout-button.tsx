@@ -12,7 +12,9 @@ export default function SignOut() {
             variant="outline"
             type="button"
             onClick={() => {
+
                 auth?.logout().then(() => {
+                    console.log('logging out');
                     router.push("/auth/login");
                 }).catch((error: any) => {
                     console.log(error);
