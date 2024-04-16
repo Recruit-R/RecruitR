@@ -5,11 +5,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { z } from "zod";
 import { feedbackSchema } from "@/app/recruit/home/data/student-schema.ts";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import { useThrottle } from "@/app/hooks/useThrottle.ts";
+import { useThrottle } from "@/hooks/useThrottle.ts";
 import _ from "lodash";
 import { addFeedback } from "@/app/recruit/home/actions.ts";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 export function TextFeedback() {
     const { currentStudent,
         setCurrentStudent,
@@ -17,6 +18,7 @@ export function TextFeedback() {
         setSaved,
         currentUserEditId,
         currRecrFeedback,
+        changedStudent,
         editable,
     } = useContext(StudentDataContext) as StudentDataContextType
     const [value, setValue] = useState(
@@ -24,23 +26,15 @@ export function TextFeedback() {
 
     useEffect(() => {
         setValue(currentStudent?.feedback?.[currRecrFeedback]?.text_feedback ?? "")
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
 
-    const throttledRequest = useThrottle(() => {
-        // send request to the backend
-        // access to latest state here
-        if (editable()) {
-
-            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "text_feedback": value } });
-            addFeedback(currentStudent!.id, JSON.stringify({ "text_feedback": value }), currentUserEditId).then(r => setSaved(true))
-            setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject }))
-        }
-    });
-    useEffect(() => {
-        setSaved(false)
-        throttledRequest();
-    }, [value])
+    useThrottledRequest({
+        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
+        dbData: { "text_feedback": value },
+        localData: { "text_feedback": value },
+        dependency: value,
+    })
 
     return (
         <div>

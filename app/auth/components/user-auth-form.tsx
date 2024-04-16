@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react";
 import * as z from 'zod';
 
 import { useAuth } from "@/components/auth-provider";
@@ -10,19 +9,53 @@ import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+// import microsoft icon
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { BsGithub, BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
+    eventId?: string;
 }
 
-export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
-    const [authSuccessful, setAuthSuccessful] = useState<boolean>(true);
-    const [authError, setAuthError] = useState<any>(null);
-    const router = useRouter();
+export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form, signup, auth }: { id: any, type: string, placeholder: string, autoComplete: string, label: string, form: any, signup: any, auth: any }) => {
+    return (
+        <FormField
+            control={form.control}
+            name={id}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel className="sr-only" htmlFor={id}>
+                        {label}
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            id={id}
+                            placeholder={placeholder}
+                            type={type}
+                            autoCapitalize="none"
+                            autoComplete={autoComplete}
+                            autoCorrect="off"
+                            disabled={auth?.isLoading}
+                            {...field}
+                        />
+                    </FormControl>
+                    {signup && <FormMessage className="text-center" />}
+
+                </FormItem>
+            )}>
+        </FormField>
+    )
+}
+
+export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthFormProps) {
+    const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
+    const auth = useAuth();
     const formSchema = z.object({
+        firstName: z.string(),
+        lastName: z.string(),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
@@ -30,169 +63,158 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
         },
     })
 
-    const LoginFailure = () => {
-        return (
-            <div className='text-center'>
-                <span>Incorrect email or password. <br />Try again or </span>
-                <Link className='underline' href="/auth/signup" >
-                    sign up instead
-                </Link>
-            </div>
-        )
-    }
-
-    const SignupFailure = () => {
-        return (
-            <div className='text-center'>
-                <span>An account with this email already exists. <br /> Please </span>
-                <Link className='underline' href="/auth/login" >
-                    login instead
-                </Link>
-            </div>
-        )
-    }
-
-    const auth = useAuth();
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        if (signup) {
-            auth?.createAccountEmail({ email: values.email, password: values.password }).then(() => {
-            }).catch((error) => {
-                if (error.code === 'auth/email-already-in-use') {
-                    setAuthError(SignupFailure);
-                } else {
-                    setAuthError("There was an error when creating the account, please try again.");
-                }
-                setAuthSuccessful(false);
-            });
-        } else {
-            auth?.loginEmail({ email: values.email, password: values.password }).then(() => {
-            }).catch((error) => {
-                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                    setAuthError(LoginFailure);
-                } else {
-                    setAuthError("There was an error when logging in, please try again.");
-                }
-                setAuthSuccessful(false);
-                console.log(error);
-            });
-        }
-    }
-
     useEffect(() => {
-        if (!auth?.isLoading && auth?.currentUser) {
-            if (auth?.isCoordinator || auth?.isRecruiter) {
-                router.push('/recruit/home');
-            } else {
-                router.push('/candidate/profile');
-            }
+        if (auth?.error) {
+            auth.setError(null);
         }
-    }, [auth?.isLoading, auth?.currentUser, auth?.isCoordinator, auth?.isRecruiter, router])
+    }, [])
 
-    return (
-        <div className='grid gap-6' {...props}>
 
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-2">
-                        <div className="grid gap-1">
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="sr-only" htmlFor="email">
-                                            Email
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="email"
-                                                placeholder="name@example.com"
-                                                type="email"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={auth?.isLoading}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        {signup && <FormMessage className="text-center" />}
-
-                                    </FormItem>
-                                )}>
-                            </FormField>
-
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="sr-only" htmlFor="email">
-                                            Password
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="password"
-                                                placeholder="password"
-                                                type="password"
-                                                autoCapitalize="none"
-                                                disabled={auth?.isLoading}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        {signup && <FormMessage className="text-center" />}
-
-                                    </FormItem>
-                                )}>
-                            </FormField>
-
-                        </div>
-
-                        <Button disabled={auth?.isLoading}>
-                            {auth?.isLoading && (
-                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                            )}
-                            {signup ? 'Sign up' : 'Login'}
-                        </Button>
-                    </div>
-                </form>
-            </Form>
-            {!authSuccessful && (
-                <div className={cn("text-sm font-medium text-destructive")}>
-                    {authError}
-                </div>
-            )}
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                        Or continue with
-                    </span>
-                </div>
-            </div>
-
+    const OAuthButton = ({ authType, authTitle, Logo }: { authType: () => Promise<void>, authTitle: string, Logo: React.ElementType }) => {
+        return (
             <Button
                 variant="outline"
                 type="button"
                 disabled={auth?.isLoading}
-                onClick={() => {
-                    auth?.loginGoogle();
-                }}
-                className='w-full'>
+                onClick={() => authType()
+                    .then(() => { if (eventId) auth?.addEvent(eventId) })
+                }
+                className='w-full'
+            >
                 {auth?.isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                    <Icons.google className="mr-2 h-4 w-4" />
+                    <Logo className="mr-2 h-4 w-4" />
                 )}{" "}
-                Google
+                {authTitle}
             </Button>
-        </div>
+        )
+    }
+
+
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // verify auth is available
+        if (auth === null) {
+            console.error("Auth not available");
+            return;
+        }
+        console.log('event id', eventId);
+        if (eventId) auth.addEvent(eventId);
+        if (signup) {
+            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
+        } else {
+            auth.loginEmail({ email: values.email, password: values.password })
+        }
+    }
+
+    return (
+        <>
+            <div className="flex flex-col space-y-2 text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
+                </h1>
+                {
+                    !recruitLogin && (
+                        <p className="text-sm text-muted-foreground">
+                            Enter an email and password below to {signup ? "create an account" : "login"}.
+                        </p>
+                    )
+                }
+            </div>
+            <div className='grid gap-2' {...props}>
+
+                {!recruitLogin && (
+                    <>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)}>
+                                <div className="grid gap-1">
+                                    <div className="grid mb-1">
+                                        {signup && (
+                                            <>
+                                                <AuthFormField id="firstName" type="text" placeholder="First Name" autoComplete="given-name" label="First Name" form={form} signup={signup} auth={auth} />
+                                                <AuthFormField id="lastName" type="text" placeholder="Last Name" autoComplete="family-name" label="Last Name" form={form} signup={signup} auth={auth} />
+                                            </>
+                                        )}
+                                        <AuthFormField id="email" type="email" placeholder="Email" autoComplete="email" label="Email" form={form} signup={signup} auth={auth} />
+                                        <AuthFormField id="password" type="password" placeholder="Password" autoComplete="current-password" label="Password" form={form} signup={signup} auth={auth} />
+                                    </div>
+
+                                    <Button disabled={auth?.isLoading}>
+                                        {auth?.isLoading && (
+                                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        )}
+                                        {signup ? 'Sign up' : 'Login'}
+                                    </Button>
+                                    {!signup && (
+                                        <div className="flex flex-col">
+                                            <Button asChild variant={"link"}>
+                                                <Link href="/auth/reset" target="_blank">Forgot password?</Link>
+                                            </Button>
+                                        </div>
+                                    )
+                                    }
+                                </div>
+                            </form>
+                        </Form>
+
+                        {auth!.error && (
+                            <div className={cn("text-sm font-medium text-destructive text-center")}>
+                                {auth!.error}
+                            </div>
+                        )}
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-background px-2 text-muted-foreground">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+
+
+                {recruitLogin ? (
+                    <>
+                        <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
+                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
+                    </>
+                ) : (
+                    <>
+                        <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
+                    </>
+                )}
+
+                {recruitLogin && auth!.error && (
+                    <div className={cn("text-sm font-medium text-destructive text-center")}>
+                        {auth!.error}
+                    </div>
+                )}
+
+                <div className="flex flex-row justify-center items-center">
+                    <span className="text-sm -mr-2">
+                        Not a {recruitLogin ? "recruiter" : "student"}?
+                    </span>
+                    <Button asChild variant={"link"} onClick={() => setRecruitLogin(!recruitLogin)}>
+                        <Link href="#">{signup ? "Sign Up" : "Login"} as a {recruitLogin ? "student" : "recruiter"}</Link>
+                    </Button>
+                </div>
+            </div >
+
+
+        </>
+
+
     )
 }

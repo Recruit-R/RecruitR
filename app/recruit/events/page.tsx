@@ -1,24 +1,40 @@
-'use server'
-import { promises as fs } from "fs";
-import path from "path";
-import { z } from "zod";
-import getData from "../../api/getData";
-import ClientComponent from "@/app/recruit/events/components/client-component";
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
 
-const formSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
-})
+
+import ClientComponent from "@/app/recruit/events/components/client-component";
+import { Suspense } from "react";
+import { getEventData } from "./actions";
+import { parseEvents } from "./utils/parse-events";
+
+async function EventListLoader() {
+    const events = await getEventData();
+    return <ClientComponent eventList={parseEvents(events)} />
+}
+
+async function EventListWithSuspense({
+    events,
+}: {
+    events?: any;
+}) {
+    if (events) {
+        return <ClientComponent eventList={parseEvents(events)} />
+    }
+
+    return (
+        <Suspense fallback={<div>working on it</div>}>
+            <EventListLoader />
+        </Suspense>
+    )
+}
 
 export default async function Page() {
-    // const students = await getStudents()
-    const events = await getData({ collection_name: 'events', schemaName: 'eventSchema' })
-    
 
-    // console.log("BRUH WHAT")
+    const events = await getEventData();
+
+
+
     return (
-        <ClientComponent e={events} />
-
+        <EventListWithSuspense events={events} />
     )
 }

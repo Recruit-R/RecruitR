@@ -27,11 +27,12 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination.tsx"
 import { DataTableToolbar } from "./data-table-toolbar.tsx"
-import { Student } from "@/app/recruit/home/data/student-schema.ts";
+import { Student, StudentList } from "@/app/recruit/home/data/student-schema.ts";
 import { tree } from "next/dist/build/templates/app-page";
-import { useContext } from "react";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/client-component.tsx";
+import {useContext, useEffect, useState} from "react";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import internal from "node:stream";
+import {StudentColumns} from "@/app/recruit/home/components/data-table/student-columns.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -42,6 +43,7 @@ interface DataTableProps<TData, TValue> {
   setPage: React.Dispatch<React.SetStateAction<number>>
 }
 
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -50,14 +52,20 @@ export function DataTable<TData, TValue>({
   c,
   setPage
 }: DataTableProps<TData, TValue>) {
-  const { currentStudent } = useContext(StudentDataContext) as StudentDataContextType
+  const { currentStudent, setStudentList, studentList, setCurrRecrFeedback, setChangedStudent, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {id: "signup_time", desc: true}
+  ])
+  // useEffect(() => {
+  //   console.log("in here")
+  //   table.resetPageIndex()
+  // }, [columnFilters]);
 
   const table = useReactTable({
     data,
@@ -67,27 +75,33 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      // pagination,
     },
+    // initialState: {
+    //   sorting: {
+    //
+    //   }
+    // }
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    // onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    autoResetPageIndex: false
   })
-  const printOutput = (row: Student) => {
-    console.log(row)
-  }
+
   return (
-    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2">
+    <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2 no-scrollbar">
       <DataTableToolbar table={table} c={c} />
 
-      <div className="grow overflow-auto ">
+      <div className="grow overflow-auto no-scrollbar">
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -112,6 +126,7 @@ export function DataTable<TData, TValue>({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
+                    className={`${(row.original as Student)?.id === (currentStudent?.id ?? "") && "bg-muted/50"}`}
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
@@ -119,6 +134,8 @@ export function DataTable<TData, TValue>({
 
                       if (student && student.id !== (currentStudent?.id ?? "")) {
                         setCurrentStudent(row.original as Student);
+                        setChangedStudent(prev => !prev)
+                        setCurrRecrFeedback(currentUserEditId);
                       }
                       setStudentView(true);
                       // table.toggleAllRowsSelected(false)

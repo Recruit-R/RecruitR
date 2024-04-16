@@ -1,10 +1,12 @@
 'use client'
+import Roles from "@/app/types/roles";
+import { useAuth } from "@/components/auth-provider.tsx";
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-} from "@/components/ui/avatar.tsx"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/avatar.tsx";
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,21 +16,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx"
+} from "@/components/ui/dropdown-menu.tsx";
 import Link from "next/link";
-import {useAuth} from "@/components/auth-provider.tsx";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
     const auth = useAuth();
     const router = useRouter();
     const name = auth?.currentUser?.displayName ?? "Recruiter Context"
+    const photoURL = auth?.currentUser?.photoURL ?? ""
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-10 w-10">
-                        <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+                        <AvatarImage src={photoURL} alt="profile" />
                         <AvatarFallback>{name.split(" ")[0][0].toUpperCase()}{name.split(" ")[1][0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </Button>
@@ -37,9 +39,9 @@ export function UserNav() {
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                         <p className={"text-xs font-bold leading-none text-muted-foreground"}>
-                            {auth?.isCoordinator
+                            {auth?.userRole === Roles.COORDINATOR
                                 ? "Coordinator"
-                                : auth?.isRecruiter
+                                : auth?.userRole === Roles.RECRUITER
                                     ? "Recruiter"
                                     : "Unknown Role"
                             }
@@ -52,6 +54,12 @@ export function UserNav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                    <Link href={"/recruit/home"}>
+                        <DropdownMenuItem>
+                            Home
+                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>
                     <Link href={"/recruit/profile"}>
                         <DropdownMenuItem>
                             Profile
@@ -64,13 +72,13 @@ export function UserNav() {
                             <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
-                    {auth?.isCoordinator &&
-                    <Link href={"/recruit/manage-recruiters"}>
-                        <DropdownMenuItem>
-                            Manage Recruiters
-                            <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                    </Link>
+                    {auth?.userRole === Roles.COORDINATOR &&
+                        <Link href={"/recruit/manage-recruiters"}>
+                            <DropdownMenuItem>
+                                Manage Recruiters
+                                <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                        </Link>
                     }
                     {/*<DropdownMenuItem>*/}
                     {/*    Rapid Sign Up*/}

@@ -35,56 +35,56 @@ const years = [
   },
 ]
 
-export function ComboboxYear({form, field} : {form: any, field: any}) {
-  //console.log(form)
+export function ComboboxYear({ form, field }: { form: any, field: any }) {
+  const [open, setOpen] = React.useState(false)
   return (
-    <Popover>
-        <PopoverTrigger asChild>
-                  <FormControl id = 'year'>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value
-                        ? years.find(
-                            (year) => year.value === field.value
-                          )?.label
-                        : "Select language"}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    {/* <CommandInput placeholder="Search language..." /> */}
-                    <CommandEmpty>No language found.</CommandEmpty>
-                    <CommandGroup>
-                      {years.map((year) => (
-                        <CommandItem
-                          value={year.label}
-                          key={year.value}
-                          onSelect={() => {
-                            form.form.setValue('year', year.value)
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              year.value === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {year.label}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <FormControl id='year'>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={cn(
+              "w-[200px] justify-between",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value
+              ? years.find(
+                (year) => year.value === field.value
+              )?.label
+              : "Select year"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandEmpty>No year found.</CommandEmpty>
+          <CommandGroup>
+            {years.map((year) => (
+              <CommandItem
+                value={year.label}
+                key={year.value}
+                onSelect={() => {
+                  form.setValue('year', year.value)
+                  setOpen(false)
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    year.value === field.value
+                      ? "opacity-100"
+                      : "opacity-0"
+                  )}
+                />
+                {year.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }

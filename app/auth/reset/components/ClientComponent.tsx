@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/toaster"
 import * as z from 'zod';
 import { useToast } from "@/components/ui/use-toast";
 
@@ -66,32 +65,32 @@ const Reset = () => {
                                 <div className="grid gap-2">
                                     <div className="grid gap-1">
                                         <FormField
-                                        control={form.control}
-                                        name="email"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="sr-only" htmlFor="email">
-                                                    Email
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                    id="email"
-                                                    placeholder="name@example.com"
-                                                    type="email"
-                                                    autoCapitalize="none"
-                                                    autoComplete="email"
-                                                    autoCorrect="off"
-                                                    {...field}
-                                                    />
-                                                </FormControl>
+                                            control={form.control}
+                                            name="email"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="sr-only" htmlFor="email">
+                                                        Email
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            id="email"
+                                                            placeholder="name@example.com"
+                                                            type="email"
+                                                            autoCapitalize="none"
+                                                            autoComplete="email"
+                                                            autoCorrect="off"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
 
-                                            </FormItem>
-                                        )}>
+                                                </FormItem>
+                                            )}>
                                         </FormField>
                                     </div>
 
-                                    <Button 
-                                        onClick={()=>{
+                                    <Button
+                                        onClick={() => {
                                             toast({
                                                 title: "Email sent!",
                                                 description: "Please check your inbox to reset your password.",
@@ -103,12 +102,12 @@ const Reset = () => {
                                 </div>
                             </form>
                         </Form>
-                        
+
                     </div>
                 </div>
             </div>
         </>
-        
+
     )
 }
 

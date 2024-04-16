@@ -1,5 +1,5 @@
 import { ClassName } from "postcss-selector-parser";
-import { Student } from "@/app/recruit/home/data/student-schema";
+import { Student } from "@/app/recruit/home/data/student-schema.ts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import { BsCloudDownload } from "react-icons/bs";
@@ -30,7 +30,7 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
                             <CardTitle className="text-xl font-medium space-y-0">
                                 {key}
                             </CardTitle>
-                            <CardDescription className="text-md">
+                            <CardDescription className="text-md whitespace-normal">
                                 {fields[key]}
                             </CardDescription>
                         </CardHeader>
@@ -40,12 +40,12 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
         </div>
     )
     const header = (
-        <div className="w-full flex-1">
-            <div className="">
+        <div className="w-full lex-1">
+            <div className=" w-full">
                 {
                     Object.keys(fields).map((key) => (
                         <div key={key}>
-                            <p className=""><span className="font-semibold">{key}:</span> <span className="text-muted-foreground">{fields[key]}</span></p>
+                            <p className="whitespace-normal"><span className="font-semibold">{key}:</span> <span className="text-muted-foreground">{fields[key]}</span></p>
                         </div>
                     ))
                 }
@@ -55,7 +55,7 @@ export function StudentInfo({ func, student, headerView }: StudentInfoProps) {
         </div>
 )
     return (
-        <div className={func("grid flex-1 items-center grid-cols-1 gap-3", "xl:grid-cols-2")}>
+        <div className={func("grid flex-1 items-center grid-cols-1 gap-3 truncate", "")}>
             {student &&
             headerView ?
                 header : body

@@ -1,9 +1,9 @@
 import { AuthProvider } from "@/components/auth-provider.tsx"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
 import { cn } from "@/lib/utils"
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Toaster } from "@/components/ui/toaster"
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: "--font-sans" })
@@ -23,21 +23,21 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true}
         className={`${cn(
-          "bg-background font-sans antialiased h-screen-dynamic md:overflow-y-hidden",
+          "bg-background font-sans antialiased h-screen-dynamic no-scrollbar md:overflow-y-hidden ",
           inter.variable
         )} h-screen-dynamic`}>
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
             {children}
-          </ThemeProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
-    </html>
+    </html >
   )
 }

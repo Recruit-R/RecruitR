@@ -1,54 +1,38 @@
-import ClientComponent from "@/app/recruit/home/components/client-component";
-import { StudentList, studentSchema } from "@/app/recruit/home/data/student-schema";
-import Roles from "@/app/types/roles";
-import { promises as fs } from "fs";
-import path from "path";
-import { z } from "zod";
-import getData from "../../api/getData";
+import { getStudentList } from "@/app/recruit/home/actions.ts";
+import Dashboard from "@/app/recruit/home/components/dashboard.tsx";
+import { StudentList } from "@/app/recruit/home/data/student-schema";
+import { headers } from "next/headers";
+import { Suspense } from "react";
+import DashboardSkeleton from "./components/dashboard-skeleton";
 
 
-
-async function getStudents() {
-    const data = await fs.readFile(
-        path.join(process.cwd(), "app/recruit/home/data/student_data.json")
-    )
-
-    const tasks = JSON.parse(data.toString())
-
-    return z.array(studentSchema).parse(tasks)
+async function StudentListLoader() {
+    const students = await getStudentList();
+    return <Dashboard studentData={students} />
 }
 
-function convert(array: any) {
-    var dict: {[key: string]: any} = {}
-    array.forEach((e: any) => {
-        let id = e.id as string
-        dict[id] = e
-    })
-    return dict;
+async function StudentListWithSuspense({
+    students,
+}: {
+    students?: StudentList;
+}) {
+    if (students) {
+        return <Dashboard studentData={students} />
+    }
+
+    return (
+        <Suspense fallback={<DashboardSkeleton />}>
+            <StudentListLoader />
+        </Suspense>
+    )
 }
 export default async function Page() {
-    // const students = await getStudents()
 
-    const students = await getData({
-        collection_name: 'users', filter: {
-            field: 'role',
-            operator: (a: string, b: string) => a === b,
-            value: Roles.CANDIDATE
-        }
-    })
-
-
-    const zodStudents = z.record(studentSchema).parse(convert(students))
-
-    // console.log(new_students);
-    // const res = await addData("users", "kvXYrrCRZnyrkHpnmHc5", {"feedback": {"Karen": {"initial_feedback": 1}}})
-    // console.log(res)
-
-    // console.log(new_students);
+    let students: StudentList | undefined;
+    if (headers().get("accept")?.includes("text/html")) {
+        students = await getStudentList();
+    }
     return (
-        // <div>
-        //     testing
-        // </div>
-        <ClientComponent students={zodStudents as unknown as StudentList} />
+        <StudentListWithSuspense students={students} />
     )
 }
