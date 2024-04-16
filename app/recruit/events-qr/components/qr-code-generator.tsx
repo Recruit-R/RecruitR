@@ -24,6 +24,7 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
+                        console.log('qr url', baseUrl);
                         QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId);
                     } catch (error) {
                         console.error("Failed to generate QR code:", error);
