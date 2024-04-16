@@ -101,6 +101,8 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
             // Parse the response JSON
             const responseData = await response.json();
 
+            setIsParsing(false);
+
             return responseData;
         } catch (error) {
             setIsParsing(false);
