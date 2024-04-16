@@ -1,12 +1,10 @@
 'use client'
 
-import {StudentInfoCard} from "@/app/candidate/profile/components/studentinfo-card";
-import React, {useState} from "react";
+import { StudentInfoCard } from "@/app/candidate/profile/components/studentinfo-card";
+import { useState } from "react";
 import { EventCard } from "./event-box-comps/event-card";
 
-
-export default function ClientComponent() {
-    const [feedbackFocus, setFeedbackFocus] = useState<boolean>(true)
+export default function ClientComponent({ canData }: { canData: any }) {
     const [editMode, setEditMode] = useState<boolean>(false)
 
     return (
@@ -14,15 +12,16 @@ export default function ClientComponent() {
         <div className="flex flex-col md:flex-row md:h-full p-1">
 
             <div className="md:w-3/4 bg-background overflow-y-auto overscroll-auto md:overflow-y-scroll md:overscroll-contain md:p-1 md:no-scrollbar pb-4">
-            {/* <div>         */}
+                {/* <div>         */}
                 <StudentInfoCard
-                    editMode = {editMode}
-                    setEditMode = {setEditMode}
+                    loadedCanData={canData}
+                    editMode={editMode}
+                    setEditMode={setEditMode}
                 />
             </div>
             <div className={"h-full w-full md:w-1/4 overflow-y-auto overscroll-auto bg-background md:overflow-y-scroll md:overscroll-contain md:p-1"}>
-                <EventCard/>
-            
+                <EventCard eventIds={canData?.events ?? []} />
+
             </div>
 
         </div>
