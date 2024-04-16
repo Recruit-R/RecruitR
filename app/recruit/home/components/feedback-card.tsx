@@ -121,7 +121,6 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
                     <Timeline
                         // events={["Career Fair", "Interview 1", "Interview 2", "Success"]}
-                        editable={false}
                         c={c}
                     />
                     {
