@@ -1,4 +1,6 @@
-'use server'
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+
 
 import ClientComponent from "@/app/recruit/events/components/client-component";
 import { Suspense } from "react";
