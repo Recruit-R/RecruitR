@@ -58,7 +58,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
     })
 
     useEffect(() => {
-        form.reset(canData)
+        form.reset({ ...form.formState.defaultValues, ...canData })
     }, [canData])
 
 
