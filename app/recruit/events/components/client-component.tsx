@@ -25,6 +25,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     const [pastEvents, setSortedPastEvents] = useState<any>([]);
     const [futureEvents, setSortedFutureEvents] = useState<any>([]);
     const [open, setOpen] = useState<boolean>(false);
+   
 
     function refresh() {
         getEventData().then((events) => {
@@ -51,6 +52,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
 
         // Re-run if events change 
     }, [events]);
+
 
     //pass sorted events into two event list cards
     //one card for future events and one card for past events
@@ -80,7 +82,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                     />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-                <div className="mb-6 sm:mb-0">
+                <div className="mb-6 md:mb-0">
                         <EventsListCard
                             title="Future Events"
                             empty_message="No Upcoming Events"
