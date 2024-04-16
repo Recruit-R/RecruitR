@@ -36,7 +36,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
         first_name: z.string(),
         last_name: z.string(),
         //about_me: z.string(),
-        year: z.string().optional(),
+        year: z.string(),
         major: z.string().optional(),
         university: z.string().optional(),
         gpa: z.coerce.number().multipleOf(0.01).optional(),
