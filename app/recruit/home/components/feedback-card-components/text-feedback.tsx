@@ -18,6 +18,7 @@ export function TextFeedback() {
         setSaved,
         currentUserEditId,
         currRecrFeedback,
+        changedStudent,
         editable,
     } = useContext(StudentDataContext) as StudentDataContextType
     const [value, setValue] = useState(
@@ -25,7 +26,7 @@ export function TextFeedback() {
 
     useEffect(() => {
         setValue(currentStudent?.feedback?.[currRecrFeedback]?.text_feedback ?? "")
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
 
     useThrottledRequest({

@@ -4,7 +4,8 @@ const nextConfig = {
         API_URL: process.env.API_URL,
         PARSER_API: process.env.PARSER_API,
         DEV_PARSER_API: process.env.DEV_PARSER_API,
-        DEV_PARSER: process.env.DEV_PARSER
+        DEV_PARSER: process.env.DEV_PARSER,
+        VERCEL_URL: process.env.VERCEL_URL
     }
 }
 

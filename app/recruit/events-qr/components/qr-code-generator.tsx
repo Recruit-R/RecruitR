@@ -22,11 +22,11 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
             const generateQRCode = async () => {
 
                 const canvas = canvasRef.current;
-
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
-                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId, { width: calculateQRCodeSize() });
+                        console.log('qr url', baseUrl);
+                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId);
                     } catch (error) {
                         console.error("Failed to generate QR code:", error);
                     }
@@ -69,6 +69,7 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
     };
 
     return (
+
         <div className="flex justify-center items-center h-full">
             <div className="flex flex-col justify-center items-center h-full">
                 <span className="text-xl font-bold">QR Code for {event?.title}</span>
@@ -81,6 +82,7 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                         </Button>
                     </div>
                     
+
             </div>
         </div>
     );

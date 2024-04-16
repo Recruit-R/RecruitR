@@ -59,8 +59,12 @@ export function EventManagementForm({ event, isCreating, setOpen }: { event?: Ev
     })
 
     function onSubmit(alteredEvent: Event) {
-        addData("events", alteredEvent?.id ? alteredEvent?.id : Date.now().toString(), { ...alteredEvent, date: alteredEvent.date.toISOString() })
+        const eventId = event?.id ?? Date.now().toString();
+        alteredEvent.id = eventId;
+
+        addData("events", eventId, { ...alteredEvent, date: alteredEvent.date.toISOString() })
             .then(() => {
+
                 if (isCreating) {
                     setEvents([...events, alteredEvent])
                 } else {

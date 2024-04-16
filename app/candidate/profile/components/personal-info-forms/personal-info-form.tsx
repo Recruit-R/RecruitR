@@ -3,13 +3,13 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ComboboxYear } from "../combo-box-years"
 
-export function PersonalForm(form: any, {canData}: {canData: any}) {
+export function PersonalForm({form, canData, isParsing}: {form:any, canData: any, isParsing: boolean}) {
 
     return (
 
     <>
-        <FormField control={form.control} name = "year" 
-        render = {({field}) => (
+        <FormField disabled={isParsing} control={form.control} name = "year" 
+            render = {({field}) => (
 
             <>
             <FormItem>
@@ -21,7 +21,7 @@ export function PersonalForm(form: any, {canData}: {canData: any}) {
             
         )}></FormField>
 
-        <FormField control={form.control} name = "major" 
+        <FormField disabled={isParsing} control={form.control} name = "major" 
         render = {({field}) => (
             <>
                 <FormItem>
@@ -37,7 +37,7 @@ export function PersonalForm(form: any, {canData}: {canData: any}) {
             
         )}></FormField>
 
-        <FormField control={form.control} name = "university" 
+        <FormField disabled={isParsing} control={form.control} name = "university" 
         render = {({field}) => (
             <>
                 <FormItem>
@@ -53,7 +53,7 @@ export function PersonalForm(form: any, {canData}: {canData: any}) {
             
         )}></FormField>
 
-        <FormField control={form.control} name = "gpa" 
+        <FormField disabled={isParsing} control={form.control} name = "gpa" 
         render = {({field}) => (
             <>
                 <FormItem>

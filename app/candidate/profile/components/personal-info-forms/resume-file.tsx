@@ -6,9 +6,16 @@ import React, { useState } from "react";
 import { checkEnvironment } from "@/checkEnvironment";
 import { Icons } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
+import { CheckCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { Card } from "@/components/ui/card";
 
-export function ResumeButton({ form, canData }: { form: any, canData: any }) {
+//
+
+export function ResumeButton({ form, canData, setIsParsing}: { form: any, canData: any, setIsParsing: React.Dispatch<React.SetStateAction<boolean>>}) {
     const [upping, setUpp] = useState(false)
+
+    const [parseCheck, setParseCheck] = useState(false)
 
     const storage = getStorage(app);
     const fileRef = React.useRef<HTMLInputElement | null>(null);
@@ -30,12 +37,22 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
                 const downLoadURL = await getDownloadURL(snapshot.ref);
-                updateForm(parsedData);
+                if(parseCheck){
+                    updateForm(parsedData);
+                }
                 form.setValue('resumeURL', downLoadURL);
+                (parseCheck ?
                 toast({
                     title: "Parsed and uploaded resume successfully!",
                     description: "Remember to save!",
                 })
+                :
+                toast({
+                    title: "Uploaded resume successfully!",
+                    description: "Remember to save!",
+                })
+                )
+
                 setUpp(false)
             })
         } else {
@@ -65,7 +82,11 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
 
     // Function to parse the PDF using the Flask API
     async function parseResume(file: File): Promise<any> {
+        if(!parseCheck){
+            return
+        }
         try {
+            setIsParsing(true);
             // Convert the file to a base64 string
             const base64String = await blobToBase64(file);
 
@@ -97,21 +118,33 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             // Parse the response JSON
             const responseData = await response.json();
 
+            setIsParsing(false);
+
             return responseData;
         } catch (error) {
+            setIsParsing(false);
             console.error('Error parsing the resume:', error);
             throw error;
         }
     }
     return (
         <>
-
+        <div className = "flex flex-row gap-3 items-center">
             <Button disabled={upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
                 {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                 <input id="upload" name="upload" type="file" ref={fileRef} hidden
                     onChange={handleChange} />
                 Upload Resume
             </Button>
+            <div className="flex items-center space-x-2 bg-muted p-1 px-2 rounded-sm">
+                <label
+                className="text-sm py-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                    Use Resume Autofill?
+                </label>
+                <Checkbox id = "parseOrNot" checked = {parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)}/>
+            </div>
+        </div>
         </>
     )
 }
