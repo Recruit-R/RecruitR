@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
   c,
   setPage
 }: DataTableProps<TData, TValue>) {
-  const { currentStudent, setStudentList, studentList, setCurrRecrFeedback, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
+  const { currentStudent, setStudentList, studentList, setCurrRecrFeedback, setChangedStudent, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -134,6 +134,8 @@ export function DataTable<TData, TValue>({
 
                       if (student && student.id !== (currentStudent?.id ?? "")) {
                         setCurrentStudent(row.original as Student);
+                        console.log("changed student")
+                        setChangedStudent(prev => !prev)
                         setCurrRecrFeedback(currentUserEditId);
                       }
                       setStudentView(true);

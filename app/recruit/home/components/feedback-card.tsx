@@ -38,7 +38,6 @@ function tern<Type, Type2>(arg: Type, out: Type2): Type | Type2 {
 export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, setCurrentStudent, c} : FeedbackCardProps) {
     const { saved, currRecrFeedback, editable, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
     const auth = useAuth();
-
     return (
         <>
             <Button className="md:hidden" variant="link" onClick={() => {
@@ -71,13 +70,29 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                 </CardDescription>
                             </div>
                         </div>
-
-
                     </div>
-                    <div className={c("flex w-full flex-row gap-2", "xl:hidden")}>
+                    <div className={c("flex flex-row flex-wrap gap-2", "xl:hidden")}>
 
-                        {/*<Button className={"w-full"} asChild disabled>*/}
-                            <Link href={currentStudent?.resumeURL ?? ""} className={cn(
+                        <Link target={"_blank"} href={currentStudent?.resumeURL ?? ""} className={cn(
+                            buttonVariants({ variant: 'default' }),
+                            "w-full",
+                            !currentStudent?.resumeURL && 'pointer-events-none opacity-50',
+                        )}>
+                            {
+                                currentStudent?.resumeURL ?
+                                    "View Resume"
+                                    :
+                                    "No Resume Uploaded"
+                            }
+                        </Link>
+                        <Button variant={"secondary"} className={"w-full"} onClick={e => {
+                            downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
+                        }}>Download Student Info</Button>
+                    </div>
+                    <div className={c("hidden flex-1 ", "xl:flex items-center flex-1 pl-2 ")}>
+                        <StudentInfo func={c} student={currentStudent} headerView={true}/>
+                        <div className={"flex flex-col gap-2"}>
+                            <Link target={"_blank"} href={currentStudent?.resumeURL ?? ""} className={cn(
                                 buttonVariants({ variant: 'default' }),
                                 "w-full",
                                 !currentStudent?.resumeURL && 'pointer-events-none opacity-50',
@@ -89,17 +104,6 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                                         "No Resume Uploaded"
                                 }
                             </Link>
-                        {/*</Button>*/}
-                        <Button variant={"secondary"} className={"w-full"} onClick={e => {
-                            downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
-                        }}>Download Student Info</Button>
-                    </div>
-                    <div className={c("hidden flex-1 ", "xl:flex items-center flex-1 pl-2 ")}>
-                        <StudentInfo func={c} student={currentStudent} headerView={true}/>
-                        <div className={"flex flex-col gap-2"}>
-                            <Button variant={"default"} onClick={e => {
-                                downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
-                            }}>Download Resume</Button>
                             <Button variant={"secondary"} onClick={e => {
                                 downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
                             }}>Download Student Info</Button>

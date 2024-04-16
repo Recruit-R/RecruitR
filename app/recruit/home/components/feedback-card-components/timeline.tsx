@@ -27,6 +27,7 @@ export function Timeline({ c }: TimelineProps) {
         currRecrFeedback,
         setSaved,
         setCurrentStudent,
+        changedStudent,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const year_statuses_mapping: Record<string, string[]> = {
@@ -46,7 +47,7 @@ export function Timeline({ c }: TimelineProps) {
 
     useEffect(() => {
         setCurrStatus(getFeedback)
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
     const throttledRequest =  useThrottle(() => {
         // send request to the backend
