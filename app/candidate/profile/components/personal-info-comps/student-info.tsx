@@ -16,7 +16,7 @@ export function StudentInfo({ canData }: { canData: any }) {
     }
 
     return (
-        <div className="grid flex-1 items-center h-full grid-cols-1 pl-4">
+        <div className="grid flex-1 items-center grid-cols-1 pl-4">
             <div className="grid grid-cols-2 gap-3">
             {
                 Object.keys(fields).map((key) => (

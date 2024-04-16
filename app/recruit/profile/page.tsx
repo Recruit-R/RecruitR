@@ -1,5 +1,5 @@
 //This is the page that displays the coordinator or recruiter profile information
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { getRecruiterData } from "./actions";
 import validateUser from "@/app/api/validateUser";
 import { cookies, headers } from "next/headers";
