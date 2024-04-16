@@ -19,6 +19,7 @@ import { addCandidateData, getCandidateData } from "../actions";
 import { StatusBar } from "./personal-info-comps/status-bar";
 import { HeaderForm } from "./personal-info-forms/header-form";
 import { PersonalForm } from "./personal-info-forms/personal-info-form";
+import { ElementTitle } from "./element-title";
 
 
 interface StudentInfoCardProps {
@@ -37,9 +38,9 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
         last_name: z.string(),
         //about_me: z.string(),
         year: z.string(),
-        major: z.string(),
-        university: z.string(),
-        gpa: z.coerce.number().multipleOf(0.01),
+        major: z.string().optional(),
+        university: z.string().optional(),
+        gpa: z.coerce.number().multipleOf(0.01).optional(),
         resumeURL: z.string().optional(),
 
     })
@@ -92,35 +93,33 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
                                     {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
-                                </AvatarFallback>
-                            </Avatar>
-                            {editMode ? <HeaderForm form={form}></HeaderForm> :
-                                <div>
-                                    {canData ?
-                                        <>
-                                            <CardTitle className="text-4xl">
-                                                {canData.first_name} {canData.last_name}
-                                            </CardTitle>
-                                            <CardDescription className="text-md">
-                                                {canData.major}
-                                            </CardDescription>
-                                        </>
-                                        :
-                                        <>
-                                            <CardTitle className="text-4xl">
-                                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                            </CardTitle>
-                                            <CardDescription className="text-md">
-                                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                            </CardDescription>
-                                        </>
-                                    }
+                                    </AvatarFallback>
+                                </Avatar>
+                                {editMode ? <HeaderForm form={form}></HeaderForm> :
+                                    <div>
+                                        {canData ?
+                                            <>
+                                                <CardTitle className="sm:text-4l md:text-4xl">
+                                                    {canData.first_name} {canData.last_name}
+                                                </CardTitle>
+                                                <CardDescription className="text-md">
+                                                    {canData.major}
+                                                </CardDescription>
+                                            </>
+                                            :
+                                            <>
+                                                <CardTitle className="sm:text-4l md:text-4xl">
+                                                    <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
+                                                </CardTitle>
+                                                
+                                            </>
+                                        }
 
                                 </div>
                             }
                         </div>
 
-                        <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
+                        <div className={`flex flex-row ml-auto pt-3 pl-3 justify-items-center`}>
                             <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                             <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                 variant={"outline"}
@@ -128,45 +127,39 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             >
                                 {editMode ? "Cancel" : "Edit Profile"}
                             </Button>
-
-
                         </div>
 
-                    </CardHeader>
-                    <CardContent className={"flex flex-col flex-wrap xl:grid xl:grid-cols-2 xl:gap-x-4"}>
-                        {/*    Initial feedback */}
-                        <div className="flex flex-col gap-6">
+                        </CardHeader>
+                        <CardContent className={"flex flex-col flex-wrap xl:gap-x-4"}>
+                            {/*    Initial feedback */}
+                            <div className="flex flex-col gap-5 space-y-1">
+                                <ElementTitle title = {"Personal Info"}/>
+                                {editMode ? <PersonalForm form={form} canData={canData}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
+
+
+                                {/* <PossiblePlacement canData={canData} /> */}
+                                <ElementTitle title = {"Intership Process Status"}/>
+                                <StatusBar canData={canData}></StatusBar>
+                                {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
-                                Personal Info
+                                Skills
                             </p>
-                            {editMode ? <PersonalForm form={form} canData={canData}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
+                            {<ShowSkills/>}
+                            
+                        </div> */}       
+                                <ElementTitle title = {"Resume"}/>
+                                    {editMode &&
+                                    <div className={`pt-0.01`}>
+                                        <ResumeButton form={form} canData={canData} />
+                                    </div>}
 
-
-                            <PossiblePlacement canData={canData} />
-                            <StatusBar canData={canData}></StatusBar>
-                            {/* <div className="space-y-1">
-                        <p className="font-bold text-lg">
-                            Skills
-                        </p>
-                        {<ShowSkills/>}
-                        
-                    </div> */}
-                            <div className="space-y-1 ">
-                                <p className="font-bold text-lg col-start-2">
-                                    Resume
-                                </p>
-                            </div>
-                            {editMode &&
-                                <div className={`pt-0.01`}>
-                                    <ResumeButton form={form} canData={canData} />
-                                </div>}
-
-                            {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                            {canData && (canData.resumeURL ? (<div>
-                                <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
-                                    <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
-                                </Button>
-                            </div>) : <span className={`${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
+                                    {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                                    {canData && (canData.resumeURL ? (<div>
+                                    <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
+                                        <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
+                                    </Button>
+                                    </div>) : <span className={`pl-4 ${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
+                                
 
                         </div>
 
