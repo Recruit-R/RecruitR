@@ -13,7 +13,7 @@ interface DocumentFilter {
 
 export default async function getData({ collection_name, document_id, filter }:
     {
-        collection_name: string, document_id?: string, schemaName?: string, filter?: DocumentFilter
+        collection_name: string, document_id?: string, filter?: DocumentFilter
     }) {
     if (document_id !== null && document_id !== undefined) {
 

@@ -1,18 +1,14 @@
 "use client"
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import React, {useEffect} from "react";
-interface EventBoxProps {
-    eventName: string
-    eventDate: string
-    eventTime: string
-}
-export function EventBox({eventName, eventDate, eventTime}: EventBoxProps){
+import { Card, CardContent } from "@/components/ui/card";
+import { parseISO } from "date-fns";
+
+export function EventBox({ event }: { event: { title: string, date: string, id: string } }) {
     return (
-        <Card className="min-h-full w-full">
+        <Card key={event.id} className="min-h-full w-full">
             <CardContent className="flex flex-col flex-wrap w-full pt-4">
-                <p className="font-bold text-lg">{eventName}</p>
-                <p className="text-sm">{eventDate}  {eventTime}</p>
+                <p className="font-bold text-lg">{event.title}</p>
+                <p className="text-sm">{parseISO(event.date).toDateString()}</p>
             </CardContent>
         </Card>
     )
-}
+} 

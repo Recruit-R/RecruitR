@@ -17,6 +17,7 @@ import { BsGithub, BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
+    eventId?: string;
 }
 
 export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form, signup, auth }: { id: any, type: string, placeholder: string, autoComplete: string, label: string, form: any, signup: any, auth: any }) => {
@@ -49,7 +50,7 @@ export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form
     )
 }
 
-export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthFormProps) {
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
@@ -82,7 +83,9 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
                 variant="outline"
                 type="button"
                 disabled={auth?.isLoading}
-                onClick={() => authType()}
+                onClick={() => authType()
+                    .then(() => { if (eventId) auth?.addEvent(eventId) })
+                }
                 className='w-full'
             >
                 {auth?.isLoading ? (
@@ -105,10 +108,11 @@ export function UserAuthForm({ className, signup, ...props }: UserAuthFormProps)
         }
 
         if (signup) {
-            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password });
+            auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
         } else {
-            auth.loginEmail({ email: values.email, password: values.password });
+            auth.loginEmail({ email: values.email, password: values.password })
         }
+        if (eventId) auth.addEvent(eventId);
     }
 
     return (
