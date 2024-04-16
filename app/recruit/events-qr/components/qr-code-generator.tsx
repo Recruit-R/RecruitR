@@ -22,11 +22,11 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
             const generateQRCode = async () => {
 
                 const canvas = canvasRef.current;
-
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
-                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId, { width: calculateQRCodeSize() });
+                        console.log('qr url', baseUrl);
+                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId);
                     } catch (error) {
                         console.error("Failed to generate QR code:", error);
                     }
@@ -69,17 +69,10 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
     };
 
     return (
-        <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col justify-center items-center h-full">
-                <span className="text-xl font-bold">QR Code for {event?.title}</span>
-                <div className="mx-auto mt-4">
-                    <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
-                </div>
-                    <div className="mt-4">
-                        <Button variant="outline" onClick={handlePrintButtonClick}>
-                            Print QR Code
-                        </Button>
-                    </div>
+        <div className="flex justify-center h-full">
+            <div className="flex flex-col justify-center h-full">
+                <span className="text-xl text-center">QR Code for {event?.title}</span>
+                <canvas id="qrcode" ref={canvasRef} className='!h-[50vh] !w-[50vh]'></canvas>
             </div>
         </div>
     );
