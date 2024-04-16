@@ -88,8 +88,13 @@ export async function POST(
             }
         }
 
+        const whiteListDocId = whiteList.docs.find((doc) => doc.data().email === body.email)?.id;
+
         // push user data to firestore and add custom claims data
         addData('users', user!.uid, userData);
+        if (whiteListDocId) {
+            addData('whitelist', whiteListDocId, { joined: true })
+        }
         await auth!.setCustomUserClaims(user!.uid, customClaims);
         return NextResponse.json(customClaims, { status: 201 });
     } catch (error) {
