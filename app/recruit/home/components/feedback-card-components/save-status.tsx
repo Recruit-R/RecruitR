@@ -5,8 +5,9 @@ import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/com
 
 export function SaveStatus() {
     const { saved, currRecrFeedback, editable, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
+    const size = 8;
     return (
-        <div className="absolute bottom-0 right-0 mb-4 mr-7">
+        <div className="absolute top-0 right-0 mt-4 mr-4">
             {
                 !editable() ? (
                             <div className={"p-1 rounded-full  border bg-secondary/75"}>

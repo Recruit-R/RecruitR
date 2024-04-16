@@ -40,7 +40,7 @@ import {Separator} from "@/components/ui/separator.tsx";
 export function ViewOtherRecruiterFeedback() {
     const { currentStudent, setCurrRecrFeedback, currRecrFeedback, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState(currRecrFeedback.toLowerCase())
+    const [value, setValue] = React.useState(currRecrFeedback)
     const recruiter_emails = Object.keys(currentStudent?.feedback ?? {})
 
     const recruiters = recruiter_emails.filter(e => e !== currentUserEditId).map(e => {
@@ -57,9 +57,14 @@ export function ViewOtherRecruiterFeedback() {
             // setTempCurrentUser(value.charAt(0).toUpperCase() + value.slice(1))
         } else if (value === "") {
             setCurrRecrFeedback(currentUserEditId)
+        } else {
+            setCurrRecrFeedback(currentUserEditId)
         }
 
     }, [value])
+    useEffect(() => {
+        setValue("")
+    }, [currentStudent]);
     return (
         <div className="flex">
             <Popover open={open} onOpenChange={setOpen}>
