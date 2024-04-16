@@ -30,6 +30,7 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     const [canData, setCanData] = useState<any>(loadedCanData);
+    const [isParsing, setIsParsing] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
         first_name: z.string(),
