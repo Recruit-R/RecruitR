@@ -32,6 +32,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     const [canData, setCanData] = useState<any>(loadedCanData);
     const [isParsing, setIsParsing] = useState<boolean>(false);
+    console.log(isParsing);
     const auth = useAuth();
     const formSchema = z.object({
         first_name: z.string(),
@@ -134,7 +135,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             {/*    Initial feedback */}
                             <div className="flex flex-col gap-5 space-y-1">
                                 <ElementTitle title = {"Personal Info"}/>
-                                {editMode ? <PersonalForm form={form} canData={canData}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
+                                {editMode ? <PersonalForm form={form} canData={canData} isParsing = {isParsing}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
 
 
                                 {/* <PossiblePlacement canData={canData} /> */}

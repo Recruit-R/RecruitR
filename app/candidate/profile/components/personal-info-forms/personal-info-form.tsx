@@ -3,13 +3,13 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ComboboxYear } from "../combo-box-years"
 
-export function PersonalForm(form: any, {canData, isParsing}: {canData: any, isParsing: boolean}) {
+export function PersonalForm({form, canData, isParsing}: {form:any, canData: any, isParsing: boolean}) {
 
     return (
 
     <>
         <FormField disabled={isParsing} control={form.control} name = "year" 
-        render = {({field}) => (
+            render = {({field}) => (
 
             <>
             <FormItem>

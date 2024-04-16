@@ -3,7 +3,7 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from "@/components/ui/input";
 
-export function HeaderForm(form: any, {isParsing}: {isParsing: boolean}) {
+export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
     
 
     return (

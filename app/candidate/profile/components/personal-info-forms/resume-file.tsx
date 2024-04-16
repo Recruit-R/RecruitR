@@ -68,7 +68,6 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
     // Function to parse the PDF using the Flask API
     async function parseResume(file: File): Promise<any> {
         try {
-
             setIsParsing(true);
             // Convert the file to a base64 string
             const base64String = await blobToBase64(file);
