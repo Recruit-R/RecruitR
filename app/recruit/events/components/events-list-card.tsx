@@ -32,7 +32,7 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
                 <Button variant="destructive" onClick={() => {
                     deleteData('events', event?.id ?? '')
                         .then((e) => {
-                            console.log('deleted event', e, event)
+                            console.log('tried to delete event', event);
                             setEvents(events.filter((e: Event) => e.id !== event.id))
                         })
                         .then(() => {
