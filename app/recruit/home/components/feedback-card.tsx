@@ -4,7 +4,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {StudentInfo} from "@/app/recruit/home/components/data-table/student-info.tsx";
 import {ChevronLeft, RefreshCcw} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import React, {useContext, useEffect} from "react";
 import {Student} from "@/app/recruit/home/data/student-schema";
 import {KnownTechFeedback} from "@/app/recruit/home/components/feedback-card-components/known-tech-feedback.tsx";
@@ -18,10 +18,11 @@ import {
 import {useAuth} from "@/components/auth-provider.tsx";
 import Roles from "@/app/types/roles.ts";
 import {DeleteStudent} from "@/app/recruit/home/components/feedback-card-components/delete-student.tsx";
-import {downloadxls} from "@/lib/utils.ts";
+import {cn, downloadxls} from "@/lib/utils.ts";
 import {
     PossiblePlacementMultiselect
 } from "@/app/recruit/home/components/feedback-card-components/possible-placement-multiselect.tsx";
+import Link from "next/link";
 
 interface FeedbackCardProps {
     feedbackFocus: boolean,
@@ -74,9 +75,21 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
 
                     </div>
                     <div className={c("flex w-full flex-row gap-2", "xl:hidden")}>
-                        <Button variant={"default"} className={"w-full"} onClick={e => {
-                            downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
-                        }}>Download Resume</Button>
+
+                        {/*<Button className={"w-full"} asChild disabled>*/}
+                            <Link href={currentStudent?.resumeURL ?? ""} className={cn(
+                                buttonVariants({ variant: 'default' }),
+                                "w-full",
+                                !currentStudent?.resumeURL && 'pointer-events-none opacity-50',
+                            )}>
+                                {
+                                    currentStudent?.resumeURL ?
+                                        "View Resume"
+                                        :
+                                        "No Resume Uploaded"
+                                }
+                            </Link>
+                        {/*</Button>*/}
                         <Button variant={"secondary"} className={"w-full"} onClick={e => {
                             downloadxls(e, [currentStudent] ?? [{data: "No Data"}])
                         }}>Download Student Info</Button>
