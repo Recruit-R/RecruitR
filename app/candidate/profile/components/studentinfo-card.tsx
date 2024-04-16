@@ -31,6 +31,8 @@ interface StudentInfoCardProps {
 export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: StudentInfoCardProps) {
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     const [canData, setCanData] = useState<any>(loadedCanData);
+    const [isParsing, setIsParsing] = useState<boolean>(false);
+    console.log(isParsing);
     const auth = useAuth();
     const formSchema = z.object({
         first_name: z.string(),
@@ -94,7 +96,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
                                     </AvatarFallback>
                                 </Avatar>
-                                {editMode ? <HeaderForm form={form}></HeaderForm> :
+                                {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
                                     <div>
                                         {canData ?
                                             <>
@@ -133,7 +135,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             {/*    Initial feedback */}
                             <div className="flex flex-col gap-5 space-y-1">
                                 <ElementTitle title = {"Personal Info"}/>
-                                {editMode ? <PersonalForm form={form} canData={canData}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
+                                {editMode ? <PersonalForm form={form} canData={canData} isParsing = {isParsing}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
 
 
                                 {/* <PossiblePlacement canData={canData} /> */}
@@ -149,7 +151,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                 <ElementTitle title = {"Resume"}/>
                                     {editMode &&
                                     <div className={`pt-0.01`}>
-                                        <ResumeButton form={form} canData={canData} />
+                                        <ResumeButton form={form} canData={canData} setIsParsing={setIsParsing}/>
                                     </div>}
 
                                     {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
