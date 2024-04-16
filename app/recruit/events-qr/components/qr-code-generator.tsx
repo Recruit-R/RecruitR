@@ -6,6 +6,7 @@ import { checkEnvironment } from "@/checkEnvironment";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+
 export function QRCodeGenerator({ eventId }: { eventId: string }) {
 
 
@@ -40,20 +41,17 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
 
     const handlePrintButtonClick = () => {
         const canvas = canvasRef.current;
-        if (canvas) {
+        if (canvas && canvas.toDataURL()) {
             const url = canvas.toDataURL(); // Convert canvas to image data URL
-            const windowContent = '<!DOCTYPE html><html><head><title>Print QR Code</title></head><body><img src="' + url + '" /></body></html>';
+            const windowContent = '<!DOCTYPE html><html><head><title>Print QR Code</title></head><body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;"><img src="' + url + '" /></body></html>';
             const printWindow = window.open('', '_blank');
             if (printWindow) {
                 printWindow.document.open();
                 printWindow.document.write(windowContent);
                 printWindow.document.close();
-                printWindow.print();
-
-            // wait before opening print window so that qr code is there
-            setTimeout(() => {
-                printWindow.print();
-            }, 100);
+                printWindow.onload = () => {
+                    printWindow.print();
+                };
 
             } else {
                 console.error("Failed to open print window.");
@@ -71,8 +69,8 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
     };
 
     return (
-        <div className="flex justify-center h-full">
-            <div className="flex flex-col justify-center h-full">
+        <div className="flex justify-center items-center h-full">
+            <div className="flex flex-col justify-center items-center h-full">
                 <span className="text-xl font-bold">QR Code for {event?.title}</span>
                 <div className="mx-auto mt-4">
                     <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
