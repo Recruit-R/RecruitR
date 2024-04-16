@@ -17,6 +17,9 @@ export function getAuthToken(): string | undefined {
 }
 
 export function setAuthToken(token: string): string | undefined {
+    if (Cookies.get('firebaseIdToken')) {
+        Cookies.remove('firebaseIdToken');
+    }
     const maxAge = 604800;
     // const secure = process.env.NEXT_PUBLIC_APP_ENV !== "emulator";
     return Cookies.set("firebaseIdToken", token, { secure: false, expires: maxAge });
@@ -84,11 +87,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
             if (user) {
                 const token = await user.getIdToken(true).then((token) => {
-                    // set auth token
-                    setAuthToken(token);
                     return token;
                 });
-                setCurrentUser(user);
 
                 // Check user role
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
@@ -132,21 +132,31 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 // check user role and update states
                 if (userResponse.ok) {
                     const userJson = await userResponse.json().then((json) => {
-                        setIsLoading(false);
                         return json;
                     });
                     await user.getIdToken(true).then((token) => {
                         // set auth token
                         setAuthToken(token);
                     });
+                    if (userEventsRef.current.length > 0) {
+                        getData({ collection_name: 'users', document_id: user.uid as string }).then((data) => {
+                            let newList = userEventsRef.current;
+                            if (data && data.events !== undefined) {
+                                const userEvents = data.events as string[];
+                                newList = [...userEventsRef.current, ...userEvents];
+                            }
+                            addData('users', user.uid as string, { events: Array.from(new Set(newList)) });
+
+                        });
+                    }
+                    setCurrentUser(user);
                     setUserRole(userJson.role as Roles);
 
                 } else {
                     console.error("Could not get user info, returned error code:", userResponse);
                     removeAuthToken();
-                    setIsLoading(false);
+                    parseAuthError({ code: 'auth/internal-error', message: 'Could not get user info' } as AuthError);
                 }
-
             }
         });
     }, []);
@@ -163,25 +173,24 @@ export const AuthProvider = ({ children }: { children: any }) => {
             }
         } else {
             if (pathname === '/auth/refresh') {
-                console.log('not actually refreshing from useeffect', userRole)
-                // router.back();
+                router.push('/auth/login');
             }
         }
     }, [userRole, router]);
 
-    useEffect(() => {
-        if (currentUser !== null && userEventsRef.current.length > 0) {
-            getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
-                let newList = userEventsRef.current;
-                if (data && data.events !== undefined) {
-                    const userEvents = data.events as string[];
-                    newList = [...userEventsRef.current, ...userEvents];
-                }
-                addData('users', currentUser?.uid as string, { events: Array.from(new Set(newList)) });
+    // useEffect(() => {
+    //     if (currentUser !== null && userEventsRef.current.length > 0) {
+    //         getData({ collection_name: 'users', document_id: currentUser?.uid as string }).then((data) => {
+    //             let newList = userEventsRef.current;
+    //             if (data && data.events !== undefined) {
+    //                 const userEvents = data.events as string[];
+    //                 newList = [...userEventsRef.current, ...userEvents];
+    //             }
+    //             addData('users', currentUser?.uid as string, { events: Array.from(new Set(newList)) });
 
-            });
-        }
-    }, [userEventsRef.current, currentUser])
+    //         });
+    //     }
+    // }, [userEventsRef.current, currentUser])
 
 
     function addEvent(eventId: string) {
@@ -236,6 +245,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function parseAuthError(authError: AuthError) {
+        setIsLoading(false);
         if (authError.code === 'auth/email-already-in-use') {
             setError(<SignupFailure />);
         } else if (['auth/user-not-found', 'auth/wrong-password', 'auth/invalid-credential'].includes(authError.code)) {
@@ -289,7 +299,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         })
     }
@@ -306,7 +315,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         })
     }
@@ -321,11 +329,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new GoogleAuthProvider())
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }
@@ -340,11 +346,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new OAuthProvider('microsoft.com'))
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }
@@ -359,12 +363,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
             signInWithPopup(auth, new OAuthProvider('github.com'))
                 .then(() => {
                     resolve();
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     console.error("signing in with github failed", error);
                     parseAuthError(error);
-                    setIsLoading(false);
                 });
         });
     }
@@ -375,9 +377,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
+            removeAuthToken();
             auth.signOut()
                 .then(() => {
-                    removeAuthToken();
                     resolve();
                 })
                 .catch((error) => {

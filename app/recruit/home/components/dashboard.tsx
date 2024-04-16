@@ -15,9 +15,9 @@ import { app } from "@/firebase/client";
 import { cn } from "@/lib/utils";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import React, {createContext, Suspense, useEffect, useState} from "react";
+import React, { createContext, useEffect, useState } from "react";
 // import {useAuth} from "@/components/auth-provider.tsx";
-import {SaveStatus} from "@/app/recruit/home/components/feedback-card-components/save-status.tsx";
+import { SaveStatus } from "@/app/recruit/home/components/feedback-card-components/save-status.tsx";
 // import React, { createContext, useEffect, useState } from "react";
 import { z } from "zod";
 
@@ -61,6 +61,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                 setCurrentUserEditId(email)
                 setCurrRecrFeedback(email)
             }
+            auth.setIsLoading(false)
         }
     }, [auth])
 
