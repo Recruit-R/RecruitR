@@ -118,7 +118,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             }
                         </div>
 
-                        <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
+                        <div className={`flex flex-row ml-auto pt-3 pl-3 justify-items-center`}>
                             <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                             <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                 variant={"outline"}
