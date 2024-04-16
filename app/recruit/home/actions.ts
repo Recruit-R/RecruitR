@@ -14,6 +14,10 @@ export async function addFeedback(student_id: string, value: string, recruiter_i
     let obj = JSON.parse(value);
     return addData("users", student_id, { "feedback": { [recruiter_id]: obj } })
 }
+export async function updateStatus(student_id: string, value: string) {
+    let obj = JSON.parse(value);
+    return addData("users", student_id, {"curr_status": obj})
+}
 export async function updateAvgRating(studentId: string, value: string) {
     const avgRating = JSON.parse(value);
     if (avgRating != 0) {
