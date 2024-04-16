@@ -409,7 +409,11 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 logout,
             }}
         >
-            {auth?.currentUser ? children : <Loading />}
+            {pathname.startsWith('/auth/') ? children : (
+                <>
+                    {auth?.currentUser ? children : <Loading />}
+                </>
+            )}
         </AuthContext.Provider>
     );
 };
