@@ -62,10 +62,11 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([
     {id: "signup_time", desc: true}
   ])
-  // const [pagination, setPagination] = useState({
-  //   pageIndex: 3, // initial page index
-  //   pageSize: 10, // default page size
-  // });
+  // useEffect(() => {
+  //   console.log("in here")
+  //   table.resetPageIndex()
+  // }, [columnFilters]);
+
   const table = useReactTable({
     data,
     columns,
@@ -95,19 +96,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     autoResetPageIndex: false
   })
-  // useEffect(() => {
-  //   console.log("changed student list from data table")
-  //   table.setPageIndex(2)
-  //   // setPagination({pageIndex: 3, pageSize: pagination.pageSize})
-  // }, [currentStudent]);
-  // useEffect(() => {
-  //     if (currentStudent) {
-  //         const selectedRow = table.getRowModel().rows.find(row => (row.original as Student)?.id === currentStudent.id);
-  //         if (selectedRow) {
-  //             selectedRow.toggleSelected(true);
-  //         }
-  //     }
-  // }, [currentStudent]);
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2 no-scrollbar">
