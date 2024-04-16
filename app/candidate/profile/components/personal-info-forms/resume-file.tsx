@@ -7,7 +7,9 @@ import { checkEnvironment } from "@/checkEnvironment";
 import { Icons } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
 
-export function ResumeButton({ form, canData }: { form: any, canData: any }) {
+//
+
+export function ResumeButton({ form, canData, setIsParsing}: { form: any, canData: any, setIsParsing: React.Dispatch<React.SetStateAction<boolean>>}) {
     const [upping, setUpp] = useState(false)
 
     const storage = getStorage(app);
@@ -66,6 +68,7 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
     // Function to parse the PDF using the Flask API
     async function parseResume(file: File): Promise<any> {
         try {
+            setIsParsing(true);
             // Convert the file to a base64 string
             const base64String = await blobToBase64(file);
 
@@ -97,8 +100,11 @@ export function ResumeButton({ form, canData }: { form: any, canData: any }) {
             // Parse the response JSON
             const responseData = await response.json();
 
+            setIsParsing(false);
+
             return responseData;
         } catch (error) {
+            setIsParsing(false);
             console.error('Error parsing the resume:', error);
             throw error;
         }
