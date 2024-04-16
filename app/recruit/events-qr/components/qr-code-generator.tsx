@@ -5,6 +5,7 @@ import { Event } from "@/app/types/event";
 import { checkEnvironment } from "@/checkEnvironment";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 export function QRCodeGenerator({ eventId }: { eventId: string }) {
 
 
@@ -24,7 +25,7 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
-                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId);
+                        QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId, { width: calculateQRCodeSize() });
                     } catch (error) {
                         console.error("Failed to generate QR code:", error);
                     }
@@ -37,13 +38,50 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
         })
     }, []);
 
+    const handlePrintButtonClick = () => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const url = canvas.toDataURL(); // Convert canvas to image data URL
+            const windowContent = '<!DOCTYPE html><html><head><title>Print QR Code</title></head><body><img src="' + url + '" /></body></html>';
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.open();
+                printWindow.document.write(windowContent);
+                printWindow.document.close();
+                printWindow.print();
+
+            // wait before opening print window so that qr code is there
+            setTimeout(() => {
+                printWindow.print();
+            }, 100);
+
+            } else {
+                console.error("Failed to open print window.");
+            }
+        } else {
+            console.error("Canvas element not found.");
+        }
+         
+    };
+
+    const calculateQRCodeSize = () => {
+        // Calculate the size based on the screen width
+        const screenWidth = window.innerWidth;
+        return Math.min(screenWidth * 0.8, 400); 
+    };
+
     return (
         <div className="flex justify-center h-full">
             <div className="flex flex-col justify-center h-full">
-                <span className="text-xl">QR Code for {event?.title}</span>
+                <span className="text-xl font-bold">QR Code for {event?.title}</span>
                 <div className="mx-auto mt-4">
                     <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
                 </div>
+                    <div className="mt-4">
+                        <Button variant="outline" onClick={handlePrintButtonClick}>
+                            Print QR Code
+                        </Button>
+                    </div>
             </div>
         </div>
     );
