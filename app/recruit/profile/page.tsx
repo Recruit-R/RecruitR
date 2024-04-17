@@ -1,26 +1,31 @@
 //This is the page that displays the coordinator or recruiter profile information
-import React, { Suspense } from "react";
-import { getRecruiterData } from "./actions";
 import validateUser from "@/app/api/validateUser";
 import { cookies, headers } from "next/headers";
+import { Suspense } from "react";
+import { getRecruiterData } from "./actions";
 import ClientComponent from "./client-component";
+import ProfileSkeleton from "./profile-skeleton";
 
 async function getUser() {
     const authToken = cookies().get('firebaseIdToken')!.value;
     return validateUser(authToken);
 }
 
-async function UserProfileLoading({
-    useData,
-}: {
-    useData?: any;
-}) {
+async function UserProfileLoader() {
+    const userAuth = await getUser();
+    const recruiterData = await getRecruiterData(userAuth.uid);
+    return <ClientComponent useData={recruiterData} />
+}
+
+
+async function UserProfileLoading({ useData }: { useData?: any; }) {
     if (useData) {
         return <ClientComponent useData={useData} />
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<ProfileSkeleton />}>
+            <UserProfileLoader />
         </Suspense>
     )
 }
@@ -33,6 +38,6 @@ export default async function Page() {
     }
 
     return (
-        <UserProfileLoading useData = {useData}/>
+        <UserProfileLoading useData={useData} />
     )
 }
