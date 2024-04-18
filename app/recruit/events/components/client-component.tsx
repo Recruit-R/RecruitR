@@ -25,6 +25,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     const [pastEvents, setSortedPastEvents] = useState<any>([]);
     const [futureEvents, setSortedFutureEvents] = useState<any>([]);
     const [open, setOpen] = useState<boolean>(false);
+   
 
     function refresh() {
         getEventData().then((events) => {
@@ -52,6 +53,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
         // Re-run if events change 
     }, [events]);
 
+
     //pass sorted events into two event list cards
     //one card for future events and one card for past events
     return (
@@ -60,8 +62,8 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                 events,
                 refresh,
                 setEvents
-            }} >
-            <div className="flex flex-col gap-4 p-4 h-4/5">
+            }} >          
+            <div className="flex flex-col gap-4 p-4 h-full overflow-y-auto">
                 <div className="">
                     <PopupDialog
                         popupButton={
@@ -79,16 +81,8 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         setOpen={setOpen}
                     />
                 </div>
-                <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2 h-full">
-                    <div className="">
-                        <EventsListCard
-                            title="Past Events"
-                            empty_message="No Previous Events"
-                            partialEvents={pastEvents}
-                        />
-
-                    </div>
-                    <div className="">
+                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+                <div className="mb-6 md:mb-0">
                         <EventsListCard
                             title="Future Events"
                             empty_message="No Upcoming Events"
@@ -96,6 +90,15 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         />
 
                     </div>
+                    <div className="gap-4 ">
+                        <EventsListCard
+                            title="Past Events"
+                            empty_message="No Previous Events"
+                            partialEvents={pastEvents}
+                        />
+
+                    </div>
+                    
                 </div>
             </div>
         </EventDataContext.Provider>

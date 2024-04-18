@@ -1,98 +1,38 @@
-'use client'
-
 //This is the page that displays the coordinator or recruiter profile information
+import React, { Suspense } from "react";
+import { getRecruiterData } from "./actions";
+import validateUser from "@/app/api/validateUser";
+import { cookies, headers } from "next/headers";
+import ClientComponent from "./client-component";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { BsPerson } from "react-icons/bs";
-import { CiMail } from "react-icons/ci";
-import React from "react";
-import { useAuth } from "@/components/auth-provider";
-import { RiCheckboxCircleLine } from "react-icons/ri";
-import { MdOutlineCancel } from "react-icons/md";
-import Roles from "@/app/types/roles";
+async function getUser() {
+    const authToken = cookies().get('firebaseIdToken')!.value;
+    return validateUser(authToken);
+}
 
-
-export default function Page() {
-
-    const auth = useAuth();
-
-
-    let itemList;
-    //if logged in as a coordinator display this list of permissions
-    if (auth?.userRole === Roles.COORDINATOR) {
-        itemList = (
-            <>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5 text-md text-md" />
-                    <span className={"text-md text-md"}>Add Recruiters</span>
-                </div>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5" />
-                    <span>Change Student Feedback</span>
-                </div>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5" />
-                    <span>Change Student Status</span>
-                </div>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5" />
-                    <span>Create/Manage Events</span>
-                </div>
-            </>
-        );
-        //if logged in as a recruiter display this list of permissions
-    } else {
-        itemList = (
-            <>
-                <div className="flex items-center">
-                    <MdOutlineCancel className="mr-2 h-5 w-5 text-md text-md" />
-                    <span className={"text-md text-md"}>Add Recruiters</span>
-                </div>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5" />
-                    <span>Change Student Feedback</span>
-                </div>
-                <div className="flex items-center">
-                    <MdOutlineCancel className="mr-2 h-5 w-5" />
-                    <span>Change Student Status</span>
-                </div>
-                <div className="flex items-center">
-                    <RiCheckboxCircleLine className="mr-2 h-5 w-5" />
-                    <span>Create/Manage Events</span>
-                </div>
-            </>
-        );
+async function UserProfileLoading({
+    useData,
+}: {
+    useData?: any;
+}) {
+    if (useData) {
+        return <ClientComponent useData={useData} />
     }
 
     return (
-        <div className="h-full p-3">
-            <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden border-2">
-                <CardHeader className={"flex flex-row items-end h-40 p-0 bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90% bg-clip-border"}>
-                    <div className={"text-5xl font-bold px-6 py-2 text-white"}>
-                        {auth?.currentUser?.displayName}
-                    </div>
-                </CardHeader>
-                <CardContent className="pt-2 gap-2">
-                    <div className="flex flex-col gap-2">
-                        <Alert className="">
-                            <BsPerson className="h-7 w-5" />
-                            <AlertTitle className={"text-xl font-md"}>Role:
-                                <span className={"font-bold"}> {auth?.userRole}</span></AlertTitle>
-                            <AlertDescription>
-                                <ul className="list-disc">
-                                    {itemList}
-                                </ul>
-                            </AlertDescription>
-                        </Alert>
-                        <Alert className="">
-                            <CiMail className="h-7 w-5" />
-                            <AlertTitle className={"text-xl font-md"}>Email: <span
-                                className={"text-md font-light"}>{auth?.currentUser?.email}</span></AlertTitle>
-                        </Alert>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+        </Suspense>
+    )
+}
+
+export default async function Page() {
+    let useData: any | undefined;
+    if (headers().get("accept")?.includes("text/html")) {
+        const userAuth = await getUser();
+        useData = await getRecruiterData(userAuth.uid);
+    }
+
+    return (
+        <UserProfileLoading useData = {useData}/>
     )
 }

@@ -3,16 +3,15 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from "@/components/ui/input";
 
-export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
+export function NameChForm(form: any, { className }: React.ComponentProps<"form">) {
     
 
     return (
         // <Form {...form}>
         // <form className={cn("grid items-start gap-4", className)} onSubmit={form.handleSubmit(onSubmit)}>
-        <>
-        <FormField disabled= {isParsing} control={form.control} name = "first_name" 
+        <div className='pl-3 pb-3 flex flex-row gap-3'>
+        <FormField control={form.control} name = "first_name" 
         render = {({field}) => (
-
             <>
             <FormItem>
                 <FormLabel>First Name</FormLabel>
@@ -24,10 +23,9 @@ export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
                 </FormControl>
             </FormItem>
             </>
-            
         )}></FormField>
         
-        <FormField disabled={isParsing} control={form.control} name = "last_name" 
+        <FormField control={form.control} name = "last_name" 
         render = {({field}) => (
             <>
             <FormItem>
@@ -42,7 +40,7 @@ export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
             </>
             
         )}></FormField>
-        </>
+        </div>
 
    )
 }

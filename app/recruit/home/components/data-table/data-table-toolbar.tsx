@@ -36,6 +36,7 @@ export function DataTableToolbar<TData>({
               }
   )
   const isFiltered = table.getState().columnFilters.length > 0
+
   return (
       <div className={"flex flex-col space-y-2"}>
         <div className="flex items-center justify-between w-full">
@@ -97,6 +98,7 @@ export function DataTableToolbar<TData>({
                   <DataTableFacetedFilter
                       column={table.getColumn("year")}
                       title="Year"
+                      table={table}
                       options={years}
                   />
               )}
@@ -104,6 +106,7 @@ export function DataTableToolbar<TData>({
                   <DataTableFacetedFilter
                       column={table.getColumn("university")}
                       title="University"
+                      table={table}
                       options={universitiesCommandObject}
                   />
               )}

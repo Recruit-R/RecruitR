@@ -1,11 +1,32 @@
-'use server'
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+
 
 import ClientComponent from "@/app/recruit/events/components/client-component";
-import { eventSchema } from "@/app/recruit/events/data/events-schema.ts";
-import { z } from "zod";
+import { Suspense } from "react";
 import { getEventData } from "./actions";
-import { parseISO } from "date-fns";
 import { parseEvents } from "./utils/parse-events";
+
+async function EventListLoader() {
+    const events = await getEventData();
+    return <ClientComponent eventList={parseEvents(events)} />
+}
+
+async function EventListWithSuspense({
+    events,
+}: {
+    events?: any;
+}) {
+    if (events) {
+        return <ClientComponent eventList={parseEvents(events)} />
+    }
+
+    return (
+        <Suspense fallback={<div>working on it</div>}>
+            <EventListLoader />
+        </Suspense>
+    )
+}
 
 export default async function Page() {
 
@@ -14,6 +35,6 @@ export default async function Page() {
 
 
     return (
-        <ClientComponent eventList={parseEvents(events)} />
+        <EventListWithSuspense events={events} />
     )
 }

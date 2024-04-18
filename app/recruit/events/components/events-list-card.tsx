@@ -32,7 +32,6 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
                 <Button variant="destructive" onClick={() => {
                     deleteData('events', event?.id ?? '')
                         .then((e) => {
-                            console.log('deleted event', e, event)
                             setEvents(events.filter((e: Event) => e.id !== event.id))
                         })
                         .then(() => {
@@ -89,10 +88,10 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
 
     return (
         <div className="h-full">
-            <div className="text-lg font-bold pb-1">{title}</div>
+            <div className={`${title === "Past Events" ? " text-lg text-gray-500" : "text-lg font-bold "} pb-1`}>{title}</div>
             <Card className="h-full">
                 <div className="md:py-2"></div>
-                <CardContent className="divide-y p-2 md:p-6">
+                <CardContent className="divide-y p-2 md:p-2">
                     {
                         partialEvents.length ?
                             partialEvents.map((event: Event, i: number) => {

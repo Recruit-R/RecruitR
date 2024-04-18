@@ -16,8 +16,8 @@ import { CheckedState } from "@radix-ui/react-checkbox";
 import { ElementTitle } from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
 import { useThrottledRequest } from "@/hooks/useThrottledRequest.ts";
 
-export function KnownTechFeedback() {
-    const languages: Array<string> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]
+export function PossiblePlacementMultiselect() {
+    const possiblePlacementValues: Array<string> = ["Data Analyst", "Business Analyst", "Cyber Security", "Software Development", "Project Management", "Digital"]
     const { currentStudent,
         setCurrentStudent,
         studentList, saved,
@@ -27,43 +27,43 @@ export function KnownTechFeedback() {
         changedStudent,
         editable
     } = useContext(StudentDataContext) as StudentDataContextType
-    const [knownLanguages, setKnownLanguages] = useState(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
+    const [possiblePlacements, setPossiblePlacements] = useState(currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? []);
 
     useEffect(() => {
-        setKnownLanguages(currentStudent?.feedback?.[currRecrFeedback]?.known_tech ?? []);
+        setPossiblePlacements(currentStudent?.feedback?.[currRecrFeedback]?.possible_placement ?? []);
     }, [changedStudent, currRecrFeedback]);
 
     useThrottledRequest({
         studentContext: (useContext(StudentDataContext) as StudentDataContextType),
-        dbData: { "known_tech": knownLanguages },
-        localData: { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "known_tech": knownLanguages },
-        dependency: knownLanguages
+        dbData: { "possible_placement": possiblePlacements },
+        localData: { ...(currentStudent?.feedback?.[currentUserEditId] ?? {}), "possible_placement": possiblePlacements },
+        dependency: possiblePlacements
     })
-    const handleCheckedChange = (event: CheckedState, language: string) => {
-        setKnownLanguages(
-            (prevLanguages) =>
+    const handleCheckedChange = (event: CheckedState, placement: string) => {
+        setPossiblePlacements(
+            (prevPlacements) =>
                 event
-                    ? [...prevLanguages, language]
-                    : prevLanguages.filter((lang) => lang !== language));
+                    ? [...prevPlacements, placement]
+                    : prevPlacements.filter((lang) => lang !== placement));
     }
     return (
         <div className="space-y-1 max-md:pb-4">
-            <ElementTitle title={"Known Tech"} />
-            <div className="flex flex-wrap gap-2">
+            <ElementTitle title={"Possible Placement"} />
+            <div className="flex flex-row flex-col gap-1">
                 {
-                    languages.map((language) => (
-                        <div className="flex items-center space-x-2 bg-muted pl-2 rounded-full" key={language}>
+                    possiblePlacementValues.map((placement) => (
+                        <div className="flex items-center w-full space-x-2 bg-muted py-1 pl-2 rounded-sm" key={placement}>
                             <Checkbox
-                                id={language}
-                                checked={knownLanguages.includes(language)}
-                                onCheckedChange={checked => handleCheckedChange(checked, language)}
+                                id={placement}
+                                checked={possiblePlacements.includes(placement)}
+                                onCheckedChange={checked => handleCheckedChange(checked, placement)}
                                 disabled={!editable()}
                             />
                             <label
-                                htmlFor={language}
+                                htmlFor={placement}
                                 className="text-sm py-2 pr-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
-                                {language}
+                                {placement}
                             </label>
                         </div>
                     ))

@@ -13,16 +13,22 @@ import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
 import Roles from "@/app/types/roles";
 import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
 import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
+import {useThrottle} from "@/hooks/useThrottle.ts";
+import _ from "lodash";
+import {addFeedback, updateStatus} from "@/app/recruit/home/actions.ts";
 
 interface TimelineProps {
-    editable: boolean
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
 }
 
-export function Timeline({ editable, c }: TimelineProps) {
+export function Timeline({ c }: TimelineProps) {
     const { currentStudent,
         studentList,
-        currRecrFeedback
+        currRecrFeedback,
+        setSaved,
+        setCurrentStudent,
+        changedStudent,
+        editable
     } = useContext(StudentDataContext) as StudentDataContextType
     const year_statuses_mapping: Record<string, string[]> = {
         "Rising Sophomore": ["Career Fair", "Interview 1", "Accepted"],
@@ -33,24 +39,34 @@ export function Timeline({ editable, c }: TimelineProps) {
     const student_year = currentStudent?.year ?? ""
     const statuses = year_statuses_mapping[student_year] || ["Career Fair", "Interview 1", "Interview 2", "Accepted"]
 
-    const getFeedback = () => currentStudent?.feedback?.[currRecrFeedback]?.curr_status ?? "Career Fair"
+    const getFeedback = () => currentStudent?.curr_status ?? "Career Fair"
+
     const [currStatus, setCurrStatus] = useState(getFeedback())
     const [progress, setProgress] = useState(statuses.indexOf(getFeedback()))
     const [progressBar, setProgressBar] = useState<number>(0)
 
     useEffect(() => {
         setCurrStatus(getFeedback)
-        console.log(currStatus)
-        console.log(progress)
-        console.log(progressBar)
-    }, [studentList, currRecrFeedback]);
+    }, [changedStudent, currRecrFeedback]);
 
-    useThrottledRequest({
-        studentContext: (useContext(StudentDataContext) as StudentDataContextType),
-        dbData: { "curr_status": currStatus },
-        localData: { "curr_status": currStatus },
-        dependency: currStatus
+    const throttledRequest =  useThrottle(() => {
+        // send request to the backend
+        // access to latest state here
+        if (editable()) {
+
+            updateStatus(currentStudent!.id,
+                JSON.stringify(currStatus)).then(e => (setSaved(true))).catch(e =>
+                console.log(e))
+
+            setCurrentStudent((prevState: any) => ({...prevState, curr_status: currStatus}))
+        }
     })
+    useEffect(() => {
+        setSaved(false)
+        throttledRequest()
+        console.log("CURR STATUS")
+        console.log(currStatus)
+    }, [currStatus]);
 
     useEffect(() => {
         setProgress(statuses.indexOf(currStatus))
