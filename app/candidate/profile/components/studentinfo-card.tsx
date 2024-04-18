@@ -122,14 +122,15 @@ export function StudentInfoCard({ editMode, setEditMode, canData, setCanData }: 
                                 }
                             </div>
 
-                            <div className={`flex flex-row ml-auto pl-3 justify-items-center`}>
+                            <div className={`flex md:flex-col lg:flex-row ml-auto pl-3 justify-items-center`}>
                                 <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                                 <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                     variant={"outline"}
-                                    className="w-32"
+                                    className="w-32 max-sm:hidden"
                                 >
                                     {editMode ? "Cancel" : "Edit Profile"}
                                 </Button>
+                                <Button className = "sm:hidden">hi!</Button>
 
 
                             </div>
