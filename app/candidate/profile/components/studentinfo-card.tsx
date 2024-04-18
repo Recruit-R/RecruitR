@@ -124,10 +124,11 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
                             <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                 variant={"outline"}
-                                className="w-32"
+                                className="w-32 max-sm:hidden"
                             >
                                 {editMode ? "Cancel" : "Edit Profile"}
                             </Button>
+                            <Button className="sm:hidden">hi!</Button>
                         </div>
 
                         </CardHeader>
