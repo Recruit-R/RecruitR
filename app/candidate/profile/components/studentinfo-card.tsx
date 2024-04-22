@@ -20,6 +20,9 @@ import { StatusBar } from "./personal-info-comps/status-bar";
 import { HeaderForm } from "./personal-info-forms/header-form";
 import { PersonalForm } from "./personal-info-forms/personal-info-form";
 import { ElementTitle } from "./element-title";
+import { XIcon } from "lucide-react";
+import { FaRegEdit } from "react-icons/fa";
+import { IoMdCheckmark } from "react-icons/io";
 
 
 interface StudentInfoCardProps {
@@ -81,7 +84,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Card className="min-h-full">
                     <CardHeader className="flex flex-row border-b mb-4">
-                        <div className={`flex flex-row pr-3 items-center space-x-4 relative rounded-lg`}>
+                        <div className={`flex flex-col sm:flex-row pr-3 items-left sm:items-center sm:space-x-4 relative rounded-lg`}>
 
                             <Avatar className="h-20 w-20">
                                 <AvatarImage src="/avatars/01.png" alt="Avatar" />
@@ -97,7 +100,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                     </AvatarFallback>
                                 </Avatar>
                                 {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
-                                    <div>
+                                    <div className="pt-2 sm:pt-0">
                                         {canData ?
                                             <>
                                                 <CardTitle className="sm:text-4l md:text-4xl">
@@ -120,13 +123,22 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             }
                         </div>
 
-                        <div className={`flex flex-row ml-auto pt-3 pl-3 justify-items-center`}>
-                            <Button className={`mr-2 ${!editMode && "hidden"}`} type="submit">Save</Button>
+                        <div className={`flex flex-col sm:flex-row ml-auto pt-3 pl-3 justify-items-center`}>
+                            <Button className = {`mr-2 ${!editMode && "hidden"} max-sm:hidden`} type="submit">Save</Button>
+                            <Button className = {`mb-2 ${!editMode && "hidden"} sm:hidden`} type="submit">
+                                <IoMdCheckmark className="w-6 h-6"/>
+                            </Button>
+
                             <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
                                 variant={"outline"}
-                                className="w-32"
+                                className="w-32 max-sm:hidden"
                             >
                                 {editMode ? "Cancel" : "Edit Profile"}
+                            </Button>
+                            <Button className="sm:hidden" disabled={canData === undefined} type="button" 
+                                onClick={() => setEditMode(prevState => !prevState)}
+                                variant={editMode ? "secondary" : "outline"}>
+                                {editMode ? <XIcon className={"w-6 h-6"} /> : <FaRegEdit className = "h-6 w-6"/>}
                             </Button>
                         </div>
 
