@@ -169,7 +169,6 @@ export function DataTable<TData, TValue>({
 
                       if (student && student.id !== (currentStudent?.id ?? "")) {
                         setCurrentStudent(row.original as Student);
-                        console.log("changed student")
                         setChangedStudent(prev => !prev)
                         setCurrRecrFeedback(currentUserEditId);
                       }

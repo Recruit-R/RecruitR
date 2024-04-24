@@ -1,10 +1,10 @@
 import Roles from "@/app/types/roles";
+import { checkEnvironment } from "@/checkEnvironment";
 import { firestore } from "@/firebase/server";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
-import validateUser from "../validateUser";
 import sendEmail from "../sendEmail";
-import { checkEnvironment } from "@/checkEnvironment";
+import validateUser from "../validateUser";
 
 async function verifyUserIsCoordinator(authToken: string | null) {
     if (authToken === null) return false;
@@ -47,7 +47,7 @@ export async function GET(
             return new NextResponse("Unauthorized", { status: 401 });
         }
         const whiteList = await firestore!.collection("whitelist").get();
-        const whietListedRecruiters = whiteList.docs.map((doc) => doc.data().email);
+        const whietListedRecruiters = whiteList.docs.map((doc) => doc.data());
         return new NextResponse(JSON.stringify(whietListedRecruiters), { status: 200 });
     } catch (error) {
         return new NextResponse("Internal Error", { status: 500 });
