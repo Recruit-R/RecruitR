@@ -137,7 +137,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
 
                                 {/* <PossiblePlacement canData={canData} /> */}
-                                <ElementTitle title = {"Intership Process Status"}/>
+                                <ElementTitle title = {"Internship Process Status"}/>
                                 <StatusBar canData={canData}></StatusBar>
                                 {/* <div className="space-y-1">
                             <p className="font-bold text-lg">

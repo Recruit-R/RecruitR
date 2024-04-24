@@ -33,7 +33,8 @@ export interface StudentDataContextType {
     editable: () => boolean,
     currentUserEditId: string,
     changedStudent: boolean,
-    setChangedStudent: React.Dispatch<React.SetStateAction<boolean>>
+    setChangedStudent: React.Dispatch<React.SetStateAction<boolean>>,
+    feedbackFocus: boolean
 
 }
 
@@ -131,7 +132,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function noStudentViewComponent() {
         return (
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-1/2 lg:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-2/3 lg:w-2/5")}>
                 <Card className="min-h-full flex items-center justify-center">
                     <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
                         <p className="font-bold">
@@ -168,7 +169,8 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
             editable,
             currentUserEditId,
             changedStudent,
-            setChangedStudent
+            setChangedStudent,
+            feedbackFocus
         }}>
 
             <div className="flex flex-row h-full relative no-scrollbar">

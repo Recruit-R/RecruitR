@@ -8,14 +8,15 @@ import Link from "next/link";
 
 export default function NavBar({ studentNav }: { studentNav: boolean }) {
     return (
-        <nav className="flex py-3 md:px-2 bg-background items-center">
+        <nav className="flex px-2 py-3 md:px-2 bg-background items-center gap-2">
             <Link href={studentNav ? "/candidate/profile" : "/recruit/home"}>
                 <Image src={picture} alt={"logo"} width={100} height={50} />
             </Link>
             <div className="flex items-center ml-auto gap-4">
                 {studentNav && <Button asChild variant={"link"}>
                             <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
-                        </Button>}
+                        </Button>
+                }
                 <ModeToggle/>
                 {
                     !studentNav &&
@@ -24,7 +25,10 @@ export default function NavBar({ studentNav }: { studentNav: boolean }) {
 
             </div>
             {studentNav &&
-                <SignOut />}
+                <div>
+                    <SignOut />
+                </div>
+            }
 
         </nav>
     )
