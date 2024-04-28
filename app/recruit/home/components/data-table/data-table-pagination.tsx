@@ -33,11 +33,11 @@ export function DataTablePagination<TData>({
 
   return (
     <div className="flex items-center justify-between px-2">
-      <div className={c("hidden flex-1 text-sm text-muted-foreground", "md:block", false)}>
+      <div className={c("hidden flex-1 text-sm text-muted-foreground", "lg:block", false)}>
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      <div className={c("flex gap-4 justify-center items-center", "md:space-x-6 lg:space-x-8", false)}>
+      <div className={c("flex gap-4 justify-center items-center", "lg:space-x-8", false)}>
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
@@ -59,7 +59,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex flex-row">
-          <div className={c("flex items-center justify-center text-sm font-medium","md:w-[100px]", false)}>
+          <div className={c("flex items-center justify-center text-sm font-medium","lg:w-[100px]", false)}>
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
           </div>
