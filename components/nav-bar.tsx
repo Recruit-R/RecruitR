@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function NavBar({ studentNav }: { studentNav: boolean }) {
     return (
         <nav className="flex px-2 py-3 md:px-2 bg-background items-center gap-2">
-            <Link href={studentNav ? "/candidate/profile" : "/recruit/home"}>
+            <Link href={studentNav ? "/candidate/profile" : "/recruit/home"} className='flex flex-row justify-center items-center'>
                 <Image src={picture} alt={"logo"} width={50} height={50} />
                 <span className='font-roboto text-3xl font-semibold'>RecruitR</span>
             </Link>
