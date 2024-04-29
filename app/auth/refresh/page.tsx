@@ -19,9 +19,8 @@ const Refresh = () => {
                     await auth.refresh(currentUser!);
                 }
                 refresh();
+
             }
-        } else {
-            router.push('/auth/login')
         }
     }, [auth, auth?.currentUser])
 
