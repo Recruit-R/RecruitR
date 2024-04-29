@@ -41,7 +41,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
         first_name: z.string().max(40, "Max length: 40 characters"),
         last_name: z.string().max(40, "Max length: 40 characters"),
         //about_me: z.string(),
-        year: z.string(),
+        year: z.string().min(1,"this is bad"),
         major: z.string().optional(),
         university: z.string().optional(),
         gpa: z.coerce.number().multipleOf(0.01).optional(),

@@ -35,12 +35,13 @@ const years = [
   },
 ]
 
-export function ComboboxYear({ form, field }: { form: any, field: any }) {
+export function ComboboxYear({ form, field, isParsing }: { form: any, field: any, isParsing: boolean }) {
   const [open, setOpen] = React.useState(false)
   return (
+    <>
+    
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <FormControl id='year'>
           <Button
             variant="outline"
             role="combobox"
@@ -56,7 +57,7 @@ export function ComboboxYear({ form, field }: { form: any, field: any }) {
               : "Select year"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
-        </FormControl>
+        
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
@@ -86,5 +87,7 @@ export function ComboboxYear({ form, field }: { form: any, field: any }) {
         </Command>
       </PopoverContent>
     </Popover>
+    
+    </>
   )
 }
