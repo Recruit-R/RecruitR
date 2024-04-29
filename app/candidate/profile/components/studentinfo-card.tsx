@@ -35,8 +35,8 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
     console.log(isParsing);
     const auth = useAuth();
     const formSchema = z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+        first_name: z.string().max(40),
+        last_name: z.string().max(40),
         //about_me: z.string(),
         year: z.string(),
         major: z.string().optional(),
