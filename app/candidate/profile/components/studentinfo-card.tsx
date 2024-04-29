@@ -38,8 +38,8 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
     console.log(isParsing);
     const auth = useAuth();
     const formSchema = z.object({
-        first_name: z.string().max(40),
-        last_name: z.string().max(40),
+        first_name: z.string().max(40, "Max length: 40 characters"),
+        last_name: z.string().max(40, "Max length: 40 characters"),
         //about_me: z.string(),
         year: z.string(),
         major: z.string().optional(),
