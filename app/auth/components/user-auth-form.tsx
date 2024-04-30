@@ -11,12 +11,10 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import microsoft icon
-import picture from "@/resources/assets/logo-v2.svg";
-import Image from "next/image";
+import { LogoV2 } from "@/components/logo-v2.tsx";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
-import {LogoV2} from "@/components/logo-v2.tsx";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
@@ -57,8 +55,8 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
-        firstName: z.string().max(40, "Max length of 40 characters"),
-        lastName: z.string().max(40, "Max length of 40 characters"),
+        firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+        lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
@@ -123,7 +121,7 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
             <div className="flex flex-col space-y-2 text-center justify-center">
                 <div className="flex justify-center items-center mb-10">
                     {/*<Image src={picture} alt={"logo"} width={100} height={100} />*/}
-                    <LogoV2 loginPage={true}/>
+                    <LogoV2 loginPage={true} />
                     <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
