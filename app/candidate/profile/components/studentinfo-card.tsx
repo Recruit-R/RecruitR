@@ -164,6 +164,13 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                     {editMode &&
                                     <div className={`pt-0.01`}>
                                         <ResumeButton form={form} canData={canData} setIsParsing={setIsParsing}/>
+                                        {canData &&
+                                        <div>
+                                            <Button type="button" asChild variant={"link"} className={`${!canData.resumeURL && 'hidden'}`}>
+                                                <Link href={`${canData.resumeURL}`} target = "_blank">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}Resume Upload</Link>
+                                            </Button>
+                                        </div>
+                                        }
                                     </div>}
 
                                     {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
