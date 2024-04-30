@@ -80,8 +80,9 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         setOpen={setOpen}
                     />
                 </div>
-                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-                    <div className="mb-6 md:mb-0">
+                <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                <div className="mb-6 md:mb-0">
+
                         <EventsListCard
                             title="Future Events"
                             empty_message="No Upcoming Events"

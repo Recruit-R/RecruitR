@@ -40,9 +40,9 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
         first_name: z.string().max(40, "Max length: 40 characters"),
         last_name: z.string().max(40, "Max length: 40 characters"),
         //about_me: z.string(),
-        year: z.string().min(1, "this is bad"),
-        major: z.string().optional(),
-        university: z.string().optional(),
+        year: z.string().min(1,"Please choose a year to save"),
+        major: z.string().max(40, "Max length: 40 characters").optional(),
+        university: z.string().max(40, "Max length: 40 characters").optional(),
         gpa: z.coerce.number().multipleOf(0.01).optional(),
         resumeURL: z.string().optional(),
 
@@ -96,27 +96,28 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
                                     {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
-                                </AvatarFallback>
-                            </Avatar>
-                            {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
-                                <div className="pt-2 sm:pt-0">
-                                    {canData ?
-                                        <>
-                                            <CardTitle className="sm:text-4l md:text-4xl">
-                                                {canData.first_name} {canData.last_name}
-                                            </CardTitle>
-                                            <CardDescription className="text-md">
-                                                {canData.major}
-                                            </CardDescription>
-                                        </>
-                                        :
-                                        <>
-                                            <CardTitle className="sm:text-4l md:text-4xl">
-                                                <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
-                                            </CardTitle>
 
-                                        </>
-                                    }
+                                    </AvatarFallback>
+                                </Avatar>
+                                {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
+                                    <div className="pt-2 sm:pt-0">
+                                        {canData ?
+                                            <>
+                                                <CardTitle className="sm:text-4l md:text-4xl">
+                                                    {canData.first_name} {canData.last_name}
+                                                </CardTitle>
+                                                <CardDescription className="text-md">
+                                                    {canData.email}
+                                                </CardDescription>
+                                            </>
+                                            :
+                                            <>
+                                                <CardTitle className="sm:text-4l md:text-4xl">
+                                                    <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
+                                                </CardTitle>
+                                                
+                                            </>
+                                        }
 
                                 </div>
                             }
