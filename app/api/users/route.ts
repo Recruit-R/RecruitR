@@ -36,7 +36,6 @@ export async function GET(
         if (userData.role === undefined) return new NextResponse("Role not found", { status: 404 });
         return NextResponse.json({ role: userData.role }, { status: 200 });
     } catch (error) {
-        console.log('get error', error);
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
@@ -98,7 +97,6 @@ export async function POST(
         await auth!.setCustomUserClaims(user!.uid, customClaims);
         return NextResponse.json(customClaims, { status: 201 });
     } catch (error) {
-        console.log('post error', error)
         return new NextResponse("Internal Error", { status: 500 });
     }
 }

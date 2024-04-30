@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 
 //
 
-export function ResumeButton({ form, canData, setIsParsing}: { form: any, canData: any, setIsParsing: React.Dispatch<React.SetStateAction<boolean>>}) {
+export function ResumeButton({ form, canData, setIsParsing }: { form: any, canData: any, setIsParsing: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [upping, setUpp] = useState(false)
 
     const [parseCheck, setParseCheck] = useState(false)
@@ -37,20 +37,20 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
             uploadBytesResumable(resumeRef, event.target.files[0], newMetaData).then(async (snapshot: any) => {
 
                 const downLoadURL = await getDownloadURL(snapshot.ref);
-                if(parseCheck){
+                if (parseCheck) {
                     updateForm(parsedData);
                 }
                 form.setValue('resumeURL', downLoadURL);
                 (parseCheck ?
-                toast({
-                    title: "Parsed and uploaded resume successfully!",
-                    description: "Remember to save!",
-                })
-                :
-                toast({
-                    title: "Uploaded resume successfully!",
-                    description: "Remember to save!",
-                })
+                    toast({
+                        title: "Parsed and uploaded resume successfully!",
+                        description: "Remember to save!",
+                    })
+                    :
+                    toast({
+                        title: "Uploaded resume successfully!",
+                        description: "Remember to save!",
+                    })
                 )
 
                 setUpp(false)
@@ -82,7 +82,7 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
 
     // Function to parse the PDF using the Flask API
     async function parseResume(file: File): Promise<any> {
-        if(!parseCheck){
+        if (!parseCheck) {
             return
         }
         try {
@@ -100,7 +100,6 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
             if (parserURL === undefined) {
                 throw new Error('no parser api url');
             }
-            console.log('trying to parse resume')
             // Make the fetch request to the Flask API
             const response = await fetch(parserURL, {
                 method: 'POST',
@@ -129,22 +128,22 @@ export function ResumeButton({ form, canData, setIsParsing}: { form: any, canDat
     }
     return (
         <>
-        <div className = "flex flex-row gap-3 items-center">
-            <Button disabled={upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
-                {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                <input id="upload" name="upload" type="file" ref={fileRef} hidden
-                    onChange={handleChange} />
-                Upload Resume
-            </Button>
-            <div className="flex items-center space-x-2 bg-muted p-1 px-2 rounded-sm">
-                <label
-                className="text-sm py-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                    Use Resume Autofill?
-                </label>
-                <Checkbox id = "parseOrNot" checked = {parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)}/>
+            <div className="flex flex-row gap-3 items-center">
+                <Button disabled={upping} type="button" onClick={() => fileRef.current && fileRef.current.click()}>
+                    {upping && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                    <input id="upload" name="upload" type="file" ref={fileRef} hidden
+                        onChange={handleChange} />
+                    Upload Resume
+                </Button>
+                <div className="flex items-center space-x-2 bg-muted p-1 px-2 rounded-sm">
+                    <label
+                        className="text-sm py-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Use Resume Autofill?
+                    </label>
+                    <Checkbox id="parseOrNot" checked={parseCheck} onCheckedChange={checked => setParseCheck(!parseCheck)} />
+                </div>
             </div>
-        </div>
         </>
     )
 }

@@ -11,7 +11,6 @@ interface DateTimePickerProps {
 export function TimePicker({ date, setDate }: DateTimePickerProps) {
 
     const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        console.log(e.target.value);
         const time = e.target.value.split(':')
 
         const mergedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), Number(time[0]), Number(time[1]));
