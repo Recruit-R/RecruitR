@@ -59,8 +59,6 @@ export function Timeline({ c }: TimelineProps) {
     useEffect(() => {
         setSaved(false)
         throttledRequest()
-        console.log("CURR STATUS")
-        console.log(currStatus)
     }, [currStatus]);
 
     useEffect(() => {

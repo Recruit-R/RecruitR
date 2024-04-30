@@ -53,21 +53,36 @@ export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form
 export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthFormProps) {
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
-    const formSchema = z.object({
-        firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
-        lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
-        email: z.string().email(),
-        password: signup ? z.string().min(6) : z.string(),
-    })
+    let formSchema: any;
+    let defaultValues: any;
+    if (signup) {
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
+        formSchema = z.object({
+            firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+            lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+            email: z.string().email(),
+            password: signup ? z.string().min(6) : z.string(),
+        })
+        defaultValues = {
             firstName: "",
             lastName: "",
             email: "",
             password: "",
-        },
+        }
+    } else {
+        formSchema = z.object({
+            email: z.string().email(),
+            password: signup ? z.string().min(6) : z.string(),
+        })
+        defaultValues = {
+            email: "",
+            password: "",
+        }
+    }
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: defaultValues,
     })
 
     useEffect(() => {
