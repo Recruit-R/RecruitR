@@ -51,9 +51,9 @@ export function EventsListCard({ partialEvents, title, empty_message }: EventsLi
         const [editOpen, setEditOpen] = useState<boolean>(false);
         return (
             <div className="py-2 pl-4 group hover:bg-secondary hover:rounded-lg transition-all flex justify-between items-center">
-                <div>
+                <div className={"truncate"}>
                     <div className="text-md font-bold">{event.title}</div>
-                    <div className="text-sm text-muted-foreground">{event.location}</div>
+                    <div className="text-sm text-muted-foreground ">{event.location}</div>
                     <div className="text-sm text-muted-foreground">{date}</div>
                 </div>
                 <div className="flex flex-row items-center my-auto mr-8 h-8 gap-4 mr-4">
