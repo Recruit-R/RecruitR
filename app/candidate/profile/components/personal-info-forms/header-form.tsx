@@ -20,8 +20,10 @@ export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
                     <Input id="first_name"
                     placeholder=""
                     autoCapitalize="none"
+                    autoComplete='given_name'
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             </>
             
@@ -38,6 +40,7 @@ export function HeaderForm({form, isParsing}:{form: any, isParsing: boolean}) {
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             </>
             
