@@ -35,6 +35,7 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             
             </>
@@ -52,6 +53,7 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             </>
             
