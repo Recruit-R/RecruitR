@@ -25,7 +25,6 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                 if (canvas) {
                     try {
                         const baseUrl = checkEnvironment().BASE_URL ?? process.env.API_URL;
-                        console.log('qr url', baseUrl);
                         QRCode.toCanvas(canvas, baseUrl as string + '/auth/signup/' + eventId);
                     } catch (error) {
                         console.error("Failed to generate QR code:", error);
@@ -59,13 +58,13 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
         } else {
             console.error("Canvas element not found.");
         }
-         
+
     };
 
     const calculateQRCodeSize = () => {
         // Calculate the size based on the screen width
         const screenWidth = window.innerWidth;
-        return Math.min(screenWidth * 0.8, 400); 
+        return Math.min(screenWidth * 0.8, 400);
     };
 
     return (
@@ -76,12 +75,12 @@ export function QRCodeGenerator({ eventId }: { eventId: string }) {
                 <div className="mx-auto mt-4">
                     <canvas id="qrcode" height={500} width={500} ref={canvasRef}></canvas>
                 </div>
-                    <div className="mt-4">
-                        <Button variant="outline" onClick={handlePrintButtonClick}>
-                            Print QR Code
-                        </Button>
-                    </div>
-                    
+                <div className="mt-4">
+                    <Button variant="outline" onClick={handlePrintButtonClick}>
+                        Print QR Code
+                    </Button>
+                </div>
+
 
             </div>
         </div>

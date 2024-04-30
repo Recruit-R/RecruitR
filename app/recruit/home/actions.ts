@@ -16,7 +16,7 @@ export async function addFeedback(student_id: string, value: string, recruiter_i
 }
 export async function updateStatus(student_id: string, value: string) {
     let obj = JSON.parse(value);
-    return addData("users", student_id, {"curr_status": obj})
+    return addData("users", student_id, { "curr_status": obj })
 }
 export async function updateAvgRating(studentId: string, value: string) {
     const avgRating = JSON.parse(value);
@@ -25,7 +25,7 @@ export async function updateAvgRating(studentId: string, value: string) {
     }
 }
 export async function get_student_feedback(student_id: string) {
-    getData({ collection_name: "users", document_id: student_id }).then((e) => console.log(e))
+    getData({ collection_name: "users", document_id: student_id })
 }
 function convert(seconds: number, nanoseconds: number) {
     // Create a Date object from the seconds and nanoseconds.

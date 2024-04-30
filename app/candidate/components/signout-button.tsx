@@ -14,10 +14,9 @@ export default function SignOut() {
             onClick={() => {
 
                 auth?.logout().then(() => {
-                    console.log('logging out');
                     router.push("/auth/login");
                 }).catch((error: any) => {
-                    console.log(error);
+                    console.error(error);
                 });
             }}
             className='px-4'>

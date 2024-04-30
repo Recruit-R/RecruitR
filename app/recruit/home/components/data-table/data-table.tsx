@@ -29,10 +29,10 @@ import { DataTablePagination } from "./data-table-pagination.tsx"
 import { DataTableToolbar } from "./data-table-toolbar.tsx"
 import { Student, StudentList } from "@/app/recruit/home/data/student-schema.ts";
 import { tree } from "next/dist/build/templates/app-page";
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import internal from "node:stream";
-import {StudentColumns} from "@/app/recruit/home/components/data-table/student-columns.tsx";
+import { StudentColumns } from "@/app/recruit/home/components/data-table/student-columns.tsx";
 import useScreenWidth from "@/hooks/use-screen-width.ts";
 
 interface DataTableProps<TData, TValue> {
@@ -59,26 +59,22 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(feedbackFocus || (widthSize && widthSize < breakWidth)
-        ?
-        {
-          "gpa": false,
-          "avgRating": false,
-          "year": false,
-          "signup_time": false,
-          "university": false,
-        }
-        : {})
+      ?
+      {
+        "gpa": false,
+        "avgRating": false,
+        "year": false,
+        "signup_time": false,
+        "university": false,
+      }
+      : {})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([
-    {id: "signup_time", desc: true}
+    { id: "signup_time", desc: true }
   ])
   const [tableUpdate, setTableUpdate] = React.useState<boolean>(false)
-  // useEffect(() => {
-  //   console.log("in here")
-  //   table.resetPageIndex()
-  // }, [columnFilters]);
 
   const table = useReactTable({
     data,
@@ -111,23 +107,21 @@ export function DataTable<TData, TValue>({
   })
   useEffect(() => {
     table.setColumnVisibility(feedbackFocus || (widthSize && widthSize < breakWidth)
-        ?
-        {
-          "gpa": false,
-          "avgRating": false,
-          "year": false,
-          "signup_time": false,
-          "university": false,
-        }
-        : {})
+      ?
+      {
+        "gpa": false,
+        "avgRating": false,
+        "year": false,
+        "signup_time": false,
+        "university": false,
+      }
+      : {})
   }, [tableUpdate]);
   useEffect(() => {
-    console.log("called")
     const check = (feedbackFocus || (widthSize && widthSize < breakWidth)) as boolean
 
     if (check != tableUpdate) {
       setTableUpdate(check)
-      console.log("callllllled")
     }
 
   }, [feedbackFocus, widthSize]);

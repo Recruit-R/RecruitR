@@ -11,7 +11,6 @@ export function EventCard({ eventIds }: { eventIds: string[] }) {
 
 
     useEffect(() => {
-        console.log(eventIds);
         async function fetchEvents() {
             const parsedEvents = await Promise.all(eventIds.map(async (id) => {
                 const unparsedEvent = await getData({ collection_name: "events", document_id: id });

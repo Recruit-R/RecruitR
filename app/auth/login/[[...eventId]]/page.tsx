@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 export default async function LoginPage({ params }: { params: { eventId: string } }) {
     const eventId = params?.eventId?.[0];
-    console.log(params);
     return (
         <>
             <div className="relative flex items-center justify-center align-center h-screen">

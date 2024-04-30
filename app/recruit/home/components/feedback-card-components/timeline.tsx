@@ -7,15 +7,15 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "@/components/auth-provider.tsx";
 import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
 import Roles from "@/app/types/roles";
-import {useThrottledRequest} from "@/hooks/useThrottledRequest.ts";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
-import {useThrottle} from "@/hooks/useThrottle.ts";
+import { useThrottledRequest } from "@/hooks/useThrottledRequest.ts";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+import { useThrottle } from "@/hooks/useThrottle.ts";
 import _ from "lodash";
-import {addFeedback, updateStatus} from "@/app/recruit/home/actions.ts";
+import { addFeedback, updateStatus } from "@/app/recruit/home/actions.ts";
 
 interface TimelineProps {
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
@@ -49,23 +49,20 @@ export function Timeline({ c }: TimelineProps) {
         setCurrStatus(getFeedback)
     }, [changedStudent, currRecrFeedback]);
 
-    const throttledRequest =  useThrottle(() => {
+    const throttledRequest = useThrottle(() => {
         // send request to the backend
         // access to latest state here
         if (editable()) {
 
             updateStatus(currentStudent!.id,
                 JSON.stringify(currStatus)).then(e => (setSaved(true))).catch(e =>
-                console.log(e))
 
-            setCurrentStudent((prevState: any) => ({...prevState, curr_status: currStatus}))
+                    setCurrentStudent((prevState: any) => ({ ...prevState, curr_status: currStatus }))
         }
     })
     useEffect(() => {
         setSaved(false)
         throttledRequest()
-        console.log("CURR STATUS")
-        console.log(currStatus)
     }, [currStatus]);
 
     useEffect(() => {

@@ -96,7 +96,6 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                 id: doc.id,
                 ...doc.data()
             })).filter((user: any) => user.role === Roles.CANDIDATE);
-            console.log(newUsers);
             setStudentList(z.record(fullStudentSchema).parse(convertStudents(newUsers)));
         });
 
@@ -107,12 +106,6 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
 
     const c = (classnames: string, conditionalNames: string, condition: boolean = true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
-    }
-    function reset() {
-        for (const studentListKey in studentList) {
-
-            feedbackReset(studentListKey).then(e => console.log(e))
-        }
     }
 
     function feedbackComponent() {

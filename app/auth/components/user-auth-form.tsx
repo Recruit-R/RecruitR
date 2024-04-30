@@ -109,7 +109,6 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
             console.error("Auth not available");
             return;
         }
-        console.log('event id', eventId);
         if (eventId) auth.addEvent(eventId);
         if (signup) {
             auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })

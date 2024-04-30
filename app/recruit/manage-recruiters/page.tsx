@@ -90,7 +90,6 @@ export default function Page() {
             if (response.ok) {
                 const data = await response.json();
                 setRecruiters(data);
-                console.log(data);
             }
         }
         fetchrecruiterEmails();
@@ -117,8 +116,6 @@ export default function Page() {
             form.reset();
         } else if (response.status == 403) {
             setAuthError('Email already exists');
-        } else {
-            console.log('error', response);
         }
     }
     const deleteRecruiter = async (email: string) => {
@@ -132,8 +129,6 @@ export default function Page() {
         })
         if (response.ok) {
             setRecruiters(recruiters.filter((recruiter) => recruiter.email !== email));
-        } else {
-            console.log('error', response);
         }
     }
 
