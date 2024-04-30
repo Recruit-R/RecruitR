@@ -121,10 +121,10 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
                 {/* <div className="flex justify-center items-center mb-10">
                     <LogoV2 loginPage={true} />
                     <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
-                </div>
+                </div> */}
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
-                </h1> */}
+                </h1>
                 {
                     !recruitLogin && (
                         <p className="text-sm text-muted-foreground">
