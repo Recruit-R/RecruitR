@@ -1,21 +1,17 @@
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import { updateStatus } from "@/app/recruit/home/actions.ts";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+import Roles from "@/app/types/roles";
+import { useAuth } from "@/components/auth-provider.tsx";
 import { Progress } from "@/components/ui/progress.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
-import React, { useContext, useEffect, useState } from "react";
-import { useAuth } from "@/components/auth-provider.tsx";
-import { TimelineCheckbox } from "@/components/ui/timeline-checkbox.tsx";
-import Roles from "@/app/types/roles";
-import { useThrottledRequest } from "@/hooks/useThrottledRequest.ts";
-import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+} from "@/components/ui/tooltip";
 import { useThrottle } from "@/hooks/useThrottle.ts";
-import _ from "lodash";
-import { addFeedback, updateStatus } from "@/app/recruit/home/actions.ts";
+import React, { useContext, useEffect, useState } from "react";
 
 interface TimelineProps {
     c: (classnames: string, conditionalNames: string, condition?: boolean) => string
@@ -55,14 +51,16 @@ export function Timeline({ c }: TimelineProps) {
         if (editable()) {
 
             updateStatus(currentStudent!.id,
-                JSON.stringify(currStatus)).then(e => (setSaved(true))).catch(e =>
+                JSON.stringify(currStatus)).then(e => (setSaved(true)))
 
-                    setCurrentStudent((prevState: any) => ({ ...prevState, curr_status: currStatus }))
+            setCurrentStudent((prevState: any) => ({ ...prevState, curr_status: currStatus }))
         }
     })
     useEffect(() => {
         setSaved(false)
         throttledRequest()
+        console.log("CURR STATUS")
+        console.log(currStatus)
     }, [currStatus]);
 
     useEffect(() => {
