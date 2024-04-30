@@ -179,5 +179,5 @@ export const StudentColumns = (feedbackFocus: any): ColumnDef<any>[] => {
 
     }
   ] as ColumnDef<any>[])
-  return feedbackFocus || (widthSize && widthSize < breakWidth) ? columns.slice(1, 3) : columns
+  return columns
 }

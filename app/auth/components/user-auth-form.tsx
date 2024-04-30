@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import microsoft icon
+import picture from "@/resources/assets/logo-v2.svg";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
@@ -117,7 +119,12 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
     return (
         <>
-            <div className="flex flex-col space-y-2 text-center">
+
+            <div className="flex flex-col space-y-2 text-center justify-center">
+                <div className="flex justify-center items-center mb-10">
+                    <Image src={picture} alt={"logo"} width={100} height={100} />
+                    <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
+                </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
                 </h1>
@@ -185,10 +192,10 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
 
 
+                <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
                 {recruitLogin ? (
                     <>
                         <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
                     </>
                 ) : (
                     <>
