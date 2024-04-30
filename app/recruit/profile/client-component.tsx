@@ -78,8 +78,8 @@ export default function ClientComponent({ useData }: { useData: any }) {
     const [userData, setUData] = useState<any>(useData);
 
     const formSchema = z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+        first_name: z.string().max(40, "Max length of 40 characters"),
+        last_name: z.string().max(40, "Max length of 40 characters"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
