@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
+import {LogoV2} from "@/components/logo-v2.tsx";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
@@ -122,7 +123,8 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
             <div className="flex flex-col space-y-2 text-center justify-center">
                 <div className="flex justify-center items-center mb-10">
-                    <Image src={picture} alt={"logo"} width={100} height={100} />
+                    {/*<Image src={picture} alt={"logo"} width={100} height={100} />*/}
+                    <LogoV2 loginPage={true}/>
                     <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
