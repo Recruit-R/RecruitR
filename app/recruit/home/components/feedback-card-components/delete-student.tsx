@@ -1,11 +1,11 @@
-import {Button} from "@/components/ui/button.tsx";
-import {TrashIcon} from "@radix-ui/react-icons";
-import React, {useContext, useState} from "react";
-import {StudentDataContext, StudentDataContextType} from "@/app/recruit/home/components/dashboard.tsx";
-import {deleteStudent} from "@/app/recruit/home/actions.ts";
-import {FaTrash} from "react-icons/fa";
-import {PopupDialog} from "@/app/recruit/events/components/popup-dialog.tsx";
-import {Event} from "@/app/types/event.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { TrashIcon } from "@radix-ui/react-icons";
+import React, { useContext, useState } from "react";
+import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
+import { deleteStudent } from "@/app/recruit/home/actions.ts";
+import { FaTrash } from "react-icons/fa";
+import { PopupDialog } from "@/app/recruit/events/components/popup-dialog.tsx";
+import { Event } from "@/app/types/event.ts";
 import deleteData from "@/app/api/deleteData.ts";
 
 export function DeleteStudent() {
@@ -20,19 +20,18 @@ export function DeleteStudent() {
                     variant="destructive"
                     onClick={() => {
                         currentStudent?.id &&
-                        deleteStudent(currentStudent.id).then(e => {
-                            console.log(`e = ${e}`)
-                            console.log("DELETED")
-                            setCurrentStudent(null)
-                            const updatedList = studentList!
-                            delete updatedList[currentStudent.id]
-                            setStudentList(studentList)
-                        })
+                            deleteStudent(currentStudent.id).then(e => {
+
+                                setCurrentStudent(null)
+                                const updatedList = studentList!
+                                delete updatedList[currentStudent.id]
+                                setStudentList(studentList)
+                            })
 
                     }}
                 >
 
-                    <TrashIcon className="h-4 w-4"/> Delete Student
+                    <TrashIcon className="h-4 w-4" /> Delete Student
                 </Button>
             </div>
         )
@@ -41,7 +40,7 @@ export function DeleteStudent() {
         <PopupDialog
             popupButton={<Button
                 className="w-64"
-                variant="destructive"><TrashIcon className="h-4 w-4"/> Delete Student</Button>}
+                variant="destructive"><TrashIcon className="h-4 w-4" /> Delete Student</Button>}
             title={`Delete Student`}
             description="Are you sure you want to delete this student?"
             dialogContent={<DeleteStudentConfirmationForm setDeleteOpen={setDeleteOpen} />}

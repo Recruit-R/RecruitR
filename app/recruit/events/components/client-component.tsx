@@ -25,7 +25,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
     const [pastEvents, setSortedPastEvents] = useState<any>([]);
     const [futureEvents, setSortedFutureEvents] = useState<any>([]);
     const [open, setOpen] = useState<boolean>(false);
-   
+
 
     function refresh() {
         getEventData().then((events) => {
@@ -35,7 +35,6 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
 
     useEffect(() => {
         const currentDate = new Date();
-        console.log('new events', events);
         const pastEvents = events
             // sort and filter past events by UTC time
             .filter((event: any) => event.date < currentDate)
@@ -62,7 +61,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                 events,
                 refresh,
                 setEvents
-            }} >          
+            }} >
             <div className="flex flex-col gap-4 p-4 h-full overflow-y-auto">
                 <div className="">
                     <PopupDialog
@@ -81,8 +80,9 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         setOpen={setOpen}
                     />
                 </div>
-                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+                <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                 <div className="mb-6 md:mb-0">
+
                         <EventsListCard
                             title="Future Events"
                             empty_message="No Upcoming Events"
@@ -98,7 +98,7 @@ export default function ClientComponent({ eventList }: { eventList: any }) {
                         />
 
                     </div>
-                    
+
                 </div>
             </div>
         </EventDataContext.Provider>

@@ -5,8 +5,8 @@ import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/c
 import { Button } from "@/components/ui/button.tsx";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import { XIcon } from "lucide-react";
-import {ElementTitle} from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
-import {addFeedback, updateAvgRating} from "@/app/recruit/home/actions.ts";
+import { ElementTitle } from "@/app/recruit/home/components/feedback-card-components/element-title.tsx";
+import { addFeedback, updateAvgRating } from "@/app/recruit/home/actions.ts";
 export function InitialFeedback() {
     const { currentStudent,
         setCurrentStudent, studentList,
@@ -38,8 +38,7 @@ export function InitialFeedback() {
         // send request to the backend
         // access to latest state here
         if (editable()) {
-            const mergedObject = _.merge({}, currentStudent!.feedback, {[currentUserEditId]: {"rating": rating} });
-            // console.log(mergedObject)
+            const mergedObject = _.merge({}, currentStudent!.feedback, { [currentUserEditId]: { "rating": rating } });
             let ratings = Object.keys(mergedObject).map((name) => {
                 return mergedObject[name].rating
             }).filter(rating => typeof rating === 'number') as number[]
@@ -52,11 +51,11 @@ export function InitialFeedback() {
                 }
             }
 
-            addFeedback(currentStudent!.id, JSON.stringify({"rating": rating}), currentUserEditId)
+            addFeedback(currentStudent!.id, JSON.stringify({ "rating": rating }), currentUserEditId)
                 .then(e => updateAvgRating(currentStudent!.id, JSON.stringify(avgRating)))
                 .then(r => setSaved(true))
 
-            setCurrentStudent((prevState: any) => ({...prevState, "feedback": mergedObject, avgRating: avgRating ?? undefined}))
+            setCurrentStudent((prevState: any) => ({ ...prevState, "feedback": mergedObject, avgRating: avgRating ?? undefined }))
         }
 
     });
@@ -72,19 +71,19 @@ export function InitialFeedback() {
 
             <div className={"flex flex-row flex-wrap items-center justify-between"}>
                 <div className={"flex flex-row items-center"}>
-                        {
-                            [...Array(5)].map((_, i) => {
-                                return (
-                                    <div key={'group' + i} className="group"
-                                         onMouseEnter={() => editable() && setHoveredStar(i + 1)}
-                                         onMouseLeave={() => editable() && setHoveredStar(0)}
-                                         onClick={() => editable() && setRating((prev) =>
-                                             (i + 1 == prev ? null : i + 1))}>
-                                        {compute(i)}
-                                    </div>
-                                )
-                            })
-                        }
+                    {
+                        [...Array(5)].map((_, i) => {
+                            return (
+                                <div key={'group' + i} className="group"
+                                    onMouseEnter={() => editable() && setHoveredStar(i + 1)}
+                                    onMouseLeave={() => editable() && setHoveredStar(0)}
+                                    onClick={() => editable() && setRating((prev) =>
+                                        (i + 1 == prev ? null : i + 1))}>
+                                    {compute(i)}
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 {
                     editable() &&
@@ -97,7 +96,7 @@ export function InitialFeedback() {
 
 
 
-                </div>
+            </div>
         </div>
     )
 }

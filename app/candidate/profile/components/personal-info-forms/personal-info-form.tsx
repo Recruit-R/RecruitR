@@ -14,8 +14,10 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
             <>
             <FormItem>
                 <FormLabel>Year</FormLabel>
-                <br/>
-                <ComboboxYear form = {form} field = {field}/>
+                    <br/>
+                <FormControl id='year'>
+                    <ComboboxYear form = {form} field = {field} isParsing = {isParsing}/>
+                </FormControl>
             </FormItem>
             </>
             
@@ -32,7 +34,9 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
+            
             </>
             
         )}></FormField>
@@ -48,6 +52,7 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             </>
             

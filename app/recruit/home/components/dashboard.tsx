@@ -33,7 +33,8 @@ export interface StudentDataContextType {
     editable: () => boolean,
     currentUserEditId: string,
     changedStudent: boolean,
-    setChangedStudent: React.Dispatch<React.SetStateAction<boolean>>
+    setChangedStudent: React.Dispatch<React.SetStateAction<boolean>>,
+    feedbackFocus: boolean
 
 }
 
@@ -95,7 +96,6 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
                 id: doc.id,
                 ...doc.data()
             })).filter((user: any) => user.role === Roles.CANDIDATE);
-            console.log(newUsers);
             setStudentList(z.record(fullStudentSchema).parse(convertStudents(newUsers)));
         });
 
@@ -107,17 +107,11 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     const c = (classnames: string, conditionalNames: string, condition: boolean = true) => {
         return cn(classnames, (feedbackFocus === condition) && conditionalNames)
     }
-    function reset() {
-        for (const studentListKey in studentList) {
-
-            feedbackReset(studentListKey).then(e => console.log(e))
-        }
-    }
 
     function feedbackComponent() {
         return (
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-2/3 lg:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-1/2 lg:w-3/5 xl:w-3/4" : "md:w-1/2 lg:w-2/5")}>
                 <FeedbackCard
                     feedbackFocus={feedbackFocus}
                     setStudentView={setStudentView}
@@ -131,7 +125,7 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
     function noStudentViewComponent() {
         return (
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-2/3 lg:w-3/5 xl:w-3/4" : "md:w-1/2 lg:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full", !studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-1/2 lg:w-3/5 xl:w-3/4" : "md:w-1/2 lg:w-2/5")}>
                 <Card className="min-h-full flex items-center justify-center">
                     <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
                         <p className="font-bold">
@@ -168,12 +162,13 @@ export default function Dashboard({ studentData }: { studentData: StudentList })
             editable,
             currentUserEditId,
             changedStudent,
-            setChangedStudent
+            setChangedStudent,
+            feedbackFocus
         }}>
 
             <div className="flex flex-row h-full relative no-scrollbar">
 
-                <div className={cn("no-scrollbar h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-1/2 lg:w-2/5 xl:w-1/4" : "md:w-1/3 lg:w-3/5")}>
+                <div className={cn("no-scrollbar h-full w-full bg-background p-1", studentView ? "max-md:hidden" : "", feedbackFocus ? "md:w-1/2 lg:w-2/5 xl:w-1/4" : "md:w-1/2 lg:w-3/5")}>
                     <DataTable
                         setCurrentStudent={changeCurrentStudent}
                         setStudentView={setStudentView}

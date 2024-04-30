@@ -49,11 +49,12 @@ export function PossiblePlacementMultiselect() {
     return (
         <div className="space-y-1 max-md:pb-4">
             <ElementTitle title={"Possible Placement"} />
-            <div className="flex flex-row flex-col gap-1">
+            <div className="flex flex-col gap-1">
                 {
                     possiblePlacementValues.map((placement) => (
-                        <div className="flex items-center w-full space-x-2 bg-muted py-1 pl-2 rounded-sm" key={placement}>
+                        <div className="flex items-center w-full space-x-2 bg-muted rounded-sm" key={placement}>
                             <Checkbox
+                                className={"ml-2"}
                                 id={placement}
                                 checked={possiblePlacements.includes(placement)}
                                 onCheckedChange={checked => handleCheckedChange(checked, placement)}
@@ -61,7 +62,7 @@ export function PossiblePlacementMultiselect() {
                             />
                             <label
                                 htmlFor={placement}
-                                className="text-sm py-2 pr-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                className="text-sm w-full py-3 pr-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 {placement}
                             </label>

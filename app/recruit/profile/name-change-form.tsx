@@ -21,6 +21,7 @@ export function NameChForm(form: any, { className }: React.ComponentProps<"form"
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                <FormMessage/>
             </FormItem>
             </>
         )}></FormField>
@@ -36,6 +37,7 @@ export function NameChForm(form: any, { className }: React.ComponentProps<"form"
                     autoCapitalize="none"
                     {...field}/>
                 </FormControl>
+                <FormMessage/>
             </FormItem>
             </>
             

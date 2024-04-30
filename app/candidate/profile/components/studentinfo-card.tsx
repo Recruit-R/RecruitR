@@ -35,15 +35,14 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
     /*const languages: Array<String> = ["Python", "Java", "Kotlin", "R", "Angular", ".NET", "Canva", "Adobe Photoshop", "Agile Philosophy", "Power BI", "Azure DevOps", "Waterfall Methodologies"]*/
     const [canData, setCanData] = useState<any>(loadedCanData);
     const [isParsing, setIsParsing] = useState<boolean>(false);
-    console.log(isParsing);
     const auth = useAuth();
     const formSchema = z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+        first_name: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+        last_name: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
         //about_me: z.string(),
-        year: z.string(),
-        major: z.string().optional(),
-        university: z.string().optional(),
+        year: z.string().min(1,"Please choose a year to save"),
+        major: z.string().max(40, "Max length: 40 characters").optional(),
+        university: z.string().max(40, "Max length: 40 characters").optional(),
         gpa: z.coerce.number().multipleOf(0.01).optional(),
         resumeURL: z.string().optional(),
 
@@ -97,6 +96,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
 
                                     {canData ? <div className="font-bold text-3xl">{canData.first_name && canData.first_name[0]}{canData.last_name && canData.last_name[0]}</div> : <>NA</>}
 
+
                                     </AvatarFallback>
                                 </Avatar>
                                 {editMode ? <HeaderForm form={form} isParsing={isParsing}></HeaderForm> :
@@ -107,7 +107,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                                     {canData.first_name} {canData.last_name}
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
-                                                    {canData.major}
+                                                    {canData.email}
                                                 </CardDescription>
                                             </>
                                             :
@@ -124,9 +124,9 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                         </div>
 
                         <div className={`flex flex-col sm:flex-row ml-auto pt-3 pl-3 justify-items-center`}>
-                            <Button className = {`mr-2 ${!editMode && "hidden"} max-sm:hidden`} type="submit">Save</Button>
-                            <Button className = {`mb-2 ${!editMode && "hidden"} sm:hidden`} type="submit">
-                                <IoMdCheckmark className="w-6 h-6"/>
+                            <Button className={`mr-2 ${!editMode && "hidden"} max-sm:hidden`} type="submit">Save</Button>
+                            <Button className={`mb-2 ${!editMode && "hidden"} sm:hidden`} type="submit">
+                                <IoMdCheckmark className="w-6 h-6" />
                             </Button>
 
                             <Button disabled={canData === undefined} type="button" onClick={() => setEditMode(prevState => !prevState)}
@@ -135,44 +135,44 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                             >
                                 {editMode ? "Cancel" : "Edit Profile"}
                             </Button>
-                            <Button className="sm:hidden" disabled={canData === undefined} type="button" 
+                            <Button className="sm:hidden" disabled={canData === undefined} type="button"
                                 onClick={() => setEditMode(prevState => !prevState)}
                                 variant={editMode ? "secondary" : "outline"}>
-                                {editMode ? <XIcon className={"w-6 h-6"} /> : <FaRegEdit className = "h-6 w-6"/>}
+                                {editMode ? <XIcon className={"w-6 h-6"} /> : <FaRegEdit className="h-6 w-6" />}
                             </Button>
                         </div>
 
-                        </CardHeader>
-                        <CardContent className={"flex flex-col flex-wrap xl:gap-x-4"}>
-                            {/*    Initial feedback */}
-                            <div className="flex flex-col gap-5 space-y-1">
-                                <ElementTitle title = {"Personal Info"}/>
-                                {editMode ? <PersonalForm form={form} canData={canData} isParsing = {isParsing}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
+                    </CardHeader>
+                    <CardContent className={"flex flex-col flex-wrap xl:gap-x-4"}>
+                        {/*    Initial feedback */}
+                        <div className="flex flex-col gap-5 space-y-1">
+                            <ElementTitle title={"Personal Info"} />
+                            {editMode ? <PersonalForm form={form} canData={canData} isParsing={isParsing}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
 
 
-                                {/* <PossiblePlacement canData={canData} /> */}
-                                <ElementTitle title = {"Intership Process Status"}/>
-                                <StatusBar canData={canData}></StatusBar>
-                                {/* <div className="space-y-1">
+                            {/* <PossiblePlacement canData={canData} /> */}
+                            <ElementTitle title={"Internship Process Status"} />
+                            <StatusBar canData={canData}></StatusBar>
+                            {/* <div className="space-y-1">
                             <p className="font-bold text-lg">
                                 Skills
                             </p>
                             {<ShowSkills/>}
                             
-                        </div> */}       
-                                <ElementTitle title = {"Resume"}/>
-                                    {editMode &&
-                                    <div className={`pt-0.01`}>
-                                        <ResumeButton form={form} canData={canData} setIsParsing={setIsParsing}/>
-                                    </div>}
+                        </div> */}
+                            <ElementTitle title={"Resume"} />
+                            {editMode &&
+                                <div className={`pt-0.01`}>
+                                    <ResumeButton form={form} canData={canData} setIsParsing={setIsParsing} />
+                                </div>}
 
-                                    {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                                    {canData && (canData.resumeURL ? (<div>
-                                    <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
-                                        <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
-                                    </Button>
-                                    </div>) : <span className={`pl-4 ${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
-                                
+                            {!canData && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                            {canData && (canData.resumeURL ? (<div>
+                                <Button type="button" asChild variant={"link"} className={`${editMode && 'hidden'}`}>
+                                    <Link href={`${canData.resumeURL && canData.resumeURL}`} target="_blank">Download My Resume</Link>
+                                </Button>
+                            </div>) : <span className={`pl-4 ${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
+
 
                         </div>
 

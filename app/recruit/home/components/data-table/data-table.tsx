@@ -29,10 +29,11 @@ import { DataTablePagination } from "./data-table-pagination.tsx"
 import { DataTableToolbar } from "./data-table-toolbar.tsx"
 import { Student, StudentList } from "@/app/recruit/home/data/student-schema.ts";
 import { tree } from "next/dist/build/templates/app-page";
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { StudentDataContext, StudentDataContextType } from "@/app/recruit/home/components/dashboard.tsx";
 import internal from "node:stream";
-import {StudentColumns} from "@/app/recruit/home/components/data-table/student-columns.tsx";
+import { StudentColumns } from "@/app/recruit/home/components/data-table/student-columns.tsx";
+import useScreenWidth from "@/hooks/use-screen-width.ts";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -52,20 +53,28 @@ export function DataTable<TData, TValue>({
   c,
   setPage
 }: DataTableProps<TData, TValue>) {
-  const { currentStudent, setStudentList, studentList, setCurrRecrFeedback, setChangedStudent, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
+  const widthSize = useScreenWidth()
+  const breakWidth = 768
+  const { currentStudent, feedbackFocus, setStudentList, studentList, setCurrRecrFeedback, setChangedStudent, currentUserEditId } = useContext(StudentDataContext) as StudentDataContextType
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>(feedbackFocus || (widthSize && widthSize < breakWidth)
+      ?
+      {
+        "gpa": false,
+        "avgRating": false,
+        "year": false,
+        "signup_time": false,
+        "university": false,
+      }
+      : {})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([
-    {id: "signup_time", desc: true}
+    { id: "signup_time", desc: true }
   ])
-  // useEffect(() => {
-  //   console.log("in here")
-  //   table.resetPageIndex()
-  // }, [columnFilters]);
+  const [tableUpdate, setTableUpdate] = React.useState<boolean>(false)
 
   const table = useReactTable({
     data,
@@ -96,6 +105,26 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     autoResetPageIndex: false
   })
+  useEffect(() => {
+    table.setColumnVisibility(feedbackFocus || (widthSize && widthSize < breakWidth)
+      ?
+      {
+        "gpa": false,
+        "avgRating": false,
+        "year": false,
+        "signup_time": false,
+        "university": false,
+      }
+      : {})
+  }, [tableUpdate]);
+  useEffect(() => {
+    const check = (feedbackFocus || (widthSize && widthSize < breakWidth)) as boolean
+
+    if (check != tableUpdate) {
+      setTableUpdate(check)
+    }
+
+  }, [feedbackFocus, widthSize]);
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between overflow-auto px-1 py-2 no-scrollbar">

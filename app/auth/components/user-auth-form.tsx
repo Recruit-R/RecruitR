@@ -54,8 +54,8 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
-        firstName: z.string(),
-        lastName: z.string(),
+        firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+        lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
@@ -106,7 +106,6 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
             console.error("Auth not available");
             return;
         }
-        console.log('event id', eventId);
         if (eventId) auth.addEvent(eventId);
         if (signup) {
             auth.createAccountEmail({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password })
@@ -117,10 +116,15 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
     return (
         <>
-            <div className="flex flex-col space-y-2 text-center">
+
+            <div className="flex flex-col space-y-2 text-center justify-center">
+                {/* <div className="flex justify-center items-center mb-10">
+                    <LogoV2 loginPage={true} />
+                    <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
+                </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
-                </h1>
+                </h1> */}
                 {
                     !recruitLogin && (
                         <p className="text-sm text-muted-foreground">
@@ -185,10 +189,10 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
 
 
+                <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
                 {recruitLogin ? (
                     <>
                         <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-                        <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
                     </>
                 ) : (
                     <>

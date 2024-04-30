@@ -3,8 +3,9 @@ import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import picture from "@/resources/assets/logo-v2.svg";
+import Image from "next/image";
 import { UserAuthForm } from "../../components/user-auth-form";
-
 export const metadata: Metadata = {
     title: "Authentication",
     description: "Authentication forms built using the components.",
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
 
 export default async function LoginPage({ params }: { params: { eventId: string } }) {
     const eventId = params?.eventId?.[0];
-    console.log(params);
     return (
         <>
             <div className="relative flex items-center justify-center align-center h-screen">

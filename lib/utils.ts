@@ -17,7 +17,6 @@ export function splitName(name: string | undefined) {
 }
 
 export function downloadxls(e: any, data: any) {
-  console.log(data);
   e.preventDefault();
   const ws = XLSX.utils.json_to_sheet(data);
   const wb = XLSX.utils.book_new();

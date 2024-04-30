@@ -92,7 +92,7 @@ export function UserNav() {
                     auth?.logout().then(() => {
                         router.push("/auth/login");
                     }).catch((error: any) => {
-                        console.log(error);
+                        console.error(error);
                     });
                 }}>
                     Log out

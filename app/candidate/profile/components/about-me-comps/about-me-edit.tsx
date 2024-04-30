@@ -32,7 +32,7 @@ export function AboutMeDrawerDialog() {
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")} />
+          <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -50,7 +50,7 @@ export function AboutMeDrawerDialog() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" onClick={(e) => console.log("CLICK!")} />
+        <div className="cursor-pointer pb-3 absolute inset-0 bg-secondary rounded-lg -m-3 opacity-50" />
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">

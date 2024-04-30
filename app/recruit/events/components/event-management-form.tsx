@@ -32,11 +32,11 @@ import { format } from 'date-fns'
 const formSchema = z.object({
     title: z.string().min(2, {
         message: "Event title must be at least 2 characters.",
-    }),
+    }).max(40, "Event title cannot exceed 40 characters"),
     date: z.date(),
     location: z.string().min(2, {
-        message: "location name must be at least 2 characters.",
-    }),
+        message: "Location name must be at least 2 characters.",
+    }).max(100, "Location name cannot exceed 100 characters"),
     id: z.string().optional()
 })
 
@@ -84,7 +84,7 @@ export function EventManagementForm({ event, isCreating, setOpen }: { event?: Ev
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                 <FormField
                     control={form.control}
                     name="title"
