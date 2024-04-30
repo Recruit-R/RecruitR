@@ -87,6 +87,7 @@ export function ComboboxYear({ form, field, isParsing }: { form: any, field: any
         </Command>
       </PopoverContent>
     </Popover>
+    {!isParsing && <FormMessage className="text-center" />}
     
     </>
   )

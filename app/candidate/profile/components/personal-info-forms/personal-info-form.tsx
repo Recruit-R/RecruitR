@@ -18,7 +18,6 @@ export function PersonalForm({form, canData, isParsing}: {form:any, canData: any
                 <FormControl id='year'>
                     <ComboboxYear form = {form} field = {field} isParsing = {isParsing}/>
                 </FormControl>
-                {!isParsing && <FormMessage className="text-center" />}
             </FormItem>
             </>
             
