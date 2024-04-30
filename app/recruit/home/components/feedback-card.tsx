@@ -71,7 +71,7 @@ export function FeedbackCard({feedbackFocus, setStudentView, currentStudent, set
                             </div>
                         </div>
                     </div>
-                    <div className={c("flex flex-row md:flex-col xl:flex-row gap-2", "flex w-full flex-row md:flex-col lg:flex-row xl:hidden")}>
+                    <div className={c("flex flex-col sm:flex-row md:flex-col xl:flex-row gap-2", "flex w-full flex-col sm:flex-row md:flex-col lg:flex-row xl:hidden")}>
 
                         <Link target={"_blank"} href={currentStudent?.resumeURL ?? ""} className={cn(
                             buttonVariants({ variant: 'default' }),
