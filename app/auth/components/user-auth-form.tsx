@@ -56,8 +56,8 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
     const formSchema = z.object({
-        firstName: z.string(),
-        lastName: z.string(),
+        firstName: z.string().max(40, "Max length of 40 characters"),
+        lastName: z.string().max(40, "Max length of 40 characters"),
         email: z.string().email(),
         password: signup ? z.string().min(6) : z.string(),
     })
