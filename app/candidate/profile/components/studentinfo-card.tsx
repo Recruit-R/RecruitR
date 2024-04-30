@@ -107,7 +107,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                                     {canData.first_name} {canData.last_name}
                                                 </CardTitle>
                                                 <CardDescription className="text-md">
-                                                    {canData.major}
+                                                    {canData.email}
                                                 </CardDescription>
                                             </>
                                             :
