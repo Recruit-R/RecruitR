@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import microsoft icon
-import { LogoV2 } from "@/components/logo-v2.tsx";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsGithub, BsMicrosoft } from "react-icons/bs";
@@ -119,14 +118,13 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
         <>
 
             <div className="flex flex-col space-y-2 text-center justify-center">
-                <div className="flex justify-center items-center mb-10">
-                    {/*<Image src={picture} alt={"logo"} width={100} height={100} />*/}
+                {/* <div className="flex justify-center items-center mb-10">
                     <LogoV2 loginPage={true} />
                     <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
-                </h1>
+                </h1> */}
                 {
                     !recruitLogin && (
                         <p className="text-sm text-muted-foreground">
