@@ -110,7 +110,7 @@ export default function ClientComponent({ useData }: { useData: any }) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="h-full p-3">
+                <div className="h-full p-3 overflow-y-scroll">
                     <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden border-2">
 
                         <CardHeader className={"flex flex-row items-end min-h-40 p-0 bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90% bg-clip-border"}>
