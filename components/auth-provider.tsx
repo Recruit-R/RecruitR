@@ -18,11 +18,10 @@ export function getAuthToken(): string | undefined {
 }
 
 export function setAuthToken(token: string): string | undefined {
-    if (Cookies.get('firebaseIdToken')) {
+    if (Cookies.get('firebaseIdToken') !== undefined) {
         Cookies.remove('firebaseIdToken');
     }
     const maxAge = 604800;
-    // const secure = process.env.NEXT_PUBLIC_APP_ENV !== "emulator";
     return Cookies.set("firebaseIdToken", token, { secure: false, expires: maxAge });
 }
 
@@ -90,6 +89,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 const token = await user.getIdToken(true).then((token) => {
                     return token;
                 });
+                console.log(user)
 
                 // Check user role
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
@@ -277,7 +277,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function createAccountEmail({ firstName, lastName, email, password }: EmailAccountProps): Promise<void> {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
             if (!auth) {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
@@ -286,7 +286,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 setError(<span>Please enter your first and last name.</span>);
                 return;
             }
-            createUserWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
                     updateProfile(res.user, { displayName: firstName + " " + lastName });
                     addCandidateData(res.user.uid as string, {
@@ -300,6 +300,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 });
         })
     }
+
 
     function loginEmail({ email, password: password }: EmailAccountProps): Promise<void> {
         return new Promise((resolve) => {
@@ -370,19 +371,21 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
 
     function logout(): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (!auth) {
                 setError(<GeneralAuthFailure authCode="auth/not-initialized" />);
                 return;
             }
             removeAuthToken();
-            auth.signOut()
+            setCurrentUser(null);
+            await auth!.signOut()
                 .then(() => {
                     resolve();
                 })
                 .catch((error) => {
                     reject(error);
                 });
+
         });
     }
 
