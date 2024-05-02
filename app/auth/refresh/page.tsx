@@ -18,7 +18,7 @@ const Refresh = () => {
                 const refresh = async () => {
                     await auth.refresh(currentUser!);
                 }
-                refresh();
+                refresh().then(() => window.location.reload());
 
             }
         }

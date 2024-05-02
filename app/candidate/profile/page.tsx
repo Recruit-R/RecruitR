@@ -1,7 +1,7 @@
 import validateUser from "@/app/api/validateUser";
 import ClientComponent from "@/app/candidate/profile/components/client-component";
 import { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { getCandidateData } from "./actions";
 import CandidateSkeleton from "./components/candidate-skeleton";
@@ -41,10 +41,9 @@ async function getUser() {
 
 export default async function Page() {
     let canData: any | undefined;
-    if (headers().get("accept")?.includes("text/html")) {
-        const candidateAuth = await getUser();
-        canData = await getCandidateData(candidateAuth.uid);
-    }
+    const candidateAuth = await getUser();
+    canData = await getCandidateData(candidateAuth.uid);
+
     return (
         <CandidateProfileWithSuspense canData={canData} />
     )
