@@ -89,7 +89,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 const token = await user.getIdToken(true).then((token) => {
                     return token;
                 });
-                console.log(user)
 
                 // Check user role
                 const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
