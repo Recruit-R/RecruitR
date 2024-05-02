@@ -113,17 +113,19 @@ export default function ClientComponent({ useData }: { useData: any }) {
                 <div className="h-full p-3">
                     <Card className="md:w-2/5 md:mx-auto md:h-full divide-y overflow-hidden border-2">
 
-                        <CardHeader className={"flex flex-row items-end h-40 p-0 bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90% bg-clip-border"}>
+                        <CardHeader className={"flex flex-row items-end min-h-40 p-0 bg-gradient-to-r from-fuchsia-800 from-5% via-indigo-600 via-30% to-sky-500 to-90% bg-clip-border"}>
 
                             {(!editMode) ?
                                 <>
-                                    <div className={"flex flex-row text-5xl font-bold px-6 py-3 text-white"}>
-                                        {userData.first_name} {userData.last_name}
+                                    <div className={"px-6 py-3 w-full"}>
+                                        <p className={"break-all text-5xl mr-3 font-bold text-white"}>{userData.first_name}</p>
+
+                                        <p className={"break-all text-5xl font-bold text-blue-100"}>{userData.last_name}</p>
                                     </div>
                                 </>
                                 :
                                 <>
-                                    <div className={"flex flex-row text-white"}>
+                                    <div className={"flex flex-row"}>
                                         <NameChForm form={form}></NameChForm>
                                     </div>
                                 </>
