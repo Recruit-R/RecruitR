@@ -3,7 +3,9 @@ import { Event } from "@/app/types/event";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseISO } from "date-fns";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import {Button} from "@/components/ui/button.tsx";
 
 export function EventCard({ eventIds }: { eventIds: string[] }) {
     const [events, setEvents] = useState<Event[]>([])

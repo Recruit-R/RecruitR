@@ -150,9 +150,9 @@ export default function Page() {
     const RecruiterBox = ({ recruiter }: { recruiter: any }) => {
         const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
         return (
-            <div className="flex items-center justify-between hover:bg-secondary rounded-lg p-3" >
+            <div className="flex items-center justify-between hover:bg-secondary rounded-lg p-3 w-full" >
                 <li className="h-10 flex flex-row gap-2 justify-between items-center w-full ">
-                    <div className="flex flex-row gap-2 items-center">
+                    <div className="flex flex-row gap-2 items-center overflow-x-hidden">
                         <div>
                             <p className="text-muted-foreground text-md">{recruiter.email}</p>
                         </div>
@@ -196,7 +196,7 @@ export default function Page() {
             <AddRecruiterBar form={form} onSubmit={onSubmit} authError={authError} />
             <b>Recruiter List</b>
             <div>
-                <div className="py-2 pl-3 w-3/4 group border rounded-lg transition-all ">
+                <div className="py-3 px-3 w-full md:w-3/4 group border rounded-lg transition-all ">
                     {recruiters.length > 0 &&
                         <>
                             {
