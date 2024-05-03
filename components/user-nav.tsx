@@ -46,7 +46,7 @@ export function UserNav() {
                                     : "Unknown Role"
                             }
                         </p>
-                        <p className="text-sm font-medium leading-none">{auth?.currentUser?.displayName}</p>
+                        <p className="text-sm font-medium leading-none overflow-hidden">{auth?.currentUser?.displayName}</p>
                         <p className="text-xs leading-none text-muted-foreground">
                             {auth?.currentUser?.email}
                         </p>
@@ -57,26 +57,22 @@ export function UserNav() {
                     <Link href={"/recruit/home"}>
                         <DropdownMenuItem>
                             Home
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
                     <Link href={"/recruit/profile"}>
                         <DropdownMenuItem>
                             Profile
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
                     <Link href={"/recruit/events"}>
                         <DropdownMenuItem>
                             Events
-                            <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
                     {auth?.userRole === Roles.COORDINATOR &&
                         <Link href={"/recruit/manage-recruiters"}>
                             <DropdownMenuItem>
                                 Manage Recruiters
-                                <DropdownMenuShortcut>⇧⌘M</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </Link>
                     }
@@ -96,7 +92,6 @@ export function UserNav() {
                     });
                 }}>
                     Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
