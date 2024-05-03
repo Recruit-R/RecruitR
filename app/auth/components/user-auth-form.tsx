@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 // import microsoft icon
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BsGithub, BsMicrosoft } from "react-icons/bs";
+import { BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
@@ -205,13 +205,9 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
 
                 <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
-                {recruitLogin ? (
+                {recruitLogin && (
                     <>
                         <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-                    </>
-                ) : (
-                    <>
-                        <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
                     </>
                 )}
 
