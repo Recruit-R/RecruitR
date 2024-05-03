@@ -1,6 +1,6 @@
 export function LogoV2({loginPage} : {loginPage: boolean}) {
     return (
-        <svg className={`fill-current ${loginPage ? "h-24 w-24" : "h-12 w-12"}`}
+        <svg className={`fill-current ${loginPage ? "h-24 w-24" : "h-10 w-10 md:h-12 md:w-12"}`}
              id="earAo2Q1WhG1"
              viewBox="0 0 330 324"
              shapeRendering="geometricPrecision"

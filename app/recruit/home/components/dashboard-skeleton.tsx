@@ -50,7 +50,7 @@ const DashboardSkeleton = () => {
             </div>
 
             <div
-                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full md:w-2/5")}>
+                className={cn("no-scrollbar bg-background overflow-y-scroll overscroll-contain p-1 w-full hidden md:w-2/5 md:block")}>
                 <Card className="min-h-full flex items-center justify-center">
                     <CardContent className="flex flex-col gap-2 items-center justify-center p-0">
                         <p className="font-bold">

@@ -23,6 +23,7 @@ import { ElementTitle } from "./element-title";
 import { XIcon } from "lucide-react";
 import { FaRegEdit } from "react-icons/fa";
 import { IoMdCheckmark } from "react-icons/io";
+import {Separator} from "@/components/ui/separator.tsx";
 
 
 interface StudentInfoCardProps {
@@ -146,6 +147,7 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                     <CardContent className={"flex flex-col flex-wrap xl:gap-x-4"}>
                         {/*    Initial feedback */}
                         <div className="flex flex-col gap-5 space-y-1">
+
                             <ElementTitle title={"Personal Info"} />
                             {editMode ? <PersonalForm form={form} canData={canData} isParsing={isParsing}></PersonalForm> : <StudentInfo canData={canData}></StudentInfo>}
 
@@ -173,7 +175,10 @@ export function StudentInfoCard({ editMode, setEditMode, loadedCanData }: Studen
                                 </Button>
                             </div>) : <span className={`pl-4 ${editMode && 'hidden'}`}> No resume uploaded. Edit profile to upload a resume. </span>)}
 
-
+                            <Separator className={"md:hidden"}/>
+                            <Button asChild variant={"link"} className={"self-start md:hidden"}>
+                                <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
+                            </Button>
                         </div>
 
                     </CardContent>

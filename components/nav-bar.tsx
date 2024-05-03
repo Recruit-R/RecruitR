@@ -13,10 +13,10 @@ export default function NavBar({ studentNav }: { studentNav: boolean }) {
             <Link href={studentNav ? "/candidate/profile" : "/recruit/home"} className='flex flex-row justify-center items-center'>
                 {/*<Image src={picture} alt={"logo"} width={50} height={50} />*/}
                 <LogoV2 loginPage={false}/>
-                <span className='font-roboto text-3xl font-semibold'>RecruitR</span>
+                <span className='font-roboto text-2xl md:text-3xl font-semibold'>RecruitR</span>
             </Link>
             <div className="flex items-center ml-auto gap-4">
-                {studentNav && <Button asChild variant={"link"}>
+                {studentNav && <Button asChild variant={"link"} className={"hidden md:block"}>
                     <Link href="https://www.ppg.com/en-US" target="_blank">Check out PPG!</Link>
                 </Button>}
                 <ModeToggle />
