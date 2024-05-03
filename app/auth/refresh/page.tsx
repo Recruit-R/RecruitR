@@ -13,7 +13,7 @@ const Refresh = () => {
         if (auth) {
             const currentUser = auth.currentUser;
             if (!currentUser) {
-                router.push('/auth/login')
+                router.push('/auth/login');
             } else {
                 const refresh = async () => {
                     await auth.refresh(currentUser!);

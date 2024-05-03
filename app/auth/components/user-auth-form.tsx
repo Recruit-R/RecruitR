@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 // import microsoft icon
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BsGithub, BsMicrosoft } from "react-icons/bs";
+import { BsMicrosoft } from "react-icons/bs";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     signup: boolean;
@@ -53,21 +53,36 @@ export const AuthFormField = ({ id, type, placeholder, autoComplete, label, form
 export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthFormProps) {
     const [recruitLogin, setRecruitLogin] = useState<boolean>(false);
     const auth = useAuth();
-    const formSchema = z.object({
-        firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
-        lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
-        email: z.string().email(),
-        password: signup ? z.string().min(6) : z.string(),
-    })
+    let formSchema: any;
+    let defaultValues: any;
+    if (signup) {
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
+        formSchema = z.object({
+            firstName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+            lastName: z.string().trim().max(40, "Max length of 40 characters").min(1, "Min length of 1 character"),
+            email: z.string().email(),
+            password: signup ? z.string().min(6) : z.string(),
+        })
+        defaultValues = {
             firstName: "",
             lastName: "",
             email: "",
             password: "",
-        },
+        }
+    } else {
+        formSchema = z.object({
+            email: z.string().email(),
+            password: signup ? z.string().min(6) : z.string(),
+        })
+        defaultValues = {
+            email: "",
+            password: "",
+        }
+    }
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: defaultValues,
     })
 
     useEffect(() => {
@@ -121,10 +136,10 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
                 {/* <div className="flex justify-center items-center mb-10">
                     <LogoV2 loginPage={true} />
                     <span className='font-roboto text-6xl font-semibold'>RecruitR</span>
-                </div>
+                </div> */}
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {recruitLogin ? "Recruiter" : "Student"} {signup ? "Sign Up" : "Login"}
-                </h1> */}
+                </h1>
                 {
                     !recruitLogin && (
                         <p className="text-sm text-muted-foreground">
@@ -190,13 +205,9 @@ export function UserAuthForm({ className, signup, eventId, ...props }: UserAuthF
 
 
                 <OAuthButton authType={auth!.loginGoogle} authTitle="Google" Logo={Icons.google} />
-                {recruitLogin ? (
+                {recruitLogin && (
                     <>
                         <OAuthButton authType={auth!.loginMicrosoft} authTitle="Microsoft" Logo={BsMicrosoft} />
-                    </>
-                ) : (
-                    <>
-                        <OAuthButton authType={auth!.loginGithub} authTitle="Github" Logo={BsGithub} />
                     </>
                 )}
 
