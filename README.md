@@ -4,22 +4,22 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="resources/assets/logo-v2.svg" alt="Logo" width="80" height="80">
+    <img src="resources/assets/logo-v2-w.png" alt="Logo" width="80" height="80" style="border-radius:20px">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">RecruitR</h3>
 
   <p align="center">
-    project_description
+    An intuitive, mobile-first webapp for all the difficult to manage hiring tasks.
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
+    <!-- <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <br /> -->
+    <!-- <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
     ·
     <a href="https://github.com/github_username/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a> -->
   </p>
 </div>
 
