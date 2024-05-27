@@ -3,23 +3,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/thedeafone/repo_name">
     <img src="resources/assets/logo-v2-w.png" alt="Logo" width="80" height="80" style="border-radius:20px">
   </a>
 
 <h3 align="center">RecruitR</h3>
 
   <p align="center">
-    An intuitive, mobile-first webapp for all the difficult to manage hiring tasks.
+    An intuitive, mobile-first webapp for all the difficult to manage recruiting tasks.
     <br />
-    <!-- <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <!-- <a href="https://github.com/thedeafone/repo_name"><strong>Explore the docs »</strong></a>
     <br /> -->
     <!-- <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/thedeafone/repo_name">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/thedeafone/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a> -->
+    <a href="https://github.com/thedeafone/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a> -->
   </p>
 </div>
 
@@ -32,6 +32,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#origin">Origin</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -44,7 +45,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <!-- <li><a href="#contributing">Contributing</a></li> -->
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -56,24 +57,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
+### Origin
+This project was born out of a need to create, maintain, and easily utilize information related to recruiting candidates. One of the hardest parts of recruiting is figuring out how to manage the data that you get from candidates. RecruitR enables candidates to quickly create accounts with a QR code, and populate them with relevant information. Recruiters can then interact with these accounts by filtering and sorting them, along with all sorts of capabilities for rating and information recording.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+[![Next][Next.js]][Next-url] \
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) \
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) \
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -82,43 +79,57 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * npm
   ```sh
   npm install npm@latest -g
   ```
+* A [firebase project](https://firebase.google.com/) 
 
-### Installation
+### Installation and Running
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/Recruit-R/RecruitR.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
-   npm install
+   npm i
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install [firebase tools](https://www.npmjs.com/package/firebase-tools)
+   ```sh
+   npm i firebase-tools
    ```
+4. Initialize and connect firebase project
+    ```sh
+    firebase init
+    ```
+5. Initialize Emulators (Optional)
+    run emulators with
+    ```sh
+    firebase init emulators
+    ```
+6. Initialize a local version or setup the cloud version of the [recruitr-resume-parser api](https://github.com/Recruit-R/recruitr-resume-parser)
+
+7. Fill out the [environment variables file](./.env.example)
+
+8. When using the emulators, start by running the following:
+    ```sh
+    npm run emulators
+    ```
+9. Run the app
+    ```sh
+    npm run dev
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- USAGE EXAMPLES -->
+USAGE EXAMPLES 
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+You can access the production version of the app at https://recruitr-dun.vercel.app/auth/login
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -126,20 +137,44 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <!-- ROADMAP -->
 ## Roadmap
+- [x] authorization/authentication
+    - [x] login
+    - [x] signup
+    - [x] password reset
+    - [x] refresh
+- [x] Candidate homepage
+    - [x] resume parsing
+    - [x] resume management
+    - [ ] editable candidate email
+- [x] Recruiter dashboard
+    - [x] candidate feedback
+        - [x] candidate summary
+        - [x] automatic saving
+        - [x] delete capability
+        - [x] feedback
+        - [ ] configurable feedback
+    - [x] candidate datatable
+    - [x] live candidate updating
+- [x] Recruiter Profile
+    - [ ] editable recruiter email
+- [x] Recruiter management by coordinator
+    - [x] CRUD for recruiters
+    - [x] email api
+- [x] Event management
+    - [x] CRUD for events
+    - [x] creating qr code for event
+    - [x] connecting event to profiles
+- [x] hosting with vercel
+- [ ] testing
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Recruit-R/RecruitR/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+<!-- ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -152,14 +187,14 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See [LICENSE.txt](LICENSE.txt) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -168,9 +203,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Keegan Woodburn - keegan.woodburn@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/thedeafone/repo_name](https://github.com/thedeafone/repo_name)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -179,25 +214,27 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+[Caleb Frey](https://github.com/freycp20)\
+[Ava Hatfield](https://github.com/avaHatfield)\
+[Keegan Woodburn](https://github.com/TheDeafOne)\
+[Noah Yuen](https://github.com/NoYuen)\
+[PPG](https://www.ppg.com/en-US)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/thedeafone/repo_name.svg?style=for-the-badge
+[contributors-url]: https://github.com/thedeafone/repo_name/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/thedeafone/repo_name.svg?style=for-the-badge
+[forks-url]: https://github.com/thedeafone/repo_name/network/members
+[stars-shield]: https://img.shields.io/github/stars/thedeafone/repo_name.svg?style=for-the-badge
+[stars-url]: https://github.com/thedeafone/repo_name/stargazers
+[issues-shield]: https://img.shields.io/github/issues/thedeafone/repo_name.svg?style=for-the-badge
+[issues-url]: https://github.com/thedeafone/repo_name/issues
+[license-shield]: https://img.shields.io/github/license/thedeafone/repo_name.svg?style=for-the-badge
+[license-url]: https://github.com/thedeafone/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
@@ -217,3 +254,4 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+[Firebase-url]: https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34
