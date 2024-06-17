@@ -35,6 +35,9 @@
         <li><a href="#origin">Origin</a></li>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#architecture-and-design">Architecture and Design</a></li>
+        <ul>
+        <li><a href="#general-architecture">General Architecture</a></li>
+        </ul>
       </ul>
     </li>
     <li>
@@ -69,6 +72,8 @@ This project was born out of a need to create, maintain, and easily utilize info
 
 [![Next][Next.js]][Next-url] \
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) \
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000?style=for-the-badge&logo=shadcnui&logoColor=fff)](#) \
+![Tailwind](https://img.shields.io/badge/tailwindcss-0F172A?style=for-the-badge&logo=tailwindcss) \
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) \
 ![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 
@@ -77,8 +82,18 @@ This project was born out of a need to create, maintain, and easily utilize info
 
 
 ### Architecture and Design
-We used NextJS to build the front and back end. We use firebase for authentication, data storage, and email services. NextJS allows for more consistent development, and integrates really well with firebase technologies. \
+#### General Architecture
+We use NextJS to build the front and back end. We use firebase for authentication, data storage, and email services. NextJS allows for more consistent development, and integrates really well with firebase technologies. \
 <img src="./documentation/diagrams/general-recruitr-architecture.svg" />
+<br />
+The main elements of RecruitRs architecture are:
+- NextJS Frontend and Backend
+- Firebase authentication for user management
+- Firestore database
+- Firestore email services through the firestore-send-email extension
+- Google cloud run for resume parsing (see more at https://github.com/Recruit-R/recruitr-resume-parser)
+
+
 
 
 <!-- GETTING STARTED -->
@@ -148,9 +163,9 @@ You can access the production version of the app at https://recruitr-dun.vercel.
     - [x] password reset
     - [x] refresh
 - [x] Candidate homepage
+    - [x] editable info
     - [x] resume parsing
     - [x] resume management
-    - [ ] editable candidate email
 - [x] Recruiter dashboard
     - [x] candidate feedback
         - [x] candidate summary
@@ -172,7 +187,7 @@ You can access the production version of the app at https://recruitr-dun.vercel.
 - [x] hosting with vercel
 - [ ] testing
 
-See the [open issues](https://github.com/Recruit-R/RecruitR/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Recruit-R/RecruitR/issues) for a a more comprehensive list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
