@@ -34,6 +34,7 @@
       <ul>
         <li><a href="#origin">Origin</a></li>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#architecture-and-design">Architecture and Design</a></li>
       </ul>
     </li>
     <li>
@@ -74,6 +75,10 @@ This project was born out of a need to create, maintain, and easily utilize info
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+### Architecture and Design
+We used NextJS to build the front and back end. We use firebase for authentication, data storage, and email services. NextJS allows for more consistent development, and integrates really well with firebase technologies. \
+<img src="./documentation/diagrams/general-recruitr-architecture.svg" />
 
 
 <!-- GETTING STARTED -->
