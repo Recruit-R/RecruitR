@@ -63,7 +63,14 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 ### Origin
-This project was born out of a need to create, maintain, and easily utilize information related to recruiting candidates. One of the hardest parts of recruiting is figuring out how to manage the data that you get from candidates. RecruitR enables candidates to quickly create accounts with a QR code, and populate them with relevant information. Recruiters can then interact with these accounts by filtering and sorting them, along with all sorts of capabilities for rating and information recording.
+This project was born out of a need to create, maintain, and easily utilize information related to recruiting candidates. One of the hardest parts of recruiting is figuring out how to manage the data that you get from candidates. RecruitR enables candidates to easily create accounts with a QR code, and populate them with relevant information. Recruiters can then interact with these accounts by filtering and sorting them, along with all sorts of capabilities for rating and information recording.
+
+#### Example User Story
+Matt, a student at the University of Pittsburgh, is looking to get an internship for the upcoming summer. He's perusing different company booths at a career fair, and notices PPG, a materials manufacturing company. He gets in line, and sees he can upload his information through the RecruitR app. He scans the available QR code at the PPG booth and makes an account using google OAuth. As he's waiting in line, he quickly fills out a bit of his experience, and academic info. 
+
+Bryan, a recruiter at 
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -81,8 +88,8 @@ This project was born out of a need to create, maintain, and easily utilize info
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-### Architecture and Design
-#### General Architecture
+## Architecture and Design
+### General Architecture
 We use NextJS to build the front and back end. We use firebase for authentication, data storage, and email services. NextJS allows for more consistent development, and integrates really well with firebase technologies. \
 <img src="./documentation/diagrams/general-recruitr-architecture.svg" />
 <br />
@@ -91,8 +98,29 @@ The main elements of RecruitRs architecture are:
 - Firebase authentication for user management
 - Firestore database
 - Firestore email services through the firestore-send-email extension
-- Google cloud run for resume parsing (see more at https://github.com/Recruit-R/recruitr-resume-parser)
+- A flask api for resume parsing, running on GCR (see more at https://github.com/Recruit-R/recruitr-resume-parser)
 
+
+### Front and Back End
+We tried to offload much of the stereotypical CRUD work onto the front-end using [firestore security rules](https://firebase.google.com/docs/firestore/security/get-started). This means that the front-end could be the main focus of our development efforts. We use the backend for any security-related requests (e.g. whitelist requests) and email requests.
+
+### Firestore Database
+Firestore is a no-SQL solution for data management, which was useful as we explored different data architectures. Additionally, it provides real-time updates and broadcasting, meaning that its only a few extra lines of code to update the UI when a new piece of data is added.
+
+There are four collections for our data:
+1. events - the set of past and future events
+2. mail - various email requests, which include email messages, success states, and recipients.
+3. users - the set of users all users
+4. whitelist - the set of whitelisted recruiters or coordinators
+
+While the data throughout these collections tends to be consistent, the exception is the users collection.
+
+Users in this collection are partitioned by their role. Recruiters and coordinators have the same information such as email, name, and role; However, candidates will have varying data attributes, most notably the feedback attribute, which varies based on recruiter feedback.
+
+### Authorization and Authentication
+A large part of why we use firebase is for its robust security features. We authenticate using firebase's email and oAuth capabilities. We can then use firebase-provided authentication tokens to directly query firestore for data from the frontend. By setting up firestore security rules, users are validated and filtered by their given roles.
+
+Beyond using roles for just data request validation, we also use them to manage where in the app a given user has access to. We do this through [NextJS's middleware](https://nextjs.org/docs/pages/building-your-application/routing/middleware), which is deployed "at the edge." This enables really quick role validation and means we can redirect the user quickly without having to worry about access policies on the client-side.
 
 
 
@@ -147,7 +175,6 @@ The main elements of RecruitRs architecture are:
 
 
 
-USAGE EXAMPLES 
 ## Usage
 You can access the production version of the app at https://recruitr-dun.vercel.app/auth/login
 
