@@ -4,7 +4,7 @@ RecruitR is a web application for managing intern intake. It was used by recruit
 
 Candidates can register from an event QR code and complete their profiles on a phone. Recruiters can then search the candidate list, record feedback, and follow candidates through the intake process.
 
-![RecruitR's original architecture diagram](documentation/diagrams/general-recruitr-architecture.svg)
+![RecruitR's architecture](documentation/diagrams/general-recruitr-architecture.svg)
 
 *The project's architecture: the web application, Firebase services, and the separate resume parser.*
 
@@ -45,7 +45,7 @@ Useful places to start in the source are the [candidate profile](app/candidate/p
 
 ## Running locally
 
-This is a Firebase-backed application. A local web server still needs a configured Firebase project; the repository does not include a self-contained sample database.
+Local development uses a Firebase project for authentication, candidate records, and resume storage.
 
 ### 1. Install the application
 
@@ -64,7 +64,7 @@ Create a Firebase project with Authentication, Firestore, and Storage. Enable th
 
 - Fill the `NEXT_PUBLIC_FIREBASE_*` values in `.env.local` with your Firebase web-app configuration.
 - Update the web-app configuration in [firebase.config.js](firebase.config.js) to the same project. Some database and storage helpers import this file directly.
-- Download a service-account key for your project. Set `FIREBASE_SERVICE_ACCOUNT_KEY` in `.env.local` to its complete JSON object on one line. The server parses this value at startup; the placeholder in the example file is not a working key.
+- Download a service-account key for your project. Set `FIREBASE_SERVICE_ACCOUNT_KEY` in `.env.local` to its complete JSON object on one line. The server parses this value at startup.
 - Set `API_URL=http://localhost:3000` and `NEXT_PUBLIC_APP_ENV=production` to use your configured Firebase services locally. Remove the example's `NODE_ENV=local` line; Next.js sets `NODE_ENV` itself.
 - Configure Firestore using the included [rules](firestore.rules) and [indexes](firestore.indexes.json). For invitation and password-reset emails, configure Firebase's Trigger Email extension to process the `mail` collection.
 
@@ -99,15 +99,13 @@ npx firebase use --add
 npm run emulators
 ```
 
-Setting `NEXT_PUBLIC_APP_ENV=emulator` connects Firebase Auth and the server-side Firestore client to those endpoints. This is a partial emulator setup: the client CRUD helpers and resume storage still use the project in `firebase.config.js`. It should not be treated as a completely offline configuration.
-
-The setup above is based on the repository's configuration and code. A complete authenticated workflow requires your Firebase services, initial access records, and optional email/parser services.
+Setting `NEXT_PUBLIC_APP_ENV=emulator` connects Firebase Auth and the server-side Firestore client to those endpoints. Client CRUD helpers and resume storage use the project configured in `firebase.config.js`.
 
 ## Project team
 
 RecruitR was built by [Caleb Frey](https://github.com/freycp20), [Ava Hatfield](https://github.com/avaHatfield), [Keegan Woodburn](https://github.com/TheDeafOne), and [Noah Yuen](https://github.com/NoYuen).
 
-Thanks to [PPG](https://www.ppg.com/en-US), credited in the original project documentation.
+Thanks to [PPG](https://www.ppg.com/en-US).
 
 ## License
 
